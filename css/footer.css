@@ -1,0 +1,263 @@
+/* Container chính cho phần lợi ích */
+.benefits-section {
+    margin: 0 auto; /* Căn giữa block nếu có max-width */
+    max-width: 100%; /* Hoặc chiều rộng phù hợp */
+    background-color: #fff; /* Nền trắng */
+    padding: 20px; /* Padding trên dưới trái phải */
+    border-top: 4px solid #d0021c; /* Đường kẻ đỏ phía trên */
+    /* border-bottom: 1px solid #eee; */ /* Có thể thêm đường kẻ dưới */
+    font-family: sans-serif; /* Hoặc font chữ bạn dùng */
+}
+/* Container cho 3 item lợi ích (sử dụng Flexbox) */
+.benefits-container {
+    display: flex; /* Bật Flexbox */
+    justify-content: space-around; /* Phân phối không gian xung quanh các item */
+    align-items: flex-start; /* Căn item lên đầu theo chiều dọc */
+    flex-wrap: wrap; /* Cho phép xuống dòng trên màn hình nhỏ */
+}
+/* Mỗi item lợi ích */
+.benefit-item {
+    display: flex; /* Bật Flexbox để sắp xếp icon và text cạnh nhau */
+    align-items: center; /* Căn icon và khối text theo chiều dọc */
+    flex-basis: 30%; /* Mỗi item chiếm khoảng 30% chiều rộng (điều chỉnh tùy ý) */
+    /* flex-grow: 1; */ /* Hoặc cho phép item tự giãn */
+    margin-bottom: 20px; /* Khoảng cách dưới nếu xuống dòng trên mobile */
+    padding-right: 10px; /* Khoảng padding cuối item */
+}
+/* Container cho Icon */
+.benefit-icon {
+    width: 40px; /* Kích thước vòng tròn icon */
+    height: 40px;
+    border-radius: 50%; /* Bo tròn */
+    background-color: #d0021c; /* Nền đỏ */
+    color: white; /* Màu icon */
+    font-size: 1.5em; /* Kích thước icon */
+    display: flex; /* Bật Flexbox để căn giữa icon */
+    justify-content: center; /* Căn giữa icon theo chiều ngang */
+    align-items: center; /* Căn giữa icon theo chiều dọc */
+    margin-right: 15px; /* Khoảng cách giữa icon và text */
+    flex-shrink: 0; /* Ngăn icon bị co lại trên màn hình nhỏ */
+}
+/* Container cho Text (Tiêu đề và Mô tả) */
+.benefit-text {
+    flex-grow: 1; /* Cho phép khối text chiếm hết không gian còn lại */
+    color: rgba(0,0,0,.8); /* Màu chữ chung */
+}
+/* Tiêu đề lợi ích */
+.benefit-title {
+    font-size: 1em;
+    font-weight: bold;
+    margin: 0 0 5px 0; /* Khoảng cách dưới tiêu đề */
+    line-height: 1.3;
+}
+/* Mô tả lợi ích */
+.benefit-description {
+    font-size: 0.9em;
+    color: rgba(0,0,0,.6); /* Màu chữ xám hơn */
+    margin: 0;
+    line-height: 1.3;
+}
+/* Media query cho màn hình nhỏ hơn */
+@media (max-width: 768px) {
+    .benefits-container {
+        flex-direction: column; /* Xếp các item theo cột dọc trên màn hình nhỏ */
+        align-items: center; /* Căn giữa các item khi xếp cột */
+    }
+
+    .benefit-item {
+        width: 95%; /* Chiếm gần hết chiều rộng */
+        flex-basis: auto; /* Bỏ base cố định */
+        justify-content: flex-start; /* Căn item về bên trái (icon-text) */
+        padding-right: 0; /* Bỏ padding cuối item */
+    }
+    .benefit-text {
+        flex-grow: 1; /* Vẫn cho phép text chiếm không gian */
+    }
+}
+
+
+
+
+/* Footer */
+/* Footer container chính */
+footer {
+    background-color: #fbfbfb; /* Nền xám nhạt */
+    padding: 40px 20px; /* Padding trên dưới và trái phải */
+    font-family: sans-serif; /* Hoặc font chữ bạn dùng */
+    color: rgba(0,0,0,.8); /* Màu chữ mặc định */
+    font-size: 0.9em;
+}
+/* Container cho các cột footer */
+.footer-container {
+    max-width: 1200px; /* Chiều rộng tối đa giống các phần khác */
+    margin: 0 auto; /* Căn giữa container */
+    display: grid; /* Sử dụng Grid */
+    /* Định nghĩa 5 cột. Các cột link (1,2,5) hẹp hơn, cột logo (3,4) rộng hơn */
+    grid-template-columns: 1.2fr 1.2fr 1.8fr 1.8fr 1fr;
+    gap: 30px; /* Khoảng cách giữa các cột */
+}
+/* Tiêu đề các cột */
+.footer-col h3 {
+    font-size: 1em;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: rgba(0,0,0,.8); /* Màu chữ tiêu đề cột */
+}
+/* Style chung cho các danh sách link (cột 1, 2, 5) */
+.footer-col-links ul,
+.footer-col-social ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.footer-col-links li,
+.footer-col-social li {
+    margin-bottom: 10px; /* Khoảng cách giữa các item link */
+}
+.footer-col-links a,
+.footer-col-social a {
+    text-decoration: none;
+    color: rgba(0,0,0,.65); /* Màu chữ link */
+    font-size: 0.9em;
+    transition: color 0.2s ease;
+    display: flex; /* Dùng Flexbox cho link social để căn icon/text */
+    align-items: center;
+}
+.footer-col-links a:hover,
+.footer-col-social a:hover {
+    color: #d0021c; /* Đổi màu khi hover (ví dụ: màu đỏ) */
+}
+/* Icon trong link social */
+.footer-col-social a i {
+    margin-right: 8px; /* Khoảng cách giữa icon và text */
+    width: 20px; /* Đảm bảo icon có kích thước cố định để căn dòng */
+    text-align: center;
+}
+/* Style cho lưới logo (cột 3, 4) */
+.logo-grid {
+    display: grid; /* Sử dụng Grid cho lưới logo con */
+    /* Định nghĩa số cột cho logo (ví dụ: 3 cột cho payment, 4 cột cho shipping) */
+    /* Cái này có thể cần override cho từng loại lưới logo */
+    grid-template-columns: repeat(3, 1fr); /* Mặc định 3 cột */
+    gap: 10px; /* Khoảng cách giữa các logo */
+}
+/* Override số cột cho lưới logo vận chuyển (nếu cần) */
+.shipping-logos {
+     grid-template-columns: repeat(4, 1fr); /* 4 cột cho vận chuyển */
+}
+/* Mỗi item logo */
+.logo-item {
+    border: 1px solid #eee; /* Viền nhẹ */
+    border-radius: 4px;
+    padding: 5px; /* Padding bên trong item */
+    background-color: #fff; /* Nền trắng cho item */
+    display: flex; /* Dùng Flexbox để căn giữa ảnh logo */
+    justify-content: center;
+    align-items: center;
+}
+/* Ảnh logo */
+.logo-item img {
+    display: block;
+    max-width: 100%; /* Đảm bảo ảnh logo không tràn ra */
+    max-height: 30px; /* Giới hạn chiều cao ảnh logo (điều chỉnh tùy ý) */
+    object-fit: contain; /* Giữ tỷ lệ ảnh */
+}
+/* Phần bản quyền hoặc thông tin dưới cùng (nếu có) */
+/* .footer-bottom {
+    max-width: 1200px;
+    margin: 20px auto 0;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    text-align: center;
+    font-size: 0.8em;
+    color: rgba(0,0,0,.5);
+} */
+/* Responsive: Chuyển bố cục Grid thành ít cột hơn trên màn hình nhỏ */
+@media (max-width: 992px) {
+    .footer-container {
+        /* Chuyển thành 3 cột */
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+    /* Điều chỉnh lại lưới logo nếu cần */
+     .logo-grid {
+         grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); /* Logo tự co giãn */
+     }
+     .shipping-logos {
+         grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+     }
+}
+@media (max-width: 768px) {
+    .footer-container {
+        /* Chuyển thành 2 cột */
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+    /* Logo grid có thể giữ nguyên auto-fit */
+@media (max-width: 480px) {
+     .footer-container {
+        /* Chuyển thành 1 cột */
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    /* Logo grid có thể giữ nguyên auto-fit */
+}
+/* Style cho phần dưới cùng của footer */
+.footer-bottom {
+    max-width: 1200px; /* Giới hạn chiều rộng */
+    margin: 20px auto 0; /* Khoảng cách trên và căn giữa */
+    padding: 20px 0; /* Padding trên dưới */
+    border-top: 1px solid #eee; /* Đường kẻ mỏng phía trên */
+    text-align: center; /* Căn giữa toàn bộ nội dung block */
+    font-size: 0.8em; /* Cỡ chữ nhỏ cho block này */
+    color: rgba(0,0,0,.65); /* Màu chữ xám */
+}
+
+/* Hàng các link chính sách */
+.footer-bottom-links {
+    display: flex; /* Sử dụng Flexbox */
+    justify-content: center; /* Căn giữa các link */
+    align-items: center;
+    flex-wrap: wrap; /* Cho phép xuống dòng trên màn hình nhỏ */
+    margin-bottom: 20px; /* Khoảng cách dưới hàng link */
+    padding: 0 10px; /* Padding hai bên */
+}
+
+.footer-bottom-links a {
+    text-decoration: none;
+    color: rgba(0,0,0,.65); /* Màu chữ link */
+    font-size: 1em; /* Cỡ chữ link */
+    padding: 0 10px; /* Padding trái phải giữa các link */
+    border-right: 1px solid #ccc; /* Đường kẻ phân cách giữa các link */
+    transition: color 0.2s ease;
+    white-space: nowrap; /* Ngăn link bị ngắt dòng */
+    margin: 5px 0; /* Margin trên dưới để tạo khoảng cách khi xuống dòng */
+}
+
+/* Bỏ đường kẻ phải cho link cuối cùng */
+.footer-bottom-links a:last-child {
+    border-right: none;
+}
+
+.footer-bottom-links a:hover {
+     color: #d0021c; /* Đổi màu khi hover */
+}
+/* Khối thông tin công ty */
+.footer-company-info {
+    text-align: center; /* Căn giữa các đoạn text */
+    line-height: 1.6; /* Chiều cao dòng */
+    padding: 0 10px; /* Padding hai bên */
+}
+
+.footer-company-info p {
+    margin: 0 0 8px 0; /* Khoảng cách dưới mỗi đoạn text */
+    font-size: 1em; /* Cỡ chữ cho đoạn text */
+    color: rgba(0,0,0,.65);
+}
+
+/* Style cho tên người chịu trách nhiệm (in đậm) */
+.footer-company-info p strong {
+    font-weight: bold;
+    color: rgba(0,0,0,.8); /* Có thể set màu đậm hơn */
+}

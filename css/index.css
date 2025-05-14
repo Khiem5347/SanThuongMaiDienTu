@@ -1,0 +1,430 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #e9e8e8;
+}
+/* Banner */
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+.swiper-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.swiper-button-prev,
+.swiper-button-next {
+    color: white;
+    top: 55%;
+    transform: translateY(-50%);
+}
+.swiper-button-prev {
+    left: 10px;
+}
+.swiper-button-next {
+    right: 10px;
+}
+
+
+
+/* Danh mục ngành hàng */
+.category-section {
+    margin: 100px auto;
+    padding: 20px;
+    max-width: 1200px; /* chiều rộng tối đa */
+    background-color: #fff; /* Nền trắng */
+    border-radius: 8px; /* Bo góc cho container */
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1); /* Shadow nhẹ */
+}
+/* Tiêu đề danh mục */
+.category-heading {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee; /* Đường kẻ dưới tiêu đề */
+    color: rgba(0,0,0,.54); /* Màu xám nhạt như ảnh */
+}
+/* Lưới danh mục */
+.category-grid {
+    display: grid;
+    /* Tạo 6 cột có chiều rộng bằng nhau */
+    grid-template-columns: repeat(6, 1fr);
+    /* Khoảng cách giữa các mục */
+    gap: 1px; /* Tạo đường kẻ mỏng giữa các mục */
+    border: 1px solid #eee; /* Viền cho toàn bộ lưới */
+    border-top: none; /* Bỏ viền trên vì tiêu đề đã có */
+    border-left: none; /* Bỏ viền trái */
+    border-right: none; /* Bỏ viền phải */
+}
+/* Mỗi mục danh mục */
+.category-item {
+    display: flex;
+    flex-direction: column; /* Sắp xếp icon và text theo cột dọc */
+    align-items: center; /* Căn giữa theo chiều ngang */
+    justify-content: center; /* Căn giữa theo chiều dọc */
+    padding: 15px 10px; /* Padding trên dưới trái phải */
+    text-decoration: none; /* Bỏ gạch chân link */
+    color: rgba(0,0,0,.8); /* Màu chữ */
+    font-size: 18px; /* Cỡ chữ nhỏ hơn */
+    text-align: center; /* Căn giữa text */
+    background-color: #fff; /* Nền trắng */
+    transition: background-color 0.2s ease; /* Hiệu ứng hover */
+    /* Tạo đường kẻ phải và dưới cho mỗi item */
+    border-right: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+/* Hiệu ứng khi di chuột qua */
+.category-item:hover {
+    background-color: #f8f8f8; /* Nền hơi xám khi hover */
+    /* Có thể thêm các hiệu ứng khác */
+}
+/* Wrapper cho icon để tạo nền bo tròn */
+.category-icon-wrapper {
+    width: 60px; /* Kích thước vùng icon */
+    height: 60px;
+    border-radius: 50%; /* Bo tròn */
+    background-color: #f5f5f5; /* Nền xám nhạt */
+    display: flex;
+    justify-content: center; /* Căn giữa icon trong wrapper */
+    align-items: center;
+    margin-bottom: 8px; /* Khoảng cách giữa icon và text */
+    overflow: hidden; /* Đảm bảo ảnh không tràn ra khỏi bo tròn */
+}
+/* Icon ảnh */
+.category-icon {
+    display: block; /* Loại bỏ khoảng trống dưới ảnh */
+    max-width: 100%; /* Giới hạn kích thước ảnh bên trong wrapper */
+    max-height: 100%;
+    object-fit: contain; /* Đảm bảo ảnh hiển thị đầy đủ không bị cắt */
+}
+/* Tên danh mục */
+.category-name {
+    margin: 0; /* Bỏ margin mặc định của p */
+    font-size: 0.8em; /* Có thể điều chỉnh lại font-size */
+    line-height: 1.2; /* Chiều cao dòng */
+}
+/* Cải thiện responsive nhẹ */
+@media (max-width: 992px) {
+    .category-grid {
+        grid-template-columns: repeat(4, 1fr); /* 4 cột trên màn hình trung bình */
+    }
+     .category-grid .category-item:nth-child(6n) { /* Bỏ rule cũ */
+         border-right: 1px solid #eee;
+     }
+     .category-grid .category-item:nth-child(4n) { /* Bỏ viền phải cho item cuối mỗi dòng mới */
+        border-right: none;
+    }
+}
+@media (max-width: 768px) {
+    .category-grid {
+        grid-template-columns: repeat(3, 1fr); /* 3 cột trên màn hình nhỏ */
+    }
+     .category-grid .category-item:nth-child(4n) { /* Bỏ rule cũ */
+         border-right: 1px solid #eee;
+     }
+     .category-grid .category-item:nth-child(3n) { /* Bỏ viền phải cho item cuối mỗi dòng mới */
+        border-right: none;
+    }
+}
+@media (max-width: 480px) {
+    .category-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 cột trên màn hình rất nhỏ */
+    }
+      .category-grid .category-item:nth-child(3n) { /* Bỏ rule cũ */
+         border-right: 1px solid #eee;
+     }
+    .category-grid .category-item:nth-child(2n) { /* Bỏ viền phải cho item cuối mỗi dòng mới */
+       border-right: none;
+   }
+    .category-icon-wrapper {
+        width: 50px; /* Giảm kích thước icon */
+        height: 50px;
+    }
+     .category-item {
+         padding: 10px 5px; /* Giảm padding */
+     }
+}
+
+
+
+
+/* Phần Flash Sale */
+
+.flash-sale-section {
+    margin: 100px auto;
+    padding: 20px;
+    max-width: 1200px; /* Hoặc chiều rộng phù hợp */
+    background-color: #fff; /* Nền trắng */
+    border-radius: 8px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
+    font-family: sans-serif; /* Hoặc font chữ bạn dùng */
+}
+/* Header của phần Flash Sale */
+.flash-sale-header {
+    display: flex; /* Sử dụng Flexbox để sắp xếp các mục con theo hàng ngang */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    flex-wrap: wrap; /* Cho phép xuống dòng trên màn hình nhỏ hơn */
+
+}
+.flash-sale-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: red; /* Màu đỏ nổi bật */
+    margin: 0;
+    flex-shrink: 0; /* Ngăn không cho bị co lại */
+}
+/* Bộ đếm thời gian */
+.flash-sale-timer {
+    display: flex;
+    align-items: center;
+    color: rgba(0,0,0,.8);
+    font-size: 1em;
+}
+.timer-label {
+    margin-right: 10px;
+}
+.countdown-box {
+    background-color: red; /* Nền đỏ */
+    color: white; /* Chữ trắng */
+    padding: 4px 6px;
+    border-radius: 4px;
+    font-weight: bold;
+    margin: 0 2px; /* Khoảng cách nhỏ giữa các hộp số */
+    text-align: center;
+
+}
+.timer-separator {
+    color: red; /* Màu dấu hai chấm */
+    font-weight: bold;
+}
+/* Nút "Xem tất cả" */
+.flash-sale-view-all {
+    display: inline-block; /* Để có padding và margin */
+    padding: 8px 15px;
+    color: orangered; /* Chữ trắng */
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.9em;
+    justify-content: space-between;
+    transition: background-color 0.2s ease;
+}
+/* ----- Phần danh sách sản phẩm ----- */
+/* Nếu dùng Swiper, bạn cần include CSS của Swiper */
+/* CSS cho container Swiper nếu cần tùy chỉnh thêm */
+.flash-sale-products-swiper.swiper {
+    width: 100%;
+    height: 400px;
+    padding-bottom: 20px; /* Khoảng trống nếu có pagination dots */
+}
+/* Mỗi item sản phẩm trong Swiper */
+.flash-sale-product-item.swiper-slide {
+    width: 180px; /* Ví dụ: fixed width cho mỗi sản phẩm */
+    /* Hoặc dùng width: calc(100% / 6 - 10px); để hiển thị 6 item trên màn hình lớn với khoảng cách */
+    flex-shrink: 0; /* Đảm bảo item không bị co lại */
+    margin-right: 10px; /* Khoảng cách giữa các item */
+    border: 1px solid #eee; /* Viền nhẹ */
+    border-radius: 5px;
+    overflow: hidden; /* Cắt nội dung tràn ra ngoài */
+    display: flex;
+    flex-direction: column; /* Xếp nội dung theo cột */
+    transition: box-shadow 0.2s ease;
+    background-color: #fff;
+}
+.flash-sale-product-item.swiper-slide:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .1); /* Shadow khi hover */
+}
+.flash-sale-product-item .product-link {
+    text-decoration: none;
+    color: inherit; /* Kế thừa màu chữ */
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Đảm bảo link bao phủ toàn bộ item */
+}
+.product-image-wrapper {
+    position: relative; /* Dùng cho các nhãn tuyệt đối */
+    width: 100%;
+    padding-top: 100%; /* Tỷ lệ khung hình 1:1 */
+    overflow: hidden;
+}
+.product-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Đảm bảo ảnh không bị méo */
+}
+.product-info {
+    padding: 10px;
+    flex-grow: 1; /* Chiếm không gian còn lại */
+    display: flex;
+    flex-direction: column;
+}
+.product-location {
+    font-size: 0.7em;
+    color: gray;
+    margin: 0 0 5px 0;
+}
+.product-name {
+    font-size: 0.9em;
+    font-weight: normal;
+    margin: 0 0 5px 0;
+    /* Giới hạn số dòng nếu cần */
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Hiển thị tối đa 2 dòng */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.product-prices {
+    display: flex;
+    align-items: baseline; /* Căn dòng dưới cùng */
+    margin-bottom: 5px;
+    flex-wrap: wrap; /* Cho phép xuống dòng nếu không đủ chỗ */
+}
+.discounted-price {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: red; /* Giá khuyến mãi màu đỏ */
+    margin-right: 5px;
+}
+.original-price {
+    font-size: 0.8em;
+    color: gray;
+    text-decoration: line-through; /* Gạch ngang giá gốc */
+}
+.product-discount-info {
+    margin-bottom: 5px;
+}
+.discount-percent {
+     display: inline-block;
+     padding: 2px 5px;
+     background-color: #ffe4e1; /* Nền hồng nhạt */
+     color: red; /* Chữ đỏ */
+     font-size: 0.7em;
+     border-radius: 3px;
+     font-weight: bold;
+     margin-bottom: 10px; /* Khoảng cách với giá */
+}
+/* Phần "Đã bán" */
+.sold-bar-container {
+    width: 100%;
+    height: 12px; /* Chiều cao thanh progress */
+    background-color: #eee; /* Nền xám của thanh */
+    border-radius: 6px;
+    overflow: hidden; /* Đảm bảo progress bar không tràn ra */
+    position: relative; /* Cho văn bản "Đã bán" */
+    margin-top: auto; /* Đẩy xuống cuối flex container */
+}
+.sold-bar-progress {
+    height: 100%;
+    background-color: red; /* Màu đỏ của progress bar */
+    /* width được set inline HTML dựa trên dữ liệu */
+    border-radius: 6px; /* Bo góc */
+    position: absolute; /* Nằm trên container */
+    top: 0;
+    left: 0;
+}
+.sold-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center; /* Căn giữa văn bản trong thanh */
+    align-items: center;
+    font-size: 0.7em;
+    color: white; /* Chữ trắng */
+    font-weight: bold;
+    z-index: 1; /* Đảm bảo chữ nằm trên progress bar */
+    text-shadow: 0 0 2px rgba(0,0,0,0.5); /* Shadow nhẹ cho chữ dễ đọc trên nền đỏ */
+}
+
+
+
+/* Thương hiệu nổi bật */
+.featured-brands-section {
+    margin: 100px auto;
+    padding: 20px;
+    max-width: 1200px; /* Hoặc chiều rộng phù hợp */
+    background-color: #f5f5f5; /* Nền xám nhạt như ảnh */
+    border-radius: 8px;
+    /* box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .05); */ /* Có thể thêm shadow nhẹ */
+    font-family: sans-serif; /* Hoặc font chữ bạn dùng */
+}
+/* Tiêu đề */
+.featured-brands-heading {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: rgba(0,0,0,.8); /* Màu chữ xám đậm */
+    margin: 0 0 20px 0; /* Khoảng cách dưới tiêu đề */
+    text-align: center; /* Căn giữa tiêu đề nếu muốn, trong ảnh nó hơi lệch trái */
+}
+/* Container Swiper cho danh sách thương hiệu */
+/* Bạn cần đảm bảo Swiper CSS đã được include */
+.featured-brands-swiper.swiper {
+    width: 100%;
+    height: 100%; /* Có thể set chiều cao cố định cho Swiper container */
+    padding: 10px 0; /* Padding nhẹ nếu có shadow hoặc border cho item */
+}
+/* Mỗi item thương hiệu trong Swiper */
+.brand-item.swiper-slide {
+    width: 180px; /* Kích thước cố định cho mỗi ô logo (điều chỉnh tùy ý) */
+    height: 80px; /* Chiều cao cố định */
+    flex-shrink: 0; /* Đảm bảo item không bị co lại */
+    margin-right: 15px; /* Khoảng cách giữa các ô logo */
+    background-color: #fff; /* Nền trắng */
+    border-radius: 8px; /* Bo góc */
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .08); /* Shadow nhẹ */
+    overflow: hidden; /* Đảm bảo nội dung không tràn ra ngoài */
+    /* Dùng Flexbox để căn giữa logo bên trong */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+ /*Bỏ margin-right cho item cuối cùng nếu không dùng Swiper hoặc khi Swiper không hiển thị scrollbar */
+ .brand-item:last-child {
+    margin-right: 0;
+} 
+/* Link bọc logo */
+.brand-link {
+    display: flex; /* Giúp link bọc toàn bộ item */
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none; /* Bỏ gạch chân link */
+}
+/* Logo ảnh */
+.brand-logo {
+    display: block; /* Loại bỏ khoảng trống dưới ảnh */
+    max-width: 80%; /* Giới hạn kích thước logo bên trong ô */
+    max-height: 80%;
+    object-fit: contain; /* Đảm bảo logo hiển thị đầy đủ không bị cắt hoặc méo */
+    filter: grayscale(0%); /* Logo có màu như ảnh */
+    opacity: 1; /* Đảm bảo logo hiển thị đầy đủ */
+    transition: filter 0.2s ease, opacity 0.2s ease;
+}
+/* Hiệu ứng khi di chuột qua (tùy chọn) */
+.brand-item:hover {
+     box-shadow: 0 4px 12px rgba(0, 0, 0, .15); /* Shadow rõ hơn khi hover */
+     /* transform: translateY(-2px); */ /* Nhấc nhẹ lên */
+}
+ .brand-item:hover .brand-logo {
+    filter: grayscale(0%); /*Đảm bảo màu nếu bạn làm mờ logo ban đầu*/
+    opacity: 1; /* Đảm bảo hiện đủ nếu làm mờ ban đầu */
+} 
+/* CSS cho Swiper navigation/pagination nếu có */
+.featured-brands-swiper .swiper-button-next,
+.featured-brands-swiper .swiper-button-prev {
+    color: #000; /* Màu đen hoặc màu khác */
+}
