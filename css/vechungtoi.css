@@ -1,0 +1,186 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+    line-height: 1.6;
+}
+
+.about-section {
+    max-width: 960px;
+    margin: 40px auto;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Phần đã có */
+.about-section h2 {
+    font-size: 2em;
+    color: #333;
+    margin-bottom: 20px;
+    line-height: 1.3;
+}
+
+.about-section p {
+    font-size: 1em;
+    color: #555;
+    margin: 10px 0;
+}
+
+.button-container {
+    margin: 30px 0;
+}
+
+.find-out-more-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: #ee4d2d;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.find-out-more-btn:hover {
+    background-color: #d74426;
+}
+
+.columns-container {
+    display: flex;
+    gap: 20px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+}
+
+.column-box {
+    flex: 1;
+    min-width: 280px;
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    text-align: left;
+}
+
+.column-box h3 {
+    font-size: 1.3em;
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #ee4d2d;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+.column-box p {
+    font-size: 0.95em;
+    color: #666;
+    margin: 0;
+}
+
+/* Phần MỚI: Our Principles Section */
+.our-principles-section {
+    margin-top: 60px; /* Khoảng cách lớn hơn so với phần trên */
+    padding-top: 40px;
+    border-top: 1px solid #eee; /* Đường kẻ phân cách nhẹ */
+    /* text-align: center; Đã set cho about-section, không cần set lại */
+}
+
+.our-principles-section h2 {
+    /* Sử dụng lại style của h2 chính hoặc chỉnh sửa nếu cần */
+    margin-bottom: 15px; /* Giảm khoảng cách dưới h2 này */
+}
+
+.our-principles-section .principles-subtitle {
+    font-size: 1em;
+    color: #555;
+    margin-bottom: 30px; /* Khoảng cách dưới subtitle */
+}
+
+.principles-columns-container {
+    display: flex; /* Flexbox cho 3 cột */
+    gap: 20px; /* Khoảng cách giữa các cột */
+    flex-wrap: wrap; /* Cho phép xuống dòng */
+}
+
+.principle-column {
+    flex: 1; /* Mỗi cột chiếm 1 phần không gian bằng nhau */
+    min-width: 220px; /* Chiều rộng tối thiểu cho cột 3 */
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    text-align: center; /* Căn giữa nội dung trong mỗi cột */
+}
+
+.principle-column img {
+    max-width: 100%; /* Ảnh không vượt quá chiều rộng cột */
+    height: auto;
+    margin-bottom: 15px; /* Khoảng cách dưới ảnh */
+    border-radius: 4px; /* Bo góc ảnh nếu cần */
+}
+
+.principle-column h3 {
+    font-size: 1.2em;
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 10px;
+    /* Style khác nếu cần, ví dụ: không có border bottom như cột trên */
+}
+
+.principle-column p {
+    font-size: 0.9em;
+    color: #666;
+    margin: 0;
+}
+
+
+/* Responsive cho màn hình nhỏ */
+@media (max-width: 768px) {
+    .about-section {
+        padding: 15px;
+    }
+
+    .about-section h2 {
+        font-size: 1.5em;
+    }
+
+    .columns-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .column-box {
+        min-width: auto;
+        padding: 20px;
+    }
+
+    .column-box h3 {
+        text-align: center;
+        display: block;
+    }
+
+    /* Responsive cho phần MỚI */
+    .our-principles-section {
+        margin-top: 40px; /* Giảm margin top trên mobile */
+        padding-top: 20px; /* Giảm padding top */
+    }
+
+    .principles-columns-container {
+        flex-direction: column; /* Xếp 3 cột thành 1 cột */
+        gap: 15px;
+    }
+
+    .principle-column {
+        min-width: auto;
+        padding: 15px; /* Giảm padding */
+    }
+
+    .principle-column img {
+        max-width: 80%; /* Có thể giới hạn chiều rộng ảnh */
+        margin: 0 auto 15px auto; /* Căn giữa ảnh */
+    }
+}

@@ -1,0 +1,320 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    background-color: #f5f5f5;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.product-container {
+    display: flex;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+    max-width: 1000px; /* Adjust as needed */
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.image-gallery {
+    flex: 1; /* Take up remaining space */
+    padding-right: 20px;
+    min-width: 300px; /* Minimum width for image gallery */
+    box-sizing: border-box;
+}
+
+.main-image {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.thumbnails {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto; /* Allow scrolling if many thumbnails */
+    padding-bottom: 5px; /* Space for scrollbar */
+}
+
+.thumbnails img {
+    width: 60px; /* Thumbnail size */
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.2s ease;
+}
+
+.thumbnails img.active {
+    border-color: #ee4d2d; /* Shopee orange */
+}
+
+.product-details {
+    flex: 1.5; /* Take up more space than image gallery */
+    min-width: 350px; /* Minimum width for details */
+    box-sizing: border-box;
+}
+
+.product-title {
+    font-size: 24px;
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.ratings-sold {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: #777;
+}
+
+.ratings-sold .rating .stars {
+    color: #ffce3d; /* Yellow stars */
+    margin-left: 5px;
+}
+
+.ratings-sold .separator {
+    margin: 0 10px;
+    color: #ccc;
+}
+
+.price-section {
+    background-color: #fff0f0; /* Light red/pinkish background */
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+}
+
+.price-section .price {
+    font-size: 30px;
+    color: #ee4d2d; /* Shopee orange */
+    font-weight: bold;
+}
+
+.shipping-info,
+.return-policy,
+.variations-section,
+.quantity-section {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.shipping-info label,
+.return-policy label,
+.variations-section label,
+.quantity-section label {
+    display: block;
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.shipping-info .shipping-details,
+.shipping-info .voucher-info,
+.return-policy p {
+     display: flex;
+     align-items: flex-start; /* Align items to the start */
+     margin-bottom: 10px;
+     font-size: 14px;
+     color: #555;
+}
+.shipping-info .shipping-details label,
+.shipping-info .voucher-info label {
+     flex-basis: 100px; /* Fixed width for labels */
+     flex-shrink: 0; /* Prevent label from shrinking */
+     margin-right: 15px;
+     font-weight: normal; /* Labels inside details are less bold */
+     color: #333;
+}
+
+.shipping-info .shipping-details > div {
+    flex-grow: 1; /* Allow content to take up remaining space */
+}
+
+.return-policy p label {
+    flex-basis: 100px;
+    flex-shrink: 0;
+    margin-right: 15px;
+    font-weight: normal;
+     color: #333;
+}
+
+
+.return-policy .return-details {
+    color: #007bff; /* Link color for details */
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+
+.variations-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.variation-option {
+    padding: 8px 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.variation-option:hover {
+    border-color: #ee4d2d; /* Shopee orange on hover */
+    color: #ee4d2d;
+}
+
+.variation-option.selected {
+    border-color: #ee4d2d; /* Shopee orange when selected */
+    color: #ee4d2d;
+    background-color: #fff8f5; /* Light orange background */
+}
+
+.quantity-selector {
+    display: flex;
+    align-items: center;
+    gap: 0px; /* Remove gap between button and input */
+    margin-top: 5px;
+    display: inline-flex; /* Align with stock info */
+    vertical-align: middle;
+}
+
+.quantity-btn {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background-color: #f5f5f5;
+    cursor: pointer;
+    font-size: 16px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+.quantity-btn.minus {
+    border-radius: 4px 0 0 4px;
+    border-right: none;
+}
+.quantity-btn.plus {
+     border-radius: 0 4px 4px 0;
+     border-left: none;
+}
+
+
+.quantity-input {
+    width: 40px; /* Adjust as needed */
+    height: 30px;
+    padding: 0 5px;
+    border: 1px solid #ccc;
+    text-align: center;
+    font-size: 16px;
+    -moz-appearance: textfield; /* Hide stepper arrows in Firefox */
+    box-sizing: border-box;
+}
+.quantity-input::-webkit-outer-spin-button,
+.quantity-input::-webkit-inner-spin-button {
+    -webkit-appearance: none; /* Hide stepper arrows in Webkit */
+    margin: 0;
+}
+
+.stock-available {
+    font-size: 14px;
+    color: #777;
+    margin-left: 15px;
+     display: inline-block;
+     vertical-align: middle;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.action-buttons button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.add-to-cart {
+    background-color: #ffecd5; /* Light orange */
+    color: #ee4d2d; /* Shopee orange */
+    border: 1px solid #ee4d2d !important; /* Ensure border */
+}
+
+.add-to-cart:hover {
+    background-color: #ffe3bf;
+}
+
+.buy-now {
+    background-color: #ee4d2d; /* Shopee orange */
+    color: #fff;
+}
+
+.buy-now:hover {
+    background-color: #d04326;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .product-container {
+        flex-direction: column; /* Stack columns vertically */
+        padding: 10px;
+    }
+
+    .image-gallery {
+        padding-right: 0;
+        margin-bottom: 20px; /* Add space between image and details */
+        min-width: 100%;
+    }
+
+    .product-details {
+        min-width: 100%;
+    }
+
+    .price-section {
+        padding: 10px;
+    }
+
+    .price-section .price {
+        font-size: 24px;
+    }
+
+     .shipping-info .shipping-details label,
+     .shipping-info .voucher-info label,
+     .return-policy p label {
+        flex-basis: 80px; /* Reduce label width on smaller screens */
+        margin-right: 10px;
+    }
+
+    .action-buttons {
+        flex-direction: column; /* Stack buttons vertically */
+        gap: 10px;
+    }
+
+    .action-buttons button {
+        width: 100%; /* Make buttons full width */
+        text-align: center;
+    }
+}
