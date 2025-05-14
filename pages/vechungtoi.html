@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Về chúng tôi</title>
+    <link rel="stylesheet" href="../css/vechungtoi.css">
+</head>
+<body>
+    <div id="header"></div>
+    <div class="about-section">
+        <h2>V-ECOMMERCE là nền tảng Thương mại Điện tử hàng đầu tại Đông Nam Á và là đối tác chiến lược quan trọng cho sự phát triển toàn diện của Đại học Bách Khoa Hà Nội.</h2>
+        <p>Ra mắt vào năm 2025, V-Ecommerce mang đến cho người dùng trong khu vực trải nghiệm mua sắm trực tuyến đơn giản, an toàn và nhanh chóng thông qua hệ thống hỗ trợ thanh toán và vận hành vững mạnh.</p>
+        <p>Chúng tôi tin rằng trải nghiệm mua sắm trực tuyến cần đơn giản, dễ dàng và mang lại niềm vui cho người dùng. Sứ mệnh này cũng là nguồn cảm hứng thúc đẩy chúng tôi phát triển từng ngày.</p>
+        <div class="button-container">
+            <a href="#" class="find-out-more-btn">Tìm Hiểu Thêm</a>
+        </div>
+        <div class="columns-container">
+            <div class="column-box">
+                <h3>Mục tiêu của chúng tôi</h3>
+                <p>Tại V-Ecommerce, chúng tôi hướng đến việc xây dựng một thế giới tốt đẹp hơn thông qua sức mạnh của công nghệ. Bằng cách tạo ra một nền tảng thương mại điện tử tiện lợi, an toàn và hiệu quả, V-Ecommerce không chỉ kết nối hàng triệu người mua và người bán trên khắp khu vực, mà còn góp phần thúc đẩy sự phát triển kinh tế số, hỗ trợ các doanh nghiệp vừa và nhỏ, đồng thời nâng cao chất lượng cuộc sống cho cộng đồng.</p>
+            </div>
+            <div class="column-box">
+                <h3>Định vị của chúng tôi</h3>
+                <p>V-Ecommerce định vị mình là nền tảng thương mại điện tử hàng đầu khu vực, nơi người dùng Internet có thể dễ dàng tiếp cận với một hệ sinh thái mua sắm trực tuyến toàn diện. Tại đây, khách hàng không chỉ được lựa chọn từ hàng triệu sản phẩm đa dạng thuộc nhiều ngành hàng, mà còn có cơ hội kết nối trực tiếp với cộng đồng người bán năng động. Với trải nghiệm mua sắm tiện lợi, an toàn và quy trình giao nhận hàng hóa nhanh chóng, liền mạch, V-Ecommerce cam kết mang đến giá trị vượt trội và sự hài lòng tối đa cho mọi người dùng.</p>
+            </div>
+        </div>
+        <div class="our-principles-section">
+             <h2>Phương châm của chúng tôi</h2>
+             <p class="principles-subtitle">Phương châm Smart Tech -  Caring Service - Growing Together là phương châm luôn xuất hiện trong hành trình phát triển của chúng tôi . Nó nhấn mạnh vai trò của V-Ecommerce trong việc ứng dụng công nghệ hiện đại, xây dựng dịch vụ chu đáo và hỗ trợ sự lớn mạnh của cộng đồng người dùng.</p>
+
+             <div class="principles-columns-container">
+                 <div class="principle-column">
+                     <img src="../assets/img/smarttech.webp" alt="Smart Tech">
+                     <h3>Smart Tech</h3>
+                     <p>Chúng tôi tin việc ứng dụng công nghệ hiện đại sẽ giúp khách hàng có một trải nhiệm nhanh chóng , dễ dàng , đơn giản hóa và bảo mật</p>
+                 </div>
+                 <div class="principle-column">
+                      <img src="../assets/img/caringservice.jpg" alt="Caring Service">
+                     <h3>Caring Service</h3>
+                     <p>Chúng tôi cam kết bảo đảm chất lượng dịch vụ trong từng sản phẩm , đem đến cho khách hàng sự tiện lợi , an toàn và chất lượng</p>
+                 </div>
+                 <div class="principle-column">
+                     <img src="../assets/img/growingtogether.jpg" alt="Growing Together">
+                     <h3>Growing Together</h3>
+                     <p>Chúng tôi phát huy sức mạnh tập thể thông qua làm việc nhóm và tinh thần cộng tác, đồng thời tận hưởng khoảng thời gian chất lượng ở bên nhau tại nơi làm việc.</p>
+                 </div>
+             </div>
+        </div>
+    </div>
+    <div id="footer"></div>
+    <script>
+        // Thêm header , footer
+        async function loadHTML(id, file) {
+        const res = await fetch(file);
+        const html = await res.text();
+        document.getElementById(id).innerHTML = html;
+        }
+        // Gọi khi trang tải xong
+        window.addEventListener("DOMContentLoaded", () => {
+        loadHTML("header", "../components/header.html");
+        loadHTML("footer", "../components/footer.html");
+        });
+    </script>
+</body>
+</html>
