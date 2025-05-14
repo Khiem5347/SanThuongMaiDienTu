@@ -1,0 +1,16 @@
+https://drive.google.com/file/d/15O5NFgktjLE9K4JfKD_jiL9uRo4rvkLI/view?usp=sharing
+
+
+// Hàm băm pass
+function hashStringTo10Digits(str) {
+    let hash = 0n; // dùng BigInt để tránh tràn số
+
+    for (let i = 0; i < str.length; i++) {
+        hash = (hash * 31n + BigInt(str.charCodeAt(i))) % 10000000000n;
+    }
+
+    return hash.toString().padStart(10, '0'); 
+}
+
+
+console.log(hashStringTo10Digits("linh1415"));  
