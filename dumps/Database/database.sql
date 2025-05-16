@@ -17,7 +17,6 @@ CREATE TABLE Users (
 -- Thông tin sản phẩm 
 CREATE TABLE Products (
 	product_id INT AUTO_INCREMENT PRIMARY KEY,
-    seller_id INT NOT NULL,
     category_id INT NOT NULL,
     shop_id INT NOT NULL,
     product_name VARCHAR(200) NOT NULL,
@@ -30,7 +29,6 @@ CREATE TABLE Products (
     product_max_price INT,
     number_of_likes INT DEFAULT 0,
     num_of_product_star INT DEFAULT 0,
-	FOREIGN KEY (seller_id) REFERENCES Users(user_id),
     FOREIGN KEY (category_id) REFERENCES Categories(category_id),
     FOREIGN KEY (shop_id) REFERENCES Shops(shop_id)
 );
