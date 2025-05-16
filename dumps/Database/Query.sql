@@ -24,6 +24,20 @@ VALUES (1, 'Shop A', 'Description of Shop A', 'url_to_avatar_a', 'Address A', 0)
 DELETE FROM Shops
 WHERE shop_id = 1;
 
+-- Sửa thông tin shop
+UPDATE Shops
+SET 
+  shop_name = 'Tên mới',
+  shop_description = 'Mô tả mới',
+  shop_avatar_url = 'link_moi.jpg',
+  shop_addr = 'Địa chỉ mới'
+WHERE shop_id = 1;
+
+-- Tăng doanh thu của shop
+UPDATE Shops
+SET shop_revenue = shop_revenue + 500000
+WHERE shop_id = 1;
+
 -- Thêm danh mục
 INSERT INTO Categories (category_name, parent_id)
 VALUES ('Electronics', NULL);
