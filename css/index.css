@@ -347,6 +347,36 @@ body {
     z-index: 1; /* Đảm bảo chữ nằm trên progress bar */
     text-shadow: 0 0 2px rgba(0,0,0,0.5); /* Shadow nhẹ cho chữ dễ đọc trên nền đỏ */
 }
+/* Style cho nút Next và Previous */
+.swiper-button-next,
+.swiper-button-prev {
+    color: rgb(56, 54, 53); /* Màu mũi tên */
+    transition: opacity 0.2s ease; /* Hiệu ứng khi ẩn/hiện */
+    opacity: 0.5;
+}
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+    opacity: 1; /* Hiện rõ khi hover */
+    background-color: rgba(255, 255, 255, 0.8); /* Nền trắng hơi trong */
+    width: 40px; /* Kích thước */
+    height: 60px; 
+    display: flex; /* Căn giữa mũi tên bên trong */
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Shadow nhẹ */
+}
+/* Ẩn nút nếu slider không cần cuộn */
+.swiper-button-disabled {
+    opacity: 0.3;
+    pointer-events: none; /* Không cho tương tác khi bị disabled */
+}
+/* Tùy chỉnh vị trí hoặc ẩn nút trên màn hình nhỏ nếu cần */
+@media (max-width: 768px) {
+    .swiper-button-next,
+    .swiper-button-prev {
+        display: none;
+    }
+}
 
 
 

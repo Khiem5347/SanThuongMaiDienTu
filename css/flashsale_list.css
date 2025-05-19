@@ -1,0 +1,69 @@
+h1 {
+    color: orangered;
+}
+#products-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Style cho thẻ <a> bọc sản phẩm */
+.product-link {
+    text-decoration: none; /* Bỏ gạch chân cho link */
+    color: inherit; /* Kế thừa màu chữ */
+    display: block; /* Biến link thành block để bọc toàn bộ item */
+    border: 1px solid #ccc; /* Có thể giữ border ở link thay vì item */
+    border-radius: 5px;
+    transition: transform 0.2s ease-in-out; /* Thêm hiệu ứng hover (tùy chọn) */
+}
+.product-link:hover {
+    transform: translateY(-5px); /* Hiệu ứng nhấc nhẹ khi hover (tùy chọn) */
+    border-color: #007bff; /* Đổi màu border khi hover (tùy chọn) */
+}
+
+.product-item {
+    padding: 15px;
+    /* Bỏ border và margin-bottom nếu đã thêm vào .product-link */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    /* box-shadow: 0 2px 5px rgba(0,0,0,0.1); */ /* Thêm shadow (tùy chọn) */
+    height: 100%; /* Đảm bảo các item trong grid/flex cùng chiều cao */
+    box-sizing: border-box; /* Tính padding vào kích thước */
+}
+
+.product-item img {
+    width: 100%;
+    max-width: 150px;
+    height: auto;
+    margin-bottom: 10px;
+    object-fit: cover; /* Đảm bảo ảnh không bị méo */
+}
+
+.product-item h3 {
+    margin-top: 0;
+    margin-bottom: 5px;
+    font-size: 1.2em;
+}
+
+/*.product-item p {
+    margin-bottom: 5px;
+    font-size: 0.9em;
+    color: #653838;
+}*/
+.product_price {
+    font-weight: bold;
+    color: orangered;
+    margin-bottom: 5px;
+}
+.product_description {
+    margin-bottom: 5px;
+    font-size: 0.9em;
+    color: #5d2a2a;
+}
+
+
+
+

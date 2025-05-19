@@ -8,7 +8,7 @@ body {
 }
 
 .product-container {
-    display: flex;
+    display: flex; /* Sẽ được thiết lập bởi JS sau khi tải */
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
@@ -17,12 +17,17 @@ body {
     padding: 20px;
     box-sizing: border-box;
     flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    /* Thêm style cho trạng thái loading ban đầu nếu cần */
+    /* text-align: center; */
+    /* align-items: center; */
+    /* justify-content: center; */
+    /* min-height: 300px; */ /* Chiều cao tối thiểu khi loading */
 }
 
 .image-gallery {
-    flex: 1; /* Take up remaining space */
+    flex: 1;
     padding-right: 20px;
-    min-width: 300px; /* Minimum width for image gallery */
+    min-width: 300px;
     box-sizing: border-box;
 }
 
@@ -36,12 +41,12 @@ body {
 .thumbnails {
     display: flex;
     gap: 10px;
-    overflow-x: auto; /* Allow scrolling if many thumbnails */
-    padding-bottom: 5px; /* Space for scrollbar */
+    overflow-x: auto;
+    padding-bottom: 5px;
 }
 
 .thumbnails img {
-    width: 60px; /* Thumbnail size */
+    width: 60px;
     height: 60px;
     object-fit: cover;
     border-radius: 4px;
@@ -51,12 +56,12 @@ body {
 }
 
 .thumbnails img.active {
-    border-color: #ee4d2d; /* Shopee orange */
+    border-color: #ee4d2d;
 }
 
 .product-details {
-    flex: 1.5; /* Take up more space than image gallery */
-    min-width: 350px; /* Minimum width for details */
+    flex: 1.5;
+    min-width: 350px;
     box-sizing: border-box;
 }
 
@@ -123,23 +128,23 @@ body {
 .shipping-info .shipping-details,
 .shipping-info .voucher-info,
 .return-policy p {
-     display: flex;
-     align-items: flex-start; /* Align items to the start */
-     margin-bottom: 10px;
-     font-size: 14px;
-     color: #555;
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #555;
 }
 .shipping-info .shipping-details label,
 .shipping-info .voucher-info label {
-     flex-basis: 100px; /* Fixed width for labels */
-     flex-shrink: 0; /* Prevent label from shrinking */
-     margin-right: 15px;
-     font-weight: normal; /* Labels inside details are less bold */
-     color: #333;
+    flex-basis: 100px;
+    flex-shrink: 0;
+    margin-right: 15px;
+    font-weight: normal;
+    color: #333;
 }
 
 .shipping-info .shipping-details > div {
-    flex-grow: 1; /* Allow content to take up remaining space */
+    flex-grow: 1;
 }
 
 .return-policy p label {
@@ -147,12 +152,12 @@ body {
     flex-shrink: 0;
     margin-right: 15px;
     font-weight: normal;
-     color: #333;
+    color: #333;
 }
 
 
 .return-policy .return-details {
-    color: #007bff; /* Link color for details */
+    color: #007bff;
     cursor: pointer;
     margin-left: 10px;
 }
@@ -175,22 +180,22 @@ body {
 }
 
 .variation-option:hover {
-    border-color: #ee4d2d; /* Shopee orange on hover */
+    border-color: #ee4d2d;
     color: #ee4d2d;
 }
 
 .variation-option.selected {
-    border-color: #ee4d2d; /* Shopee orange when selected */
+    border-color: #ee4d2d;
     color: #ee4d2d;
-    background-color: #fff8f5; /* Light orange background */
+    background-color: #fff8f5;
 }
 
 .quantity-selector {
     display: flex;
     align-items: center;
-    gap: 0px; /* Remove gap between button and input */
+    gap: 0px;
     margin-top: 5px;
-    display: inline-flex; /* Align with stock info */
+    display: inline-flex;
     vertical-align: middle;
 }
 
@@ -212,24 +217,24 @@ body {
     border-right: none;
 }
 .quantity-btn.plus {
-     border-radius: 0 4px 4px 0;
-     border-left: none;
+    border-radius: 0 4px 4px 0;
+    border-left: none;
 }
 
 
 .quantity-input {
-    width: 40px; /* Adjust as needed */
+    width: 40px;
     height: 30px;
     padding: 0 5px;
     border: 1px solid #ccc;
     text-align: center;
     font-size: 16px;
-    -moz-appearance: textfield; /* Hide stepper arrows in Firefox */
+    -moz-appearance: textfield;
     box-sizing: border-box;
 }
 .quantity-input::-webkit-outer-spin-button,
 .quantity-input::-webkit-inner-spin-button {
-    -webkit-appearance: none; /* Hide stepper arrows in Webkit */
+    -webkit-appearance: none;
     margin: 0;
 }
 
@@ -237,8 +242,8 @@ body {
     font-size: 14px;
     color: #777;
     margin-left: 15px;
-     display: inline-block;
-     vertical-align: middle;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .action-buttons {
@@ -258,9 +263,9 @@ body {
 }
 
 .add-to-cart {
-    background-color: #ffecd5; /* Light orange */
-    color: #ee4d2d; /* Shopee orange */
-    border: 1px solid #ee4d2d !important; /* Ensure border */
+    background-color: #ffecd5;
+    color: #ee4d2d;
+    border: 1px solid #ee4d2d !important;
 }
 
 .add-to-cart:hover {
@@ -268,7 +273,7 @@ body {
 }
 
 .buy-now {
-    background-color: #ee4d2d; /* Shopee orange */
+    background-color: #ee4d2d;
     color: #fff;
 }
 
@@ -279,13 +284,13 @@ body {
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .product-container {
-        flex-direction: column; /* Stack columns vertically */
+        flex-direction: column;
         padding: 10px;
     }
 
     .image-gallery {
         padding-right: 0;
-        margin-bottom: 20px; /* Add space between image and details */
+        margin-bottom: 20px;
         min-width: 100%;
     }
 
@@ -301,20 +306,20 @@ body {
         font-size: 24px;
     }
 
-     .shipping-info .shipping-details label,
-     .shipping-info .voucher-info label,
-     .return-policy p label {
-        flex-basis: 80px; /* Reduce label width on smaller screens */
+    .shipping-info .shipping-details label,
+    .shipping-info .voucher-info label,
+    .return-policy p label {
+        flex-basis: 80px;
         margin-right: 10px;
     }
 
     .action-buttons {
-        flex-direction: column; /* Stack buttons vertically */
+        flex-direction: column;
         gap: 10px;
     }
 
     .action-buttons button {
-        width: 100%; /* Make buttons full width */
+        width: 100%;
         text-align: center;
     }
 }
