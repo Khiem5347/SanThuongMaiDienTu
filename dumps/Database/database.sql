@@ -29,6 +29,7 @@ CREATE TABLE Products (
     product_max_price INT,
     number_of_likes INT DEFAULT 0,
     num_of_product_star INT DEFAULT 0,
+    remaining_quantity INT,
     FOREIGN KEY (category_id) REFERENCES Categories(category_id),
     FOREIGN KEY (shop_id) REFERENCES Shops(shop_id)
 );
@@ -45,7 +46,7 @@ CREATE TABLE ProductsImage (
 CREATE TABLE ProductVariants (
     variant_id INT AUTO_INCREMENT PRIMARY KEY,
     product_id INT NOT NULL,
-    color VARCHAR(50),
+    color VARCHAR(50),	
     image_url VARCHAR(255),			-- Ảnh sẽ theo color
     
     FOREIGN KEY (product_id) REFERENCES Products(product_id)
