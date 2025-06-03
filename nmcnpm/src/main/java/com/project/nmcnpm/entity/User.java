@@ -1,8 +1,9 @@
 package com.project.nmcnpm.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore; 
 import jakarta.persistence.*;
-import java.sql.Date; 
-import java.util.HashSet; 
+import java.sql.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -24,31 +25,40 @@ public class User {
     @Column(name = "gender")
     private Gender gender;
     @Column(name = "date_of_birth")
-    private Date dateOfBirth; 
+    private Date dateOfBirth;
     @Column(name = "avatar_url", length = 255)
     private String avatarUrl;
     @Column(name = "phone", length = 20)
     private String phone;
     @Column(name = "user_role", columnDefinition = "SET('buyer', 'seller', 'admin') DEFAULT 'buyer'")
-    private String userRole; 
+    private String userRole;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Shop> shops = new HashSet<>(); 
+    @JsonIgnore
+    private Set<Shop> shops = new HashSet<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Cart> carts = new HashSet<>(); 
+    @JsonIgnore
+    private Set<Cart> carts = new HashSet<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Address> addresses = new HashSet<>(); 
+    @JsonIgnore
+    private Set<Address> addresses = new HashSet<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Order> orders = new HashSet<>(); 
+    @JsonIgnore
+    private Set<Order> orders = new HashSet<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ProductReview> productReviews = new HashSet<>(); 
+    @JsonIgnore
+    private Set<ProductReview> productReviews = new HashSet<>();
     @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Conversation> initiatedConversations = new HashSet<>(); 
+    @JsonIgnore
+    private Set<Conversation> initiatedConversations = new HashSet<>();
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private Set<Conversation> receivedConversations = new HashSet<>();
     @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private Set<Message> sentMessages = new HashSet<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<History> histories = new HashSet<>(); 
+    @JsonIgnore
+    private Set<History> histories = new HashSet<>();
     public enum Gender {
         male, female
     }
