@@ -1,69 +1,240 @@
-h1 {
-    color: orangered;
+/* css/flashsale_list.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f4f4f4; /* Màu nền chung cho trang */
 }
-#products-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
+
+.flash-sale-list-container {
+    max-width: 1200px;
+    margin: 20px auto;
     padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
-/* Style cho thẻ <a> bọc sản phẩm */
-.product-link {
-    text-decoration: none; /* Bỏ gạch chân cho link */
-    color: inherit; /* Kế thừa màu chữ */
-    display: block; /* Biến link thành block để bọc toàn bộ item */
-    border: 1px solid #ccc; /* Có thể giữ border ở link thay vì item */
-    border-radius: 5px;
-    transition: transform 0.2s ease-in-out; /* Thêm hiệu ứng hover (tùy chọn) */
-}
-.product-link:hover {
-    transform: translateY(-5px); /* Hiệu ứng nhấc nhẹ khi hover (tùy chọn) */
-    border-color: #007bff; /* Đổi màu border khi hover (tùy chọn) */
+.page-title {
+    text-align: center;
+    color: orangered;
+    margin-bottom: 30px;
+    font-size: 2em;
 }
 
-.product-item {
-    padding: 15px;
-    /* Bỏ border và margin-bottom nếu đã thêm vào .product-link */
+.product-grid {
+    display: grid;
+    /* grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); */ /* Responsive grid */
+    grid-template-columns: repeat(5, 1fr); /* Ví dụ: 5 cột */
+    gap: 20px; /* Khoảng cách giữa các sản phẩm */
+    margin-bottom: 30px;
+}
+
+.loading-text, .error-text {
+    grid-column: 1 / -1; /* Chiếm toàn bộ chiều rộng grid */
+    text-align: center;
+    padding: 40px;
+    font-size: 1.2em;
+    color: #777;
+}
+.error-text {
+    color: red;
+}
+
+
+/* CSS cho mỗi item sản phẩm - có thể tái sử dụng hoặc điều chỉnh từ flashsale.css */
+.flash-sale-product-item-list { /* Đổi tên class để tránh xung đột nếu cần */
+    border: 1px solid #eee;
+    border-radius: 8px;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    /* box-shadow: 0 2px 5px rgba(0,0,0,0.1); */ /* Thêm shadow (tùy chọn) */
-    height: 100%; /* Đảm bảo các item trong grid/flex cùng chiều cao */
-    box-sizing: border-box; /* Tính padding vào kích thước */
+    background-color: #fff;
+    transition: box-shadow 0.3s ease;
 }
 
-.product-item img {
+.flash-sale-product-item-list:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.flash-sale-product-item-list .product-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.flash-sale-product-item-list .product-image-wrapper {
+    position: relative;
     width: 100%;
-    max-width: 150px;
-    height: auto;
-    margin-bottom: 10px;
-    object-fit: cover; /* Đảm bảo ảnh không bị méo */
+    padding-top: 100%; /* Tỷ lệ 1:1 cho ảnh */
+    overflow: hidden;
 }
 
-.product-item h3 {
-    margin-top: 0;
-    margin-bottom: 5px;
-    font-size: 1.2em;
+.flash-sale-product-item-list .product-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-/*.product-item p {
-    margin-bottom: 5px;
+.flash-sale-product-item-list .product-info {
+    padding: 12px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.flash-sale-product-item-list .product-location { /* Hoặc shopName */
+    font-size: 0.75em;
+    color: #888;
+    margin-bottom: 4px;
+}
+
+.flash-sale-product-item-list .product-name {
     font-size: 0.9em;
-    color: #653838;
-}*/
-.product_price {
+    font-weight: 500;
+    margin-bottom: 6px;
+    line-height: 1.3;
+    /* Giới hạn 2 dòng chữ */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: calc(0.9em * 1.3 * 2); /* Chiều cao tối thiểu cho 2 dòng */
+}
+
+.flash-sale-product-item-list .product-prices {
+    margin-bottom: 8px;
+}
+
+.flash-sale-product-item-list .discounted-price {
+    font-size: 1.1em;
     font-weight: bold;
+    color: red;
+    margin-right: 6px;
+}
+
+.flash-sale-product-item-list .original-price {
+    font-size: 0.85em;
+    color: #999;
+    text-decoration: line-through;
+}
+.flash-sale-product-item-list .product-discount-info {
+     margin-bottom: 8px;
+}
+.flash-sale-product-item-list .discount-percent {
+    display: inline-block;
+    padding: 2px 5px;
+    background-color: #ffe4e1;
+    color: red;
+    font-size: 0.75em;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+.flash-sale-product-item-list .sold-bar-container {
+    width: 100%;
+    height: 12px;
+    background-color: #f0f0f0;
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+    margin-top: auto; /* Đẩy xuống cuối cùng */
+}
+
+.flash-sale-product-item-list .sold-bar-progress {
+    height: 100%;
+    background-color: orangered; /* Hoặc màu đỏ flash sale */
+    border-radius: 6px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.flash-sale-product-item-list .sold-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.7em;
+    color: white;
+    font-weight: bold;
+    z-index: 1;
+}
+
+/* CSS cho Phân trang */
+.pagination-controls {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.pagination-controls button, .pagination-controls span {
+    margin: 0 5px;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    background-color: #fff;
     color: orangered;
-    margin-bottom: 5px;
-}
-.product_description {
-    margin-bottom: 5px;
-    font-size: 0.9em;
-    color: #5d2a2a;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: background-color 0.2s, color 0.2s;
 }
 
+.pagination-controls button:hover:not(:disabled) {
+    background-color: #ffe8e1;
+}
 
+.pagination-controls button:disabled {
+    color: #ccc;
+    cursor: not-allowed;
+    background-color: #f9f9f9;
+}
 
+.pagination-controls span.current-page {
+    font-weight: bold;
+    background-color: orangered;
+    color: white;
+    border-color: orangered;
+}
 
+/* Responsive cho grid */
+@media (max-width: 1024px) {
+    .product-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+@media (max-width: 768px) {
+    .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+    }
+    .flash-sale-list-container {
+        padding: 15px;
+    }
+    .page-title {
+        font-size: 1.8em;
+        margin-bottom: 20px;
+    }
+}
+@media (max-width: 480px) {
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 cột trên điện thoại */
+        gap: 10px;
+    }
+    .flash-sale-product-item-list .product-name {
+        font-size: 0.85em;
+    }
+    .flash-sale-product-item-list .discounted-price {
+        font-size: 1em;
+    }
+}

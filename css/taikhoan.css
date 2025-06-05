@@ -1,0 +1,220 @@
+/* css/taikhoan.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f8f8f8; /* Màu nền tổng thể */
+    color: #333;
+}
+
+/* Container chính của trang tài khoản */
+.account-container {
+    display: flex;
+    max-width: 1200px; /* Giới hạn chiều rộng tối đa */
+    margin: 30px auto; /* Căn giữa và tạo khoảng cách trên dưới */
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.1);
+    border-radius: 3px;
+}
+
+/* Sidebar menu */
+.account-sidebar {
+    width: 220px; /* Chiều rộng của sidebar */
+    padding: 20px 15px;
+    border-right: 1px solid #efefef;
+    background-color: #fff;
+}
+
+.account-sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.account-sidebar ul li a {
+    display: block;
+    padding: 12px 15px;
+    color: #555;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    font-size: 14px;
+    transition: background-color 0.2s, color 0.2s;
+}
+.account-sidebar ul ul { /* Sub-menu styling */
+    padding-left: 20px;
+    list-style: none; /* Hoặc disc nếu muốn dấu chấm */
+    margin-top: 5px;
+}
+.account-sidebar ul ul li a {
+    padding: 8px 15px;
+    font-size: 13px;
+}
+
+.account-sidebar ul li a.active,
+.account-sidebar ul li a:hover {
+    background-color: #fff0e8; /* Màu nền khi active hoặc hover */
+    color: orangered;
+}
+.account-sidebar ul ul li a.active {
+    font-weight: bold; /* Làm đậm mục con active */
+}
+
+
+/* Phần nội dung chính */
+.account-main {
+    flex-grow: 1; /* Chiếm hết không gian còn lại */
+    padding: 25px 40px;
+}
+
+.profile-header {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #efefef;
+}
+
+.profile-header h1 {
+    font-size: 20px;
+    margin: 0 0 5px 0;
+    color: #333;
+    font-weight: 500;
+}
+
+.profile-header p {
+    font-size: 14px;
+    color: #757575;
+    margin: 0;
+}
+
+/* Layout cho form và avatar */
+.profile-content {
+    display: flex;
+    gap: 40px; /* Khoảng cách giữa form và cột avatar */
+}
+
+.profile-form {
+    flex-grow: 1; /* Form chiếm phần lớn không gian */
+}
+
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center; /* Căn giữa label và input/span theo chiều dọc */
+}
+
+.form-group label {
+    width: 130px; /* Chiều rộng cố định cho label */
+    color: rgba(85,85,85,.8);
+    font-size: 14px;
+    text-align: right;
+    margin-right: 20px;
+    flex-shrink: 0; /* Không cho label co lại */
+}
+
+.form-group .input-control {
+    flex-grow: 1; /* Input control chiếm hết không gian còn lại */
+    display: flex; /* Để căn chỉnh link "Thay Đổi" nếu có */
+    align-items: center;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="date"] {
+    width: 100%; /* Chiếm hết chiều rộng của .input-control */
+    padding: 9px 12px;
+    border: 1px solid #dbdbdb;
+    border-radius: 2px;
+    font-size: 14px;
+    box-sizing: border-box; /* Để padding không làm tăng kích thước tổng */
+}
+.form-group input:focus {
+    border-color: #999;
+    outline: none;
+}
+
+.form-group .readonly-text {
+    padding: 9px 0; /* Căn chỉnh với input */
+    font-size: 14px;
+    color: #333;
+}
+
+.form-group .change-link {
+    margin-left: 15px;
+    font-size: 13px;
+    color: orangered;
+    text-decoration: none;
+}
+.form-group .change-link:hover {
+    text-decoration: underline;
+}
+
+.form-group .radio-group label { /* Style cho label của radio button */
+    margin-right: 20px;
+    width: auto; /* Reset width */
+    text-align: left;
+    font-weight: normal;
+    color: #333;
+}
+.form-group .radio-group input[type="radio"] {
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+/* Cột Avatar */
+.profile-avatar {
+    width: 180px; /* Chiều rộng cột avatar */
+    margin-left: 20px; /* Khoảng cách với form */
+    text-align: center;
+    flex-shrink: 0; /* Không cho cột avatar co lại */
+}
+
+.profile-avatar img#avatarPreview {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    border: 1px solid #efefef;
+    object-fit: cover; /* Đảm bảo ảnh không bị méo */
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.profile-avatar .btn-choose-avatar {
+    display: block;
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid rgba(0,0,0,.09);
+    background-color: #fff;
+    color: #555;
+    cursor: pointer;
+    border-radius: 2px;
+    font-size: 13px;
+    margin-bottom: 8px;
+    box-sizing: border-box;
+}
+.profile-avatar .btn-choose-avatar:hover {
+    background-color: #f9f9f9;
+}
+
+.profile-avatar .avatar-note {
+    font-size: 12px;
+    color: #999;
+    line-height: 1.4;
+}
+
+/* Nút Lưu */
+.btn-save {
+    background-color: orangered;
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 14px;
+    display: inline-block;
+    /* Căn chỉnh nút Lưu với lề của input fields */
+    margin-left: calc(130px + 20px); /* width label + margin-right label */
+}
+.btn-save:hover {
+    background-color: #e03e00;
+}

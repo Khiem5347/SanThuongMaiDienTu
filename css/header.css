@@ -11,12 +11,12 @@ a {
     background-color: orangered;
     padding: 40px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;   /* Dòng mới - để căn đều các mục hơn */
     align-items: center;
 }
 .headerlogo{
   display: flex;
-  padding-left : 20px;
+  padding-left : 10px;
   color: white;
   text-align: center;
   font-size: 20px;
@@ -35,8 +35,8 @@ a {
 .header ul {
     list-style: none;
     display: flex;
-    gap: 10px;
-    padding-right: 20px;
+    gap: 5px;
+    padding-right: 0px;
     padding-left: 0px;
 }
 .header ul li a {
@@ -61,7 +61,7 @@ a {
   overflow: hidden;
   background-color: #fff;
   height: 30px;
-  width: 450px;
+  width: 400px;
 }
 .search-box input {
   flex: 1;
@@ -84,3 +84,38 @@ a {
 .search-box button:hover {
   background: orange;
 }
+
+/* CSS cho User Dropdown */
+.user-dropdown-li {
+    position: relative; /* Để định vị dropdown content tuyệt đối so với li này */
+    display: inline-block; /* Hoặc block tùy theo layout của bạn */
+}
+.user-dropdown-trigger {
+    /* Giữ nguyên style của link header, hoặc tùy chỉnh nếu muốn */
+    /* Ví dụ: thêm padding nếu cần */
+     padding: 10px 10px; 
+     color: white; 
+     cursor: pointer; 
+}
+
+.user-dropdown-content {
+    display: none; /* Mặc định ẩn dropdown */
+    position: absolute;
+    background-color: #ac6309;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 100; /* Đảm bảo dropdown nổi lên trên */
+    right: 0; /* Căn dropdown về bên phải của trigger, hoặc left: 0; */
+    border-radius: 4px;
+}
+.user-dropdown-content a {
+    color: black;
+    /* padding: 12px 16px; */
+    text-decoration: none;
+    display: block; /* Mỗi link một dòng */
+    font-size: 10px; /* Điều chỉnh kích thước chữ */
+}
+.user-dropdown-content a:hover {
+    background-color: #fefcfc;
+    color: orangered; /* Thêm màu khi hover nếu muốn */
+} 

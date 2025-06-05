@@ -143,6 +143,7 @@ com\project\nmcnpm\service\ShopServiceImplementation.class
 com\project\nmcnpm\dto\ShippingServiceDTO.class
 com\project\nmcnpm\dto\ShippingLinkDTO.class
 com\project\nmcnpm\entity\ProductsInCart.class
+com\project\nmcnpm\config\WebConfig.class
 com\project\nmcnpm\controller\ShippingServiceController.class
 com\project\nmcnpm\controller\MessageController.class
 com\project\nmcnpm\service\ShippingProviderService.class
