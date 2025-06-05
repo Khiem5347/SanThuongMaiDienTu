@@ -8,7 +8,6 @@ import java.util.Date;
 public class PaymentResponseDTO {
     private Integer paymentId;
     private Integer orderId;
-    private String orderTrackingNumber; 
     private Payment.PaymentMethod paymentMethod;
     private Payment.PaymentStatus paymentStatus;
     private Date paymentTime;
@@ -23,7 +22,6 @@ public class PaymentResponseDTO {
         this.amount = payment.getAmount();
         if (payment.getOrder() != null) {
             this.orderId = payment.getOrder().getOrderId();
-            this.orderTrackingNumber = payment.getOrder().getOrderTrackingNumber();
         }
     }
     public Integer getPaymentId() {
@@ -37,12 +35,6 @@ public class PaymentResponseDTO {
     }
     public void setOrderId(Integer orderId) {
         this.orderId = orderId;
-    }
-    public String getOrderTrackingNumber() {
-        return orderTrackingNumber;
-    }
-    public void setOrderTrackingNumber(String orderTrackingNumber) {
-        this.orderTrackingNumber = orderTrackingNumber;
     }
     public Payment.PaymentMethod getPaymentMethod() {
         return paymentMethod;

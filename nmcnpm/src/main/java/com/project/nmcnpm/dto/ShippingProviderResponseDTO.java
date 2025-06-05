@@ -19,7 +19,6 @@ public class ShippingProviderResponseDTO {
         this.contactPhone = shippingProvider.getContactPhone();
         this.shippingLinkCount = shippingProvider.getShippingLinks() != null ? shippingProvider.getShippingLinks().size() : 0;
         this.shippingServiceCount = shippingProvider.getShippingServices() != null ? shippingProvider.getShippingServices().size() : 0;
-        this.productsInOrderCount = shippingProvider.getProductsInOrders() != null ? shippingProvider.getProductsInOrders().size() : 0;
     }
     public Integer getProviderId() {
         return providerId;

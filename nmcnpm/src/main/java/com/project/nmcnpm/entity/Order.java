@@ -23,39 +23,29 @@ public class Order {
     private Address address;
     @Column(name = "total_amount", nullable = false, precision = 10, scale = 2)
     private BigDecimal totalAmount;
-    @Column(name = "order_tracking_number", length = 255)
-    private String orderTrackingNumber;
-    @Column(name = "status", length = 50)
-    private String status;
-    @Column(name = "date_created")
-    @CreationTimestamp
-    private Date dateCreated;
-    @Column(name = "last_updated")
-    @UpdateTimestamp
-    private Date lastUpdated;
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ProductsInOrder> productsInOrder = new HashSet<>(); // Initialize here
+    private Set<ProductsInOrder> productsInOrder = new HashSet<>();
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private Payment payment;
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private History history;
     public Order() {
     }
-    public Order(Integer orderId, User user, Address address, BigDecimal totalAmount, String orderTrackingNumber,
-                 String status, Date dateCreated, Date lastUpdated, Set<ProductsInOrder> productsInOrder,
+    public Order(Integer orderId, User user, Address address, BigDecimal totalAmount, Set<ProductsInOrder> productsInOrder,
                  Payment payment, History history) {
         this.orderId = orderId;
         this.user = user;
         this.address = address;
         this.totalAmount = totalAmount;
-        this.orderTrackingNumber = orderTrackingNumber;
-        this.status = status;
-        this.dateCreated = dateCreated;
-        this.lastUpdated = lastUpdated;
         this.productsInOrder = productsInOrder;
         this.payment = payment;
         this.history = history;
     }
+    public Order(User user, Address address) {
+        this.user = user;
+        this.address = address;
+    }
+
     public Integer getOrderId() {
         return orderId;
     }
@@ -67,18 +57,6 @@ public class Order {
     }
     public BigDecimal getTotalAmount() {
         return totalAmount;
-    }
-    public String getOrderTrackingNumber() {
-        return orderTrackingNumber;
-    }
-    public String getStatus() {
-        return status;
-    }
-    public Date getDateCreated() {
-        return dateCreated;
-    }
-    public Date getLastUpdated() {
-        return lastUpdated;
     }
     public Set<ProductsInOrder> getProductsInOrder() {
         return productsInOrder;
@@ -100,18 +78,6 @@ public class Order {
     }
     public void setTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
-    }
-    public void setOrderTrackingNumber(String orderTrackingNumber) {
-        this.orderTrackingNumber = orderTrackingNumber;
-    }
-    public void setStatus(String status) {
-        this.status = status;
-    }
-    public void setDateCreated(Date dateCreated) {
-        this.dateCreated = dateCreated;
-    }
-    public void setLastUpdated(Date lastUpdated) {
-        this.lastUpdated = lastUpdated;
     }
     public void setProductsInOrder(Set<ProductsInOrder> productsInOrder) {
         this.productsInOrder = productsInOrder;

@@ -9,8 +9,6 @@ public class HistoryResponseDTO {
     private Integer userId;
     private String userName; 
     private Integer orderId;
-    private String orderTrackingNumber; 
-    private String orderStatus;
     public HistoryResponseDTO() {
     }
     public HistoryResponseDTO(History history) {
@@ -21,8 +19,6 @@ public class HistoryResponseDTO {
         }
         if (history.getOrder() != null) {
             this.orderId = history.getOrder().getOrderId();
-            this.orderTrackingNumber = history.getOrder().getOrderTrackingNumber();
-            this.orderStatus = history.getOrder().getStatus();
         }
     }
     public Integer getHistoryId() {
@@ -48,17 +44,5 @@ public class HistoryResponseDTO {
     }
     public void setOrderId(Integer orderId) {
         this.orderId = orderId;
-    }
-    public String getOrderTrackingNumber() {
-        return orderTrackingNumber;
-    }
-    public void setOrderTrackingNumber(String orderTrackingNumber) {
-        this.orderTrackingNumber = orderTrackingNumber;
-    }
-    public String getOrderStatus() {
-        return orderStatus;
-    }
-    public void setOrderStatus(String orderStatus) {
-        this.orderStatus = orderStatus;
     }
 }

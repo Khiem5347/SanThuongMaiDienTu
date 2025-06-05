@@ -1,0 +1,193 @@
+Address: 
+        - Tạo địa chỉ mới:  POST: http://localhost:8080/api/addresses
+          body: {"userId": 1,     //notnull
+           "recipientName": "Nguyễn Thị C",   //notnull <=100 ký tự
+           "phone": "0912345678",             //notnull, ko quá 20 ký tự
+           "detailAddress": "Số 789, Đường XYZ, Phường EFG, Quận MNO", //notnull <=255
+           "isDefault": true}  //mặc định là false, true nếu gán true
+        - Lấy thông tin địa chỉ theo id_adress:  GET: http://localhost:8080/api/addresses/id_adress
+        - Lấy địa chỉ theo phân trang: GET: http://localhost:8080/api/addresses?page=0&size=10
+        - Lấy địa chỉ người dùng qua id_user: GET: http://localhost:8080/api/addresses/user/id_user
+        - Lấy địa chỉ mặc định của người dùng: GET: http://localhost:8080/api/addresses/user/id_user/default
+        - Cập nhật địa chỉ:
+        - Đặt địa chỉ mặc định: PATCH: http://localhost:8080/api/addresses/user/user_id/default/address_id
+
+AppliedVoucher:
+        - Nhận voucher bằng voucherId: GET: http://localhost:8080/api/applied-vouchers/voucherId
+    or        GET: http://localhost:8080/api/applied-vouchers/voucher/101
+        - Xóa voucher vừa nhận: DELETE: http://localhost:8080/api/applied-vouchers/voucherId
+        - Lấy tất cả các mã đã áp dụng trang mặc định: GET: http://localhost:8080/api/applied-vouchers
+        - Lấy tất cả các mã đã áp dụng: GET: http://localhost:8080/api/applied-vouchers?page=1&size=5
+        - Nhận voucher áp dụng bằng categoryId: GET: http://localhost:8080/api/applied-vouchers/category/categoryId
+
+User:
+       lấy danh sách user:  GET: http://localhost:8080/api/users  
+       lấy user theo tên: GET:  http://localhost:8080/api/users/username
+       thêm tài khoản:   POST: http://localhost:8080/api/users/register
+       đăng nhập: POST: http://localhost:8080/api/users/login
+       lấy shop theo id_user: GET: http://localhost:8080/api/users/id_user/shop
+
+
+Cart:
+        - Lấy giỏ hàng theo userId: GET: http://localhost:8080/api/carts/user/userId
+Category:
+        - Tạo category cha: POST: http://localhost:8080/api/categories
+                             body: {
+                                     "categoryName": "Electronics",
+                                     "parentId": null}
+              category con: POST: http://localhost:8080/api/categories
+                             body: {
+                                     "categoryName": "Smartphones",
+                                     "parentId": 1 // Assuming 'Electronics' has categoryId 1}
+        - Lấy Category theo categoryId: GET: http://localhost:8080/api/categories/categoryId
+        - Xóa Category theo categoryId: DELETE: http://localhost:8080/api/categories/categoryId
+        - Lấy Category trang mặc định: GET: http://localhost:8080/api/categories
+        - Lấy Category trang mong muốn: GET: http://localhost:8080/api/categories?page=1&size=5
+        - Lấy Category theo id cha: GET: http://localhost:8080/api/categories/parent/id_perent/subcategories
+                 <thử vs id_perent 4,5 6>
+Conversation:
+        - Tạo cuộc trò chuyện mới: POST: http://localhost:8080/api/conversations
+                  body: {
+                       "buyerId": 1,
+                       "sellerId": 2}
+        - lấy thông tin conversation bằng conversation_id: GET: http://localhost:8080/api/conversations/conversatin_id   <ví dụ: id=2>
+        - xóa hội thoại theo conversationId: DELETE: http://localhost:8080/api/conversations/conversatin_id
+               <ví dụ: id= 3>
+        - lấy tất cả các cuộc hội thoại: GET: http://localhost:8080/api/conversations
+        - lấy hội thoại theo id người mua: GET: http://localhost:8080/api/conversations/buyer/buyerId
+        - lấy hội thoại theo id người bán: GET: http://localhost:8080/api/conversations/seller/sellerId
+        - lấy hội thoại giữa  ng dùng cụ thể: GET: http://localhost:8080/api/conversations/between-users?buyerId=1&sellerId=2
+
+History: //do trong csdl chưa có gì nên chưa request đc
+        - lấy thông tin lịch sử: GET: http://localhost:8080/api/histories/id_history
+        - xóa thông tin lịch sử: DELETE: http://localhost:8080/api/histories/id_history
+ 200 Ok - lấy tất cả lịch sử: GET: http://localhost:8080/api/histories
+        - lấy lịch sử theo user_id: GET: http://localhost:8080/api/histories/user/user_id
+        - lấy lịch sử theo đơn hàng: GET: http://localhost:8080/api/histories/order/order_id
+Message: 
+        - tạo trò chuyện: POST: http://localhost:8080/api/messages    400bad request???
+        - lấy cuộc trò chuyện theo messageid: GET: http://localhost:8080/api/messages/messageid
+           server trả về:
+                   {
+                        "messageId": 1,
+                        "conversationId": 2,
+                        "senderId": 2,
+                        "senderUsername": "thanh456",
+                       "messText": "Chào bạn, tôi có thể giúp gì cho bạn?",
+                       "messageTime": "2025-06-04T15:07:10.000+00:00",
+                       "isRead": false}
+      - xóa cuộc trò chuyện: DELETE: http://localhost:8080/api/messages/messageid
+      - lấy cuộc trò chuyện theo conversationid: GET:http://localhost:8080/api/messages/conversation/conversationid
+      - lấy cuộc trò chuyện theo id ng gửi: GET: http://localhost:8080/api/messages/sender/userid
+Voucher:
+        - Tạo voucher: POST: http://localhost:8080/api/vouchers
+           body: {"voucherCode": "SUMMER2025",
+            "discountType": "percentage",
+            "discountValue": 15.0,
+            "startDate": "2025-06-01T00:00:00",
+            "endDate": "2025-08-31T23:59:59",
+            "maxUsage": 500,
+            "minPrice": 200000.0,
+            "targetUserRole": "all", 
+            "voucherDescription": "Giảm giá 15% cho mùa hè 2025"}
+        - Nhận voucher theo voucher_id: GET: http://localhost:8080/api/vouchers/voucher_id
+             respone từ hệ thống:
+               {"voucherId": 21,
+               "voucherCode": "SUMMER2025",
+               "voucherDescription": "Giảm giá 15% cho mùa hè 2025",
+               "discountType": "percentage",
+               "discountValue": 15.00,
+               "minPrice": 200000,
+               "startDate": "2025-06-01",
+               "endDate": "2025-09-01",
+               "maxUsage": 500,
+               "usageCount": 0,
+               "targetUserRole": "all"}
+        - Nhận voucher theo mã voucher: GET: http://localhost:8080/api/vouchers/code/voucherCode
+        - Nhận all phiếu giảm giá trang mặc định 0 size 10: GET: http://localhost:8080/api/vouchers
+        - Nhận phiếu ở trang 1 với 5sp mỗi trang: GET: http://localhost:8080/api/vouchers?page=1&size=5
+        - Nhận phiếu giảm giá đang hoạt động: GET: http://localhost:8080/api/vouchers/active
+        - Nhận phiếu giảm giá với loại giảm giá fixed(cố định): GET: http://localhost:8080/api/vouchers/type/fixed
+        - Nhận phiếu giảm giá với loại giảm giá percentage(%):                  
+               GET: http://localhost:8080/api/vouchers/type/percentage
+
+Shop:
+        -Tạo cửa hàng mới: POST: http://localhost:8080/api/shops
+            body:{
+                  "userId": 8,   //sau này thử >8
+                  "shopName": "My Awesome Shop",
+                  "shopDescription": "Description for my awesome shop.",
+                  "shopAvatarUrl": "http://example.com/shop_avatar.jpg",
+                  "shopAddr": "123 Shop Street, City, Country",
+                  "shopRevenue": 0}
+         - lấy/xóa thông tin shop theo id_shop:GET/DELETE: http://localhost:8080/api/shops/id_shop
+         - lấy all cửa hàng: GET: http://localhost:8080/api/shops
+         - lấy thông tin cửa hàng theo id_user: GET: http://localhost:8080/api/shops/user/id_user
+         - tìm kiếm cửa hàng theo tên: GET: http://localhost:8080/api/shops/search?name=shop_name
+ShippingService:
+         - Tạo dịch vụ vận chuyển mới: POST: http://localhost:8080/api/shipping-services
+             body:{"providerId": 1,"serviceName": "Standard Shipping", "description": "Standard delivery service, 3-5 business days.", "defaultPrice": 50000, "fastPrice": 100000,  "addDistance": 10,  "estimatedDeliveryTime": "3-5 business days"}
+         - Lấy/Xóa thông tin dịch vụ vận chuyển theo id: GET/ DELETE: http://localhost:8080/api/shipping-services/serviceId
+         - lấy All dịch vụ vận chuyển: GET: http://localhost:8080/api/shipping-services
+         - lấy dịch vụ vận chuyển theo id nhà cung cấp: GET: http://localhost:8080/api/shipping-services/provider/provider_id
+
+
+Provider:
+         - Tạo nhà cung cấp vận chuyển mới: POST: http://localhost:8080/api/shipping-providers
+         - lấy thông tin nhà cung cấp vận chuyển theo id: GET: http://localhost:8080/api/shipping-providers/providerId
+         - Xóa: DELETE: http://localhost:8080/api/shipping-providers/providerId
+         - lấy all nhà cung cấp vận chuyển: GET: http://localhost:8080/api/shipping-providers
+         - tìm kiếm theo tên nhà vchuyen: GET: http://localhost:8080/api/shipping-providers/search?name=....
+
+
+ShippingLink:
+         - tạo liên kết vận chuyển mới: POST: http://localhost:8080/api/shipping-links
+         - lấy/xóa thông tin liên kết vận chuyển theo shippinglink_id: GET/DELETE: http://localhost:8080/api/shipping-links/shippinglink_id
+         - Lấy liên kết vận chuyển theo productId: GET: http://localhost:8080/api/shipping-links/product/productId
+         -                              providerId: GET: http://localhost:8080/api/shipping-links/provider/providerId
+
+
+ProductVariant:
+         - Tạo biến thể sp mới: POST: http://localhost:8080/api/product-variants
+             body:{"productId": 1, "color": "Red","size": "L","price": 100000, "stock": 50}
+         - lấy/xóa thông tin sản phẩm sựa trên id của nó: GET/DELETE: http://localhost:8080/api/product-variants/id
+         - cập nhật thông tin biến thể sp: PUT: http://localhost:8080/api/product-variants/id
+         - lấy tất cả: GET: http://localhost:8080/api/product-variants
+         - lấy theo productId: GET: http://localhost:8080/api/product-variants/product/productId
+
+ProductSize:
+         - tạo size mới: POST: http://localhost:8080/api/product-sizes
+              body: {"productVariantId": 1, "size": "S", "price": 90000,  "quantity": 20}
+         - lấy/Cập nhật/xóa thông tin theo sizeId: GET/PUT/DELETE : http://localhost:8080/api/product-sizes/sizeId
+         - lấy tất cả: GET: http://localhost:8080/api/product-sizes
+         - lấy theo variantId: GET: http://localhost:8080/api/product-sizes/variant/variantId
+
+ProductReview: 
+         - Tạo đánh giá mới: POST: http://localhost:8080/api/product-reviews
+         - lấy/cập nhật/xóa đánh giá sp theo reviewId: GET/PUT/DELETE http://localhost:8080/api/product-reviews/productreview_id
+         - lấy tất cả: GET: http://localhost:8080/api/product-reviews
+         - lấy theo productId: GET: http://localhost:8080/api/product-reviews/product/productId
+         - lấy theo userId: GET: http://localhost:8080/api/product-reviews/user/userId
+
+ProductImage:
+         - tạo ảnh sp mới: POST: http://localhost:8080/api/product-images
+               body:  { "imageId": 1, "productId": 1,"productUrl": "http://example.com/product/image_updated.jpg"}
+         - lấy/cập nhật/xóa ảnh theo imageId: http://localhost:8080/api/product-images/imageId
+         - lấy ảnh theo productId: GET: http://localhost:8080/api/product-images/product/productId
+Product:
+         - tạo sản phẩm mới: POST: http://localhost:8080/api/products
+                 body: {"categoryId": 1, "shopId": 1,"productName": "Smartphone X","productDescription": "A high-end smartphone with advanced features.",  "productMainImageUrl": "http://example.com/images/smartphone_x.jpg", "productMinPrice": 5000000,   "productMaxPrice": 7000000}
+         - Lấy/cập nhật/xóa sp: http://localhost:8080/api/products/productId
+         - lấy tất cả sp (hoặc phân trang): GET: http://localhost:8080/api/products
+         - lấy theo categoryId: GET: http://localhost:8080/api/products/category/categoryId
+         - lấy theo tên: GET: http://localhost:8080/api/products/search?name=....
+         - theo shopId: GET: http://localhost:8080/api/products/shop/shopId
+
+Order:
+      - tạo đơn hàng: POST: http://localhost:8080/api/orders
+  400bad request:sẽ tìm cách để tìm ra body          ví dụ: { "userId": 1,"addressId": 1,  "orderDate": "2025-06-04T22:50:00Z","totalAmount": 28400000.00, "status": "PENDING", "shippingAddress": "123 Main St, Hanoi, Vietnam","trackingNumber": "TRK" + Math.floor(Math.random() * 1000000000),  "items": [ { "productId": 1, "productQuantity": 1, "productPrice": 28000000.00,  "shopId": 4   }, {     "productId": 7,  "productQuantity": 2,"productPrice": 200000.00,"shopId": 2
+ }]}
+
+  404   - lấy/xóa thông tin đơn hàng theo id: GET/DELETE: http://localhost:8080/api/orders/orderid
+  404   - cập nhật thông tin đon hàng: PUT: http://localhost:8080/api/orders/id_order
+

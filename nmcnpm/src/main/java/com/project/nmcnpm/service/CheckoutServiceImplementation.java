@@ -36,13 +36,12 @@ public class CheckoutServiceImplementation implements CheckoutService {
         }
         BigDecimal totalAmount = productsInOrderList.stream()
                 .map(item -> item.getProductPrice().multiply(new BigDecimal(item.getProductQuantity())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add); 
-        order.setTotalAmount(totalAmount); 
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
         orderRepository.save(order);
         for (ProductsInOrder item : productsInOrderList) {
             item.setOrder(order); 
             productsInOrderRepository.save(item);
         }
-        return new PurchaseResponse("Order placed successfully for user: " + order.getUser().getUsername() + " with total amount: " + order.getTotalAmount());
+        return new PurchaseResponse("Order placed successfully for user: " + order.getUser().getUsername());
     }
 }

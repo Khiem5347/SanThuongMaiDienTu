@@ -3,9 +3,11 @@ package com.project.nmcnpm.entity;
 import jakarta.persistence.*;
 import java.util.Set;
 import java.util.HashSet; 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "Addresses")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "user", "orders"})
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

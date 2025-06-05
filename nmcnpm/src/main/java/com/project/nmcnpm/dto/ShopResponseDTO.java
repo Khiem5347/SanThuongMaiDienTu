@@ -12,9 +12,6 @@ public class ShopResponseDTO {
     private Integer shopRevenue;
     private Integer userId;
     private String userName; 
-    private int productCount;
-    private int productsInCartCount;
-    private int productsInOrderCount;
     public ShopResponseDTO() {
     }
     public ShopResponseDTO(Shop shop) {
@@ -29,9 +26,6 @@ public class ShopResponseDTO {
             this.userId = user.getUserId();
             this.userName = user.getUsername(); 
         }
-        this.productCount = shop.getProducts() != null ? shop.getProducts().size() : 0;
-        this.productsInCartCount = shop.getProductsInCarts() != null ? shop.getProductsInCarts().size() : 0;
-        this.productsInOrderCount = shop.getProductsInOrders() != null ? shop.getProductsInOrders().size() : 0;
     }
     public Integer getShopId() {
         return shopId;
@@ -80,23 +74,5 @@ public class ShopResponseDTO {
     }
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-    public int getProductCount() {
-        return productCount;
-    }
-    public void setProductCount(int productCount) {
-        this.productCount = productCount;
-    }
-    public int getProductsInCartCount() {
-        return productsInCartCount;
-    }
-    public void setProductsInCartCount(int productsInCartCount) {
-        this.productsInCartCount = productsInCartCount;
-    }
-    public int getProductsInOrderCount() {
-        return productsInOrderCount;
-    }
-    public void setProductsInOrderCount(int productsInOrderCount) {
-        this.productsInOrderCount = productsInOrderCount;
     }
 }

@@ -107,6 +107,7 @@ com\project\nmcnpm\dao\ProductRepository.class
 com\project\nmcnpm\service\PaymentService.class
 com\project\nmcnpm\dao\UserRepository.class
 com\project\nmcnpm\service\ShippingLinkServiceImplementation.class
+com\project\nmcnpm\dto\OrderDTO$OrderItemDTO.class
 com\project\nmcnpm\controller\ProductController.class
 com\project\nmcnpm\controller\ProductVariantController.class
 com\project\nmcnpm\service\ProductImageService.class
