@@ -47,6 +47,7 @@ com\project\nmcnpm\dao\PaymentRepository.class
 com\project\nmcnpm\dto\ProductVariantResponseDTO.class
 com\project\nmcnpm\controller\AppliedVoucherController.class
 com\project\nmcnpm\ECommerceApplication.class
+com\project\nmcnpm\dto\UserResponseDTO.class
 com\project\nmcnpm\dto\CartItemDTO.class
 com\project\nmcnpm\dto\CartResponseDTO.class
 com\project\nmcnpm\dto\ProductSizeDTO.class
@@ -87,6 +88,7 @@ com\project\nmcnpm\service\UserServiceImpl.class
 com\project\nmcnpm\controller\ShippingProviderController.class
 com\project\nmcnpm\dto\OrderItemResponseDTO.class
 com\project\nmcnpm\dto\VoucherDTO.class
+com\project\nmcnpm\dto\OrderResponseDTO$OrderItemResponseDTO.class
 com\project\nmcnpm\service\CheckoutService.class
 com\project\nmcnpm\entity\User$Gender.class
 com\project\nmcnpm\controller\ShopController.class

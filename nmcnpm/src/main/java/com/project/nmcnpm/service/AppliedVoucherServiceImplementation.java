@@ -2,7 +2,7 @@ package com.project.nmcnpm.service;
 
 import com.project.nmcnpm.dao.AppliedVoucherRepository;
 import com.project.nmcnpm.dao.CategoryRepository; 
-import com.project.nmcnpm.dao.VoucherRepository;  
+import com.project.nmcnpm.dao.VoucherRepository;
 import com.project.nmcnpm.dto.AppliedVoucherDTO;
 import com.project.nmcnpm.dto.AppliedVoucherResponseDTO;
 import com.project.nmcnpm.entity.AppliedVoucher;
@@ -21,6 +21,7 @@ public class AppliedVoucherServiceImplementation implements AppliedVoucherServic
     private final AppliedVoucherRepository appliedVoucherRepository;
     private final CategoryRepository categoryRepository;
     private final VoucherRepository voucherRepository;
+
     public AppliedVoucherServiceImplementation(AppliedVoucherRepository appliedVoucherRepository,
                                                 CategoryRepository categoryRepository,
                                                 VoucherRepository voucherRepository) {
@@ -28,18 +29,23 @@ public class AppliedVoucherServiceImplementation implements AppliedVoucherServic
         this.categoryRepository = categoryRepository;
         this.voucherRepository = voucherRepository;
     }
+
     @Override
     @Transactional
-    public AppliedVoucher createAppliedVoucher(AppliedVoucherDTO appliedVoucherDTO) {
+    public AppliedVoucherResponseDTO createAppliedVoucher(AppliedVoucherDTO appliedVoucherDTO) { 
         Category category = categoryRepository.findById(appliedVoucherDTO.getCategoryId())
                 .orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + appliedVoucherDTO.getCategoryId()));
         Voucher voucher = voucherRepository.findById(appliedVoucherDTO.getVoucherId())
                 .orElseThrow(() -> new EntityNotFoundException("Voucher not found with id: " + appliedVoucherDTO.getVoucherId()));
+
         AppliedVoucher appliedVoucher = new AppliedVoucher();
         appliedVoucher.setCategory(category);
         appliedVoucher.setVoucher(voucher);
-        return appliedVoucherRepository.save(appliedVoucher);
+        
+        AppliedVoucher savedAppliedVoucher = appliedVoucherRepository.save(appliedVoucher); 
+        return new AppliedVoucherResponseDTO(savedAppliedVoucher); 
     }
+
     @Override
     @Transactional(readOnly = true)
     public AppliedVoucherResponseDTO getAppliedVoucherById(Integer appliedId) {
@@ -47,6 +53,7 @@ public class AppliedVoucherServiceImplementation implements AppliedVoucherServic
                 .orElseThrow(() -> new EntityNotFoundException("Applied Voucher not found with id: " + appliedId));
         return new AppliedVoucherResponseDTO(appliedVoucher);
     }
+
     @Override
     @Transactional
     public void deleteAppliedVoucher(Integer appliedId) {
@@ -55,12 +62,14 @@ public class AppliedVoucherServiceImplementation implements AppliedVoucherServic
         }
         appliedVoucherRepository.deleteById(appliedId);
     }
+
     @Override
     @Transactional(readOnly = true)
     public Page<AppliedVoucherResponseDTO> getAllAppliedVouchers(Pageable pageable) {
         Page<AppliedVoucher> appliedVouchersPage = appliedVoucherRepository.findAll(pageable);
         return appliedVouchersPage.map(AppliedVoucherResponseDTO::new);
     }
+
     @Override
     @Transactional(readOnly = true)
     public List<AppliedVoucherResponseDTO> getAppliedVouchersByCategoryId(Integer categoryId) {
@@ -72,9 +81,10 @@ public class AppliedVoucherServiceImplementation implements AppliedVoucherServic
                 .map(AppliedVoucherResponseDTO::new)
                 .collect(Collectors.toList());
     }
+
     @Override
     @Transactional(readOnly = true)
-    public List<AppliedVoucherResponseDTO> getAppliedVouchersByVoucherId(Integer voucherId){ 
+    public List<AppliedVoucherResponseDTO> getAppliedVouchersByVoucherId(Integer voucherId) { 
         if (!voucherRepository.existsById(voucherId)) {
             throw new EntityNotFoundException("Voucher not found with id: " + voucherId);
         }

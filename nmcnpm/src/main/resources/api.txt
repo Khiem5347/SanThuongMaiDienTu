@@ -185,9 +185,24 @@ Product:
 
 Order:
       - tạo đơn hàng: POST: http://localhost:8080/api/orders
-  400bad request:sẽ tìm cách để tìm ra body          ví dụ: { "userId": 1,"addressId": 1,  "orderDate": "2025-06-04T22:50:00Z","totalAmount": 28400000.00, "status": "PENDING", "shippingAddress": "123 Main St, Hanoi, Vietnam","trackingNumber": "TRK" + Math.floor(Math.random() * 1000000000),  "items": [ { "productId": 1, "productQuantity": 1, "productPrice": 28000000.00,  "shopId": 4   }, {     "productId": 7,  "productQuantity": 2,"productPrice": 200000.00,"shopId": 2
- }]}
-
-  404   - lấy/xóa thông tin đơn hàng theo id: GET/DELETE: http://localhost:8080/api/orders/orderid
-  404   - cập nhật thông tin đon hàng: PUT: http://localhost:8080/api/orders/id_order
+ ví dụ: {
+  "userId": 2,          // Directly under OrderDTO
+  "addressId": 2,       // Directly under OrderDTO
+  "items": [            // Matches the 'items' field in OrderDTO
+    {
+      "productId": 5,           // New field, ensure this ID exists
+      "shopId": 1,
+      "productName": "Dell XPS 15",
+      "color": "Black",         // Example value, adjust as needed
+      "size": "L",              // Example value, adjust as needed
+      "productImageUrl": "image/products/5.jpg",
+      "productPrice": 28000000,
+      "productQuantity": 2,
+      "voucherId": 21,          // Can be null if no voucher
+      "providerId": 1           // New field, ensure this ID exists
+    }
+  ]
+}
+     - lấy/xóa thông tin đơn hàng theo id: GET/DELETE: http://localhost:8080/api/orders/orderid
+     - cập nhật thông tin đon hàng: PUT: http://localhost:8080/api/orders/id_order
 

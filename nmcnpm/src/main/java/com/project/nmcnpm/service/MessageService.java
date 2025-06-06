@@ -4,7 +4,6 @@ import com.project.nmcnpm.dto.MessageDTO;
 import com.project.nmcnpm.dto.MessageResponseDTO;
 import com.project.nmcnpm.entity.Message;
 import java.util.List;
-
 public interface MessageService {
     Message createMessage(MessageDTO messageDTO);
     MessageResponseDTO getMessageById(Integer messageId);

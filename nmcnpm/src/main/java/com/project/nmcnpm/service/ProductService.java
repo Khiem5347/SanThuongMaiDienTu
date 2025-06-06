@@ -1,14 +1,14 @@
 package com.project.nmcnpm.service;
 
 import com.project.nmcnpm.dto.ProductDTO;
-import com.project.nmcnpm.dto.ProductResponseDTO; 
-import com.project.nmcnpm.entity.Product;
+import com.project.nmcnpm.dto.ProductResponseDTO;
+import com.project.nmcnpm.entity.Product; 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
+import java.util.List; 
 public interface ProductService {
-    Product createProduct(ProductDTO productDTO);
-    Product updateProduct(Integer productId, ProductDTO productDTO);
+    ProductResponseDTO createProduct(ProductDTO productDTO); 
+    ProductResponseDTO updateProduct(Integer productId, ProductDTO productDTO); 
     void deleteProduct(Integer productId);
     ProductResponseDTO getProductById(Integer productId);
     Page<ProductResponseDTO> getAllProducts(Pageable pageable);

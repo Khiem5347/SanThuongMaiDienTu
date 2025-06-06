@@ -1,8 +1,8 @@
 package com.project.nmcnpm.service;
 
 import com.project.nmcnpm.dao.ProductVariantRepository;
-import com.project.nmcnpm.dao.ProductRepository; // Cần để tìm Product entity
-import com.project.nmcnpm.dao.ProductSizeRepository; // Cần cho các kích thước lồng nhau
+import com.project.nmcnpm.dao.ProductRepository;
+import com.project.nmcnpm.dao.ProductSizeRepository;
 import com.project.nmcnpm.dto.ProductSizeDTO;
 import com.project.nmcnpm.dto.ProductVariantDTO;
 import com.project.nmcnpm.dto.ProductVariantResponseDTO;
@@ -14,18 +14,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.math.BigDecimal; // Vẫn cần nếu ProductSize.price là BigDecimal
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class ProductVariantServiceImplementation implements ProductVariantService {
-
     private final ProductVariantRepository productVariantRepository;
     private final ProductRepository productRepository;
-    private final ProductSizeRepository productSizeRepository; // Để quản lý các kích thước lồng nhau
-
+    private final ProductSizeRepository productSizeRepository;
     public ProductVariantServiceImplementation(ProductVariantRepository productVariantRepository,
                                                ProductRepository productRepository,
                                                ProductSizeRepository productSizeRepository) {
@@ -36,7 +34,7 @@ public class ProductVariantServiceImplementation implements ProductVariantServic
 
     @Override
     @Transactional
-    public ProductVariant createProductVariant(ProductVariantDTO productVariantDTO) {
+    public ProductVariantResponseDTO createProductVariant(ProductVariantDTO productVariantDTO) {
         Product product = productRepository.findById(productVariantDTO.getProductId())
                 .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + productVariantDTO.getProductId()));
 
@@ -44,69 +42,53 @@ public class ProductVariantServiceImplementation implements ProductVariantServic
         productVariant.setProduct(product);
         productVariant.setColor(productVariantDTO.getColor());
         productVariant.setImageUrl(productVariantDTO.getImageUrl());
-
-        // Xử lý các ProductSizes lồng nhau
         if (productVariantDTO.getProductSizes() != null && !productVariantDTO.getProductSizes().isEmpty()) {
             for (ProductSizeDTO sizeDTO : productVariantDTO.getProductSizes()) {
                 ProductSize productSize = new ProductSize();
                 productSize.setSize(sizeDTO.getSize());
                 productSize.setPrice(sizeDTO.getPrice());
                 productSize.setQuantity(sizeDTO.getQuantity());
-                productVariant.addProductSize(productSize); // Thêm vào bộ sưu tập của biến thể
+                productVariant.addProductSize(productSize); 
             }
         }
 
         ProductVariant savedVariant = productVariantRepository.save(productVariant);
-
-        // Cập nhật stock và khoảng giá của sản phẩm (tùy chọn, nhưng là thực hành tốt)
         updateProductStockAndPrice(product);
-
-        return savedVariant;
+        return getProductVariantById(savedVariant.getVariantId());
     }
 
     @Override
     @Transactional(readOnly = true)
     public ProductVariantResponseDTO getProductVariantById(Integer variantId) {
-        ProductVariant productVariant = productVariantRepository.findById(variantId)
+        ProductVariant productVariant = productVariantRepository.findByIdWithProductAndSizes(variantId)
                 .orElseThrow(() -> new EntityNotFoundException("Product Variant not found with id: " + variantId));
         return new ProductVariantResponseDTO(productVariant);
     }
 
     @Override
     @Transactional
-    public ProductVariant updateProductVariant(Integer variantId, ProductVariantDTO productVariantDTO) {
+    public ProductVariantResponseDTO updateProductVariant(Integer variantId, ProductVariantDTO productVariantDTO) {
         ProductVariant existingVariant = productVariantRepository.findById(variantId)
                 .orElseThrow(() -> new EntityNotFoundException("Product Variant not found with id: " + variantId));
-
-        Product originalProduct = existingVariant.getProduct(); // Giữ sản phẩm gốc để tính toán lại stock/price sau này
-
+        Product originalProduct = existingVariant.getProduct();
         if (productVariantDTO.getColor() != null && !productVariantDTO.getColor().isEmpty()) {
             existingVariant.setColor(productVariantDTO.getColor());
         }
         if (productVariantDTO.getImageUrl() != null) {
             existingVariant.setImageUrl(productVariantDTO.getImageUrl());
         }
-
-        // Cập nhật Product liên quan nếu thay đổi (ít phổ biến đối với biến thể, nhưng có thể)
         if (productVariantDTO.getProductId() != null && !existingVariant.getProduct().getProductId().equals(productVariantDTO.getProductId())) {
             Product newProduct = productRepository.findById(productVariantDTO.getProductId())
                     .orElseThrow(() -> new EntityNotFoundException("New Product not found with id: " + productVariantDTO.getProductId()));
             existingVariant.setProduct(newProduct);
-            // Cập nhật stock/price cho cả sản phẩm cũ và mới
-            updateProductStockAndPrice(originalProduct); // Cập nhật sản phẩm cũ
-            updateProductStockAndPrice(newProduct); // Cập nhật sản phẩm mới
+            updateProductStockAndPrice(originalProduct); 
+            updateProductStockAndPrice(newProduct); 
         }
-
-        // Xử lý cập nhật các ProductSizes lồng nhau: Điều này phức tạp hơn.
-        // Để đơn giản, ví dụ này sẽ thay thế tất cả các kích thước nếu một danh sách mới được cung cấp.
-        // Một giải pháp mạnh mẽ hơn sẽ liên quan đến việc so sánh các danh sách và thêm/xóa/cập nhật riêng lẻ.
         if (productVariantDTO.getProductSizes() != null) {
-            // Xóa các kích thước hiện có
             if (existingVariant.getProductSizes() != null) {
                 productSizeRepository.deleteAll(existingVariant.getProductSizes());
                 existingVariant.getProductSizes().clear();
             }
-            // Thêm các kích thước mới
             for (ProductSizeDTO sizeDTO : productVariantDTO.getProductSizes()) {
                 ProductSize newSize = new ProductSize();
                 newSize.setSize(sizeDTO.getSize());
@@ -117,11 +99,8 @@ public class ProductVariantServiceImplementation implements ProductVariantServic
         }
 
         ProductVariant updatedVariant = productVariantRepository.save(existingVariant);
-
-        // Tính toán lại stock và khoảng giá của sản phẩm sau khi cập nhật
         updateProductStockAndPrice(updatedVariant.getProduct());
-
-        return updatedVariant;
+        return getProductVariantById(updatedVariant.getVariantId());
     }
 
     @Override
@@ -129,19 +108,15 @@ public class ProductVariantServiceImplementation implements ProductVariantServic
     public void deleteProductVariant(Integer variantId) {
         ProductVariant variantToDelete = productVariantRepository.findById(variantId)
                 .orElseThrow(() -> new EntityNotFoundException("Product Variant not found with id: " + variantId));
-
-        Product product = variantToDelete.getProduct(); // Lấy sản phẩm trước khi xóa
-
+        Product product = variantToDelete.getProduct(); 
         productVariantRepository.delete(variantToDelete);
-
-        // Cập nhật stock và khoảng giá của sản phẩm sau khi xóa
         updateProductStockAndPrice(product);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<ProductVariantResponseDTO> getAllProductVariants(Pageable pageable) {
-        Page<ProductVariant> variantsPage = productVariantRepository.findAll(pageable);
+        Page<ProductVariant> variantsPage = productVariantRepository.findAllWithProductAndSizes(pageable);
         return variantsPage.map(ProductVariantResponseDTO::new);
     }
 
@@ -151,29 +126,22 @@ public class ProductVariantServiceImplementation implements ProductVariantServic
         if (!productRepository.existsById(productId)) {
             throw new EntityNotFoundException("Product not found with id: " + productId);
         }
-        List<ProductVariant> variants = productVariantRepository.findByProductProductId(productId);
+        List<ProductVariant> variants = productVariantRepository.findByProductProductIdWithProductAndSizes(productId);
         return variants.stream()
                 .map(ProductVariantResponseDTO::new)
                 .collect(Collectors.toList());
     }
-
-    // Phương thức trợ giúp để cập nhật tổng stock và khoảng giá của sản phẩm
-    @Transactional // Phương thức trợ giúp này cũng cần được giao dịch
+    @Transactional
     private void updateProductStockAndPrice(Product product) {
-        List<ProductVariant> variantsForProduct = productVariantRepository.findByProductProductId(product.getProductId());
-
+        List<ProductVariant> variantsForProduct = productVariantRepository.findByProductProductIdWithProductAndSizes(product.getProductId());
         int totalStock = 0;
         Integer minPrice = null;
         Integer maxPrice = null;
-
         for (ProductVariant variant : variantsForProduct) {
             if (variant.getProductSizes() != null) {
                 for (ProductSize size : variant.getProductSizes()) {
                     totalStock += size.getQuantity();
-
-                    // Chuyển đổi BigDecimal price sang Integer để so sánh và gán
                     Integer currentPrice = size.getPrice().intValue();
-
                     if (minPrice == null || currentPrice < minPrice) {
                         minPrice = currentPrice;
                     }
@@ -183,13 +151,9 @@ public class ProductVariantServiceImplementation implements ProductVariantServic
                 }
             }
         }
-
-        // Giả sử setProductStock của Product entity mong đợi một Integer
-        product.setProductStock(Integer.valueOf(totalStock));
-        // Giả sử setProductMinPrice và setProductMaxPrice của Product entity mong đợi Integer
+        product.setProductStock(totalStock);
         product.setProductMinPrice(minPrice != null ? minPrice : 0);
         product.setProductMaxPrice(maxPrice != null ? maxPrice : 0);
-
-        productRepository.save(product); // Lưu sản phẩm đã cập nhật
+        productRepository.save(product); 
     }
 }

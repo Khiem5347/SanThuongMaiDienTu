@@ -2,7 +2,6 @@ package com.project.nmcnpm.controller;
 
 import com.project.nmcnpm.dto.ShippingLinkDTO;
 import com.project.nmcnpm.dto.ShippingLinkResponseDTO;
-import com.project.nmcnpm.entity.ShippingLink;
 import com.project.nmcnpm.service.ShippingLinkService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -13,22 +12,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-
 @RestController
 @RequestMapping("/api/shipping-links")
 public class ShippingLinkController {
+
     private final ShippingLinkService shippingLinkService;
     public ShippingLinkController(ShippingLinkService shippingLinkService) {
         this.shippingLinkService = shippingLinkService;
     }
     @PostMapping
-    public ResponseEntity<ShippingLink> createShippingLink(@Valid @RequestBody ShippingLinkDTO shippingLinkDTO) {
+    public ResponseEntity<ShippingLinkResponseDTO> createShippingLink(@Valid @RequestBody ShippingLinkDTO shippingLinkDTO) { // Changed return type to ShippingLinkResponseDTO
         try {
-            ShippingLink createdLink = shippingLinkService.createShippingLink(shippingLinkDTO);
+            ShippingLinkResponseDTO createdLink = shippingLinkService.createShippingLink(shippingLinkDTO);
             return new ResponseEntity<>(createdLink, HttpStatus.CREATED);
         } catch (EntityNotFoundException e) {
             System.err.println("Error creating shipping link: " + e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // Provider or Product not found
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
         } catch (Exception e) {
             System.err.println("Internal server error creating shipping link: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -59,6 +58,14 @@ public class ShippingLinkController {
             System.err.println("Internal server error deleting shipping link: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+    @GetMapping
+    public ResponseEntity<Page<ShippingLinkResponseDTO>> getAllShippingLinks(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ShippingLinkResponseDTO> links = shippingLinkService.getAllShippingLinks(pageable);
+        return new ResponseEntity<>(links, HttpStatus.OK);
     }
     @GetMapping("/product/{productId}")
     public ResponseEntity<List<ShippingLinkResponseDTO>> getShippingLinksByProductId(@PathVariable Integer productId) {

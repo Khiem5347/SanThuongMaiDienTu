@@ -6,11 +6,10 @@ import com.project.nmcnpm.entity.ProductSize;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
-
 public interface ProductSizeService {
-    ProductSize createProductSize(ProductSizeDTO productSizeDTO);
+    ProductSizeResponseDTO createProductSize(ProductSizeDTO productSizeDTO);
     ProductSizeResponseDTO getProductSizeById(Integer sizeId);
-    ProductSize updateProductSize(Integer sizeId, ProductSizeDTO productSizeDTO);
+    ProductSizeResponseDTO updateProductSize(Integer sizeId, ProductSizeDTO productSizeDTO); 
     void deleteProductSize(Integer sizeId);
     Page<ProductSizeResponseDTO> getAllProductSizes(Pageable pageable);
     List<ProductSizeResponseDTO> getProductSizesByProductVariantId(Integer variantId);

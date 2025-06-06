@@ -1,8 +1,8 @@
 package com.project.nmcnpm.controller;
 
 import com.project.nmcnpm.dto.PaymentDTO;
-import com.project.nmcnpm.dto.PaymentResponseDTO; 
-import com.project.nmcnpm.entity.Payment;
+import com.project.nmcnpm.dto.PaymentResponseDTO;
+import com.project.nmcnpm.entity.Payment; 
 import com.project.nmcnpm.service.PaymentService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -12,16 +12,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 @RestController
 @RequestMapping("/api/payments")
 public class PaymentController {
+
     private final PaymentService paymentService;
     public PaymentController(PaymentService paymentService) {
         this.paymentService = paymentService;
     }
     @PostMapping
-    public ResponseEntity<PaymentResponseDTO> createPayment(@Valid @RequestBody PaymentDTO paymentDTO) { // Changed return type
+    public ResponseEntity<PaymentResponseDTO> createPayment(@Valid @RequestBody PaymentDTO paymentDTO) {
         try {
             Payment createdPayment = paymentService.createPayment(paymentDTO);
             PaymentResponseDTO responseDTO = paymentService.getPaymentById(createdPayment.getPaymentId());
@@ -51,7 +51,7 @@ public class PaymentController {
         }
     }
     @PatchMapping("/{id}/status")
-    public ResponseEntity<PaymentResponseDTO> updatePaymentStatus( 
+    public ResponseEntity<PaymentResponseDTO> updatePaymentStatus(
             @PathVariable Integer id,
             @RequestParam Payment.PaymentStatus newStatus) {
         try {
@@ -67,7 +67,7 @@ public class PaymentController {
         }
     }
     @PutMapping("/{id}")
-    public ResponseEntity<PaymentResponseDTO> updatePayment(@PathVariable Integer id, @Valid @RequestBody PaymentDTO paymentDTO) { // Changed return type
+    public ResponseEntity<PaymentResponseDTO> updatePayment(@PathVariable Integer id, @Valid @RequestBody PaymentDTO paymentDTO) {
         try {
             Payment updatedPayment = paymentService.updatePayment(id, paymentDTO);
             PaymentResponseDTO responseDTO = paymentService.getPaymentById(updatedPayment.getPaymentId());

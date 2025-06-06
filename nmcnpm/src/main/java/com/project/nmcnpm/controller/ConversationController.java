@@ -13,10 +13,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-
 @RestController
 @RequestMapping("/api/conversations")
 public class ConversationController {
+
     private final ConversationService conversationService;
     public ConversationController(ConversationService conversationService) {
         this.conversationService = conversationService;
@@ -28,10 +28,10 @@ public class ConversationController {
             return new ResponseEntity<>(createdConversation, HttpStatus.CREATED);
         } catch (EntityNotFoundException e) {
             System.err.println("Error creating conversation: " + e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } catch (IllegalArgumentException e) {
             System.err.println("Validation error creating conversation: " + e.getMessage());
-            return new ResponseEntity<>(HttpStatus.CONFLICT); 
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         } catch (Exception e) {
             System.err.println("Internal server error creating conversation: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

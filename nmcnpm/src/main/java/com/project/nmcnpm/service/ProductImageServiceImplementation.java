@@ -9,7 +9,6 @@ import com.project.nmcnpm.entity.ProductImage;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,33 +16,39 @@ import java.util.stream.Collectors;
 public class ProductImageServiceImplementation implements ProductImageService {
     private final ProductImageRepository productImageRepository;
     private final ProductRepository productRepository;
+
     public ProductImageServiceImplementation(ProductImageRepository productImageRepository, ProductRepository productRepository) {
         this.productImageRepository = productImageRepository;
         this.productRepository = productRepository;
     }
+
     @Override
     @Transactional
     public ProductImage createProductImage(ProductImageDTO productImageDTO) {
         Product product = productRepository.findById(productImageDTO.getProductId())
                 .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + productImageDTO.getProductId()));
+
         ProductImage productImage = new ProductImage();
         productImage.setProduct(product);
         productImage.setProductUrl(productImageDTO.getProductUrl());
 
         return productImageRepository.save(productImage);
     }
+
     @Override
     @Transactional(readOnly = true)
     public ProductImageResponseDTO getProductImageById(Integer imageId) {
-        ProductImage productImage = productImageRepository.findById(imageId)
+        ProductImage productImage = productImageRepository.findByIdWithProduct(imageId)
                 .orElseThrow(() -> new EntityNotFoundException("Product Image not found with id: " + imageId));
         return new ProductImageResponseDTO(productImage);
     }
+
     @Override
     @Transactional
     public ProductImage updateProductImage(Integer imageId, ProductImageDTO productImageDTO) {
         ProductImage existingImage = productImageRepository.findById(imageId)
                 .orElseThrow(() -> new EntityNotFoundException("Product Image not found with id: " + imageId));
+
         if (productImageDTO.getProductUrl() != null && !productImageDTO.getProductUrl().isEmpty()) {
             existingImage.setProductUrl(productImageDTO.getProductUrl());
         }
@@ -52,8 +57,10 @@ public class ProductImageServiceImplementation implements ProductImageService {
                     .orElseThrow(() -> new EntityNotFoundException("New Product not found with id: " + productImageDTO.getProductId()));
             existingImage.setProduct(newProduct);
         }
+
         return productImageRepository.save(existingImage);
     }
+
     @Override
     @Transactional
     public void deleteProductImage(Integer imageId) {
@@ -62,13 +69,14 @@ public class ProductImageServiceImplementation implements ProductImageService {
         }
         productImageRepository.deleteById(imageId);
     }
+
     @Override
     @Transactional(readOnly = true)
     public List<ProductImageResponseDTO> getProductImagesByProductId(Integer productId) {
         if (!productRepository.existsById(productId)) {
             throw new EntityNotFoundException("Product not found with id: " + productId);
         }
-        List<ProductImage> images = productImageRepository.findByProductProductId(productId);
+        List<ProductImage> images = productImageRepository.findByProductProductIdWithProduct(productId);
         return images.stream()
                 .map(ProductImageResponseDTO::new)
                 .collect(Collectors.toList());

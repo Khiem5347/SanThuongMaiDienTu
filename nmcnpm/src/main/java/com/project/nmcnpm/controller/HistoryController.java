@@ -13,10 +13,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-
 @RestController
 @RequestMapping("/api/histories")
 public class HistoryController {
+
     private final HistoryService historyService;
     public HistoryController(HistoryService historyService) {
         this.historyService = historyService;
@@ -28,10 +28,10 @@ public class HistoryController {
             return new ResponseEntity<>(createdHistory, HttpStatus.CREATED);
         } catch (EntityNotFoundException e) {
             System.err.println("Error creating history: " + e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } catch (IllegalArgumentException e) {
             System.err.println("Validation error creating history: " + e.getMessage());
-            return new ResponseEntity<>(HttpStatus.CONFLICT); 
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         } catch (Exception e) {
             System.err.println("Internal server error creating history: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

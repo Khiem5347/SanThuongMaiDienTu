@@ -1,7 +1,7 @@
 package com.project.nmcnpm.controller;
 
 import com.project.nmcnpm.dto.ProductReviewDTO;
-import com.project.nmcnpm.dto.ProductReviewResponseDTO; 
+import com.project.nmcnpm.dto.ProductReviewResponseDTO;
 import com.project.nmcnpm.entity.ProductReview;
 import com.project.nmcnpm.service.ProductReviewService;
 import jakarta.persistence.EntityNotFoundException;
@@ -13,16 +13,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-
 @RestController
 @RequestMapping("/api/product-reviews")
 public class ProductReviewController {
+
     private final ProductReviewService productReviewService;
     public ProductReviewController(ProductReviewService productReviewService) {
         this.productReviewService = productReviewService;
     }
     @PostMapping
-    public ResponseEntity<ProductReviewResponseDTO> createProductReview(@Valid @RequestBody ProductReviewDTO productReviewDTO) { // Changed return type
+    public ResponseEntity<ProductReviewResponseDTO> createProductReview(@Valid @RequestBody ProductReviewDTO productReviewDTO) {
         try {
             ProductReview createdReview = productReviewService.createProductReview(productReviewDTO);
             ProductReviewResponseDTO responseDTO = productReviewService.getProductReviewById(createdReview.getReviewId()); // Assuming getReviewId() exists in ProductReview entity
@@ -49,7 +49,7 @@ public class ProductReviewController {
         }
     }
     @PutMapping("/{id}")
-    public ResponseEntity<ProductReviewResponseDTO> updateProductReview(@PathVariable Integer id, @Valid @RequestBody ProductReviewDTO productReviewDTO) { // Changed return type
+    public ResponseEntity<ProductReviewResponseDTO> updateProductReview(@PathVariable Integer id, @Valid @RequestBody ProductReviewDTO productReviewDTO) {
         try {
             ProductReview updatedReview = productReviewService.updateProductReview(id, productReviewDTO);
             ProductReviewResponseDTO responseDTO = productReviewService.getProductReviewById(updatedReview.getReviewId()); // Assuming getReviewId() exists in ProductReview entity

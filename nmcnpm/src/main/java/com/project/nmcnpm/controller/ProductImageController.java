@@ -1,7 +1,7 @@
 package com.project.nmcnpm.controller;
 
 import com.project.nmcnpm.dto.ProductImageDTO;
-import com.project.nmcnpm.dto.ProductImageResponseDTO; 
+import com.project.nmcnpm.dto.ProductImageResponseDTO;
 import com.project.nmcnpm.entity.ProductImage;
 import com.project.nmcnpm.service.ProductImageService;
 import jakarta.persistence.EntityNotFoundException;
@@ -10,16 +10,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-
 @RestController
 @RequestMapping("/api/product-images")
 public class ProductImageController {
+
     private final ProductImageService productImageService;
     public ProductImageController(ProductImageService productImageService) {
         this.productImageService = productImageService;
     }
     @PostMapping
-    public ResponseEntity<ProductImageResponseDTO> createProductImage(@Valid @RequestBody ProductImageDTO productImageDTO) { // Changed return type
+    public ResponseEntity<ProductImageResponseDTO> createProductImage(@Valid @RequestBody ProductImageDTO productImageDTO) {
         try {
             ProductImage createdImage = productImageService.createProductImage(productImageDTO);
             ProductImageResponseDTO responseDTO = productImageService.getProductImageById(createdImage.getImageId());
@@ -46,7 +46,7 @@ public class ProductImageController {
         }
     }
     @PutMapping("/{id}")
-    public ResponseEntity<ProductImageResponseDTO> updateProductImage(@PathVariable Integer id, @Valid @RequestBody ProductImageDTO productImageDTO) { // Changed return type
+    public ResponseEntity<ProductImageResponseDTO> updateProductImage(@PathVariable Integer id, @Valid @RequestBody ProductImageDTO productImageDTO) {
         try {
             ProductImage updatedImage = productImageService.updateProductImage(id, productImageDTO);
             ProductImageResponseDTO responseDTO = productImageService.getProductImageById(updatedImage.getImageId());

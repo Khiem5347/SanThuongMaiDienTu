@@ -2,11 +2,10 @@ package com.project.nmcnpm.service;
 
 import com.project.nmcnpm.dto.ProductReviewDTO;
 import com.project.nmcnpm.dto.ProductReviewResponseDTO;
-import com.project.nmcnpm.entity.ProductReview; 
+import com.project.nmcnpm.entity.ProductReview;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
-
 public interface ProductReviewService {
     ProductReview createProductReview(ProductReviewDTO productReviewDTO);
     ProductReviewResponseDTO getProductReviewById(Integer reviewId);

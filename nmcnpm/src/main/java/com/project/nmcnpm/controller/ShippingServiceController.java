@@ -1,8 +1,7 @@
 package com.project.nmcnpm.controller;
 
 import com.project.nmcnpm.dto.ShippingServiceDTO;
-import com.project.nmcnpm.dto.ShippingServiceResponseDTO; 
-import com.project.nmcnpm.entity.ShippingService;
+import com.project.nmcnpm.dto.ShippingServiceResponseDTO;
 import com.project.nmcnpm.service.ShippingServiceService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -13,20 +12,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-
 @RestController
 @RequestMapping("/api/shipping-services")
 public class ShippingServiceController {
+
     private final ShippingServiceService shippingServiceService;
     public ShippingServiceController(ShippingServiceService shippingServiceService) {
         this.shippingServiceService = shippingServiceService;
     }
     @PostMapping
-    public ResponseEntity<ShippingServiceResponseDTO> createShippingService(@Valid @RequestBody ShippingServiceDTO shippingServiceDTO) { // Changed return type
+    public ResponseEntity<ShippingServiceResponseDTO> createShippingService(@Valid @RequestBody ShippingServiceDTO shippingServiceDTO) {
         try {
-            ShippingService createdService = shippingServiceService.createShippingService(shippingServiceDTO);
-            ShippingServiceResponseDTO responseDTO = shippingServiceService.getShippingServiceById(createdService.getServiceId());
-            return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+            ShippingServiceResponseDTO createdService = shippingServiceService.createShippingService(shippingServiceDTO);
+            return new ResponseEntity<>(createdService, HttpStatus.CREATED);
         } catch (EntityNotFoundException e) {
             System.err.println("Error creating shipping service: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -49,9 +47,9 @@ public class ShippingServiceController {
         }
     }
     @PutMapping("/{id}")
-    public ResponseEntity<ShippingService> updateShippingService(@PathVariable Integer id, @Valid @RequestBody ShippingServiceDTO shippingServiceDTO) {
+    public ResponseEntity<ShippingServiceResponseDTO> updateShippingService(@PathVariable Integer id, @Valid @RequestBody ShippingServiceDTO shippingServiceDTO) {
         try {
-            ShippingService updatedService = shippingServiceService.updateShippingService(id, shippingServiceDTO);
+            ShippingServiceResponseDTO updatedService = shippingServiceService.updateShippingService(id, shippingServiceDTO);
             return new ResponseEntity<>(updatedService, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             System.err.println("Shipping Service or provider not found during update: " + e.getMessage());
