@@ -9,15 +9,17 @@
 <body>
   <div class="register-container">
     <h2>Đăng Ký Tài Khoản</h2>
-    <form action="/register" method="post">
-      <label for="phone">Số điện thoại:</label>
-      <input type="text" id="phone" name="phone" placeholder="Nhập số điện thoại" required>
+    <form id="registerForm"> <label for="username">Tên đăng nhập:</label>
+      <input type="text" id="username" name="username" placeholder="Nhập tên đăng nhập" required>
 
       <label for="email">Email:</label>
       <input type="email" id="email" name="email" placeholder="Nhập email của bạn" required>
 
       <label for="fullname">Tên đầy đủ:</label>
       <input type="text" id="fullname" name="fullname" placeholder="Nhập tên của bạn" required>
+
+      <label for="phone">Số điện thoại:</label>
+      <input type="text" id="phone" name="phone" placeholder="Nhập số điện thoại" required>
 
       <label for="dob">Ngày tháng năm sinh:</label>
       <input type="date" id="dob" name="dob" required>
@@ -34,5 +36,6 @@
       Đã có tài khoản? <a href="../pages/dangnhap.html">Đăng nhập ngay</a>.
     </p>
   </div>
+  <script src="../js/dangky.js"></script>
 </body>
 </html>

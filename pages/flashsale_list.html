@@ -1,61 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh sách sản phẩm</title>
-    <link rel="stylesheet" href="../css/flashsale_list.css">
+    <title>Flash Sale - Tất Cả Sản Phẩm</title>
+    <link rel="stylesheet" href="../css/header.css"> 
+    <link rel="stylesheet" href="../css/flashsale_list.css"> 
 </head>
 <body>
-    <h1>Danh sách Flash Sales</h1>
-    <div id="products-container">
-        Đang tải sản phẩm...
-    </div>
-    <script>
-    document.addEventListener('DOMContentLoaded', () => {
-    const productsContainer = document.getElementById('products-container');
-    const apiUrl = 'http://localhost:3000/api/products'; // Địa chỉ API danh sách
-    // Xóa nội dung "Đang tải..." ban đầu
-    productsContainer.innerHTML = '';
-    fetch(apiUrl)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(products => {
-            if (Array.isArray(products) && products.length > 0) {
-                products.forEach(product => {
-                    // Tạo thẻ <a> để bọc sản phẩm, làm cho nó có thể click
-                    // href trỏ đến trang chi tiết, truyền ID qua query parameter
-                    const productLink = document.createElement('a');
-                    productLink.href = `../pages/chitietsanpham.html?id=${product.product_id}`;
-                    productLink.classList.add('product-link'); // Thêm class để style link (tùy chọn)
-                    // Tạo div.product-item như trước
-                    const productElement = document.createElement('div');
-                    productElement.classList.add('product-item');
-                    // Nội dung HTML cho mỗi sản phẩm
-                    productElement.innerHTML = `
-                        <img src="${product.product_main_image_url}" alt="${product.product_name}">
-                        <h3>${product.product_name}</h3>
-                        <p class="product_description">${product.product_description}</p>
-                        <p class="product_price">Giá: ${product.product_min_price.toLocaleString('vi-VN')} VNĐ</p>
-                        `;
-                    // Thêm productElement (div) vào productLink (a)
-                    productLink.appendChild(productElement);
-                    // Thêm productLink (a) vào container
-                    productsContainer.appendChild(productLink);
-                });
-            } else {
-                productsContainer.innerHTML = '<p>Không có sản phẩm nào được tìm thấy.</p>';
-            }
-        })
-        .catch(error => {
-            console.error('Có lỗi khi lấy dữ liệu sản phẩm:', error);
-            productsContainer.innerHTML = '<p>Không thể tải dữ liệu sản phẩm.</p>';
-        });
-});
-    </script>
+    <div id="header"></div>
+
+    <main class="flash-sale-list-container">
+        <h1 class="page-title">Sản Phẩm Flash Sale</h1>
+        
+        <div id="product-grid" class="product-grid">
+            <p class="loading-text">Đang tải sản phẩm...</p>
+        </div>
+
+        <div id="pagination-controls" class="pagination-controls">
+            </div>
+    </main>
+
+    <div id="footer"></div>
+
+    <script src="../js/index.js"></script> 
+    <script src="../js/flashsale_list.js"></script>
 </body>
 </html>
