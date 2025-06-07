@@ -176,69 +176,80 @@
     const checkoutBtn = document.querySelector('.checkout-btn');
 
     if (checkoutBtn) {
-        checkoutBtn.addEventListener('click', () => {
-            const selectedRows = document.querySelectorAll("#cart-items-body tr input[type='checkbox']:checked");
+    checkoutBtn.addEventListener('click', () => {
+        const selectedRows = document.querySelectorAll("#cart-items-body tr input[type='checkbox']:checked");
 
-            if (selectedRows.length === 0) {
-                alert("Vui lòng chọn ít nhất một sản phẩm để đặt hàng.");
-                return;
-            }
+        if (selectedRows.length === 0) {
+            alert("Vui lòng chọn ít nhất một sản phẩm để đặt hàng.");
+            return;
+        }
 
-            const itemsToOrder = [];
-            let itemsTotalAmount = 0;
+        const itemsToOrder = [];
+        let itemsTotalAmount = 0;
 
-            selectedRows.forEach(checkbox => {
-                const row = checkbox.closest('tr');
-                const itemDetailsString = row.dataset.itemDetails;
-                if (itemDetailsString) {
-                    try {
-                        const item = JSON.parse(itemDetailsString);
-                        itemsToOrder.push(item);
-                        const itemPrice = item.variation ? item.variation.price : 0;
-                        itemsTotalAmount += itemPrice * item.quantity;
-                    } catch (error) {
-                        console.error("Lỗi đọc chi tiết item từ data attribute:", error);
-                    }
-                }
-            });
-
-            const shippingFee = 30000; // Giả định phí vận chuyển
-            const paymentMethod = 'Thanh toán khi nhận hàng';
-
-            const orderDataForSession = {
-                orderId: 'TEMP_' + Date.now(),
-                orderDate: new Date().toISOString().split('T')[0],
-                paymentMethod: paymentMethod,
-                shippingFee: shippingFee,
-                items: itemsToOrder,
-                itemsTotalAmount: itemsTotalAmount
-            };
-
-            sessionStorage.setItem('currentOrderDetails', JSON.stringify(orderDataForSession));
-            console.log("Lưu chi tiết đơn hàng (từ giỏ) vào sessionStorage:", orderDataForSession);
-
-            // Xóa các item đã đặt hàng khỏi localStorage
-            const currentCartItemsString = localStorage.getItem('cartItems');
-            if (currentCartItemsString) {
+        selectedRows.forEach(checkbox => {
+            const row = checkbox.closest('tr');
+            const itemDetailsString = row.dataset.itemDetails;
+            if (itemDetailsString) {
                 try {
-                    let currentCartItems = JSON.parse(currentCartItemsString);
-                    const remainingCartItems = currentCartItems.filter(cartItem =>
-                        !itemsToOrder.some(orderedItem =>
-                            String(orderedItem.productId) === String(cartItem.productId) &&
-                            (orderedItem.variation && cartItem.variation && orderedItem.variation.option === cartItem.variation.option)
-                        )
-                    );
-                    localStorage.setItem('cartItems', JSON.stringify(remainingCartItems));
-                    console.log("Đã xóa các mục đã đặt khỏi giỏ hàng.");
+                    const item = JSON.parse(itemDetailsString);
+                    itemsToOrder.push(item);
+                    const itemPrice = item.variation ? item.variation.price : 0;
+                    itemsTotalAmount += itemPrice * item.quantity;
                 } catch (error) {
-                    console.error("Lỗi cập nhật giỏ hàng sau khi đặt:", error);
+                    console.error("Lỗi đọc chi tiết item từ data attribute:", error);
                 }
             }
-
-            // Chuyển hướng sang trang xác nhận
-            window.location.href = 'xacnhanmuahang.html';
         });
-    }
+
+        const shippingFee = 30000; // Giả định phí vận chuyển
+        const paymentMethod = 'Thanh toán khi nhận hàng';
+
+        const orderDataForSession = {
+            orderId: 'DH_' + Date.now(),
+            orderDate: new Date().toISOString().split('T')[0],
+            paymentMethod: paymentMethod,
+            shippingFee: shippingFee,
+            items: itemsToOrder,
+            itemsTotalAmount: itemsTotalAmount
+        };
+
+        // 👉 Lưu đơn hàng vào sessionStorage để xem chi tiết ngay sau đó (nếu muốn)
+        sessionStorage.setItem('currentOrderDetails', JSON.stringify(orderDataForSession));
+
+        // 👉 Lưu thêm đơn hàng vào danh sách trong localStorage
+        let currentOrders = JSON.parse(localStorage.getItem('orderedList') || '[]');
+        currentOrders.push(orderDataForSession);
+        localStorage.setItem('orderedList', JSON.stringify(currentOrders));
+
+        // 👉 Xóa item đã đặt khỏi giỏ hàng
+        const currentCartItemsString = localStorage.getItem('cartItems');
+        if (currentCartItemsString) {
+            try {
+                let currentCartItems = JSON.parse(currentCartItemsString);
+                const remainingCartItems = currentCartItems.filter(cartItem =>
+                    !itemsToOrder.some(orderedItem =>
+                        String(orderedItem.productId) === String(cartItem.productId) &&
+                        (orderedItem.variation && cartItem.variation && orderedItem.variation.option === cartItem.variation.option)
+                    )
+                );
+                localStorage.setItem('cartItems', JSON.stringify(remainingCartItems));
+                console.log("Đã xóa các mục đã đặt khỏi giỏ hàng.");
+            } catch (error) {
+                console.error("Lỗi cập nhật giỏ hàng sau khi đặt:", error);
+            }
+        }
+
+        // 👉 Chuyển sang trang xác nhận hoặc danh sách đơn hàng
+        // --- Lưu đơn hàng vào danh sách userOrders trong localStorage ---
+        const existingOrders = JSON.parse(localStorage.getItem('userOrders')) || [];
+        existingOrders.push(orderDataForSession);
+        localStorage.setItem('userOrders', JSON.stringify(existingOrders));
+
+        window.location.href = 'xacnhanmuahang.html'; // hoặc: 'danhsachdonhang.html'
+    });
+}
+
 
     // --- Logic Tải Giỏ Hàng khi trang load ---
     window.addEventListener('load', () => {

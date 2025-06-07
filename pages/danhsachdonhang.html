@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Danh sách đơn hàng</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #fff3e0; /* nền cam nhạt */
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #ff9800;
+      color: white;
+    }
+    tr:hover {
+      background-color: #ffe0b2;
+      cursor: pointer;
+    }
+    .container {
+      padding: 20px;
+    }
+    .back-home {
+      text-decoration: none;
+      color: #007bff;
+      display: inline-block;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Đơn hàng đã mua</h2>
+    <a href="index.html">← Quay lại trang chủ</a>
+    <table id="order-table">
+      <thead>
+        <tr>
+          <th>Mã đơn</th>
+          <th>Ngày đặt</th>
+          <th>Phương thức</th>
+          <th>Phí vận chuyển</th>
+          <th>Tổng</th>
+        </tr>
+      </thead>
+      <tbody id="order-list">
+        <tr><td colspan="5">Đang tải đơn hàng...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script src="../js/danhsachdonhang.js"></script>
+</body>
+</html>

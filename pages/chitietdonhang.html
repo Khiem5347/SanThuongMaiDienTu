@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Chi tiết đơn hàng</title>
+  <link rel="stylesheet" href="../css/style.css"> <!-- Đổi path nếu cần -->
+  <style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #fff3e0; /* 🌈 nền màu cam nhạt */
+  }
+
+  .summary {
+    margin-top: 20px;
+    font-weight: bold;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white; /* giữ bảng trắng nếu muốn dễ nhìn */
+  }
+
+  th, td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+  }
+
+  th {
+    background-color: #ff9800; /* màu cam cho tiêu đề bảng */
+    color: white;
+  }
+
+  tr:nth-child(even) {
+    background-color: #fff8e1;
+  }
+</style>
+
+</head>
+<body>
+
+<a href="danhsachdonhang.html" class="back-link">← Quay lại danh sách đơn hàng</a>
+
+<h2>Chi tiết đơn hàng</h2>
+
+<div id="order-details"></div>
+
+<script src="../js/chitietdonhang.js"></script>
+</body>
+</html>
