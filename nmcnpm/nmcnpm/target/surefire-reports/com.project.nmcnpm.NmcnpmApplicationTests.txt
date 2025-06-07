@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.project.nmcnpm.NmcnpmApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.132 s - in com.project.nmcnpm.NmcnpmApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.316 s - in com.project.nmcnpm.NmcnpmApplicationTests

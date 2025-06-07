@@ -1,0 +1,225 @@
+[33mcommit b64a33ec56b63d94c78aaba7a66d588b35357f36[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mVinh[m[33m, [m[1;31morigin/Vinh[m[33m)[m
+Merge: f55dde7 c2bd0cf
+Author: Bùi Đạt-1802 <buixuandat1802@gmail.com>
+Date:   Sat Jun 7 11:32:47 2025 +0700
+
+    Merge branch 'dat' into Vinh
+
+[33mcommit f55dde7d35c951e7ee9b1f6529fbf6e7c6650978[m
+Author: Bùi Đạt-1802 <buixuandat1802@gmail.com>
+Date:   Sat Jun 7 11:21:04 2025 +0700
+
+    add dach sach don hang, chi tiet don hang
+
+[33mcommit 7eb2b8a2ded907144f6939e98f437c2d500db8ee[m
+Author: Bui Cao Vinh <buicaovinh5@gmail.com>
+Date:   Sat Jun 7 08:47:58 2025 +0700
+
+    update fe giohang.html
+
+[33mcommit 7ed0a1e63b90d866497fc26a6f11f85f613e62c7[m
+Author: Bui Cao Vinh <buicaovinh5@gmail.com>
+Date:   Thu Jun 5 17:03:31 2025 +0700
+
+    add chitietsanpham
+
+[33mcommit 293c6cbc46599cd4415bc6dfbcc5550e3adec54d[m
+Merge: 0462c57 4a04079
+Author: Bui Cao Vinh <buicaovinh5@gmail.com>
+Date:   Thu Jun 5 14:48:35 2025 +0700
+
+    Merge branch 'main' of https://github.com/Khiem5347/SanThuongMaiDienTu
+
+[33mcommit 0462c578c98af83ac3c8f3b367f57a60a900d4a6[m
+Author: Bui Cao Vinh <buicaovinh5@gmail.com>
+Date:   Thu Jun 5 14:48:01 2025 +0700
+
+    add flashsale_list
+
+[33mcommit 4a04079d10818203069f955d534c673dff1fe57d[m
+Author: ngocanh1124 <Nguyenthingocanh2004pt@gmail.com>
+Date:   Thu Jun 5 12:45:59 2025 +0700
+
+    Update api.txt
+
+[33mcommit 16494b6784f52b110057ff13dbf07dccdeb91585[m
+Merge: b1b6245 254f2db
+Author: ngocanh1124 <nguyenthingocanh2004pt@gmail.com>
+Date:   Thu Jun 5 12:35:57 2025 +0700
+
+    Resolve merge conflict in application.properties
+
+[33mcommit b1b6245a88fab579654546bce08fd777ab6a0fd3[m
+Author: ngocanh1124 <nguyenthingocanh2004pt@gmail.com>
+Date:   Thu Jun 5 12:18:51 2025 +0700
+
+    Add/Update all files in the nmcnpm directory
+
+[33mcommit 254f2dbac4fcdd465f305fb83078aebe9cca7b7c[m
+Author: Bui-Dat-1802 <buixuandat1802@gmail.com>
+Date:   Wed Jun 4 12:40:58 2025 +0700
+
+    Update application.properties
+
+[33mcommit dcc6048d935d43e671d03aa632331b32fdd423c5[m
+Author: DinhDuyen2810 <dinhduyen299792@gmail.com>
+Date:   Wed Jun 4 12:07:57 2025 +0700
+
+    add categories image
+
+[33mcommit 262221daa848884646cffbdfdf1b9348bfe80c54[m
+Author: ngocanh1124 <Nguyenthingocanh2004pt@gmail.com>
+Date:   Wed Jun 4 00:37:15 2025 +0700
+
+    Update User.java
+
+[33mcommit d182b2310015acb66898511a1020b878732fd4c2[m
+Author: ngocanh1124 <Nguyenthingocanh2004pt@gmail.com>
+Date:   Mon Jun 2 19:17:14 2025 +0700
+
+    Update ProductSizeServiceImplementation.java
+
+[33mcommit 4b0f178846b34a6fcead50a556b6e81d8ca48118[m
+Author: ngocanh1124 <Nguyenthingocanh2004pt@gmail.com>
+Date:   Mon Jun 2 19:15:01 2025 +0700
+
+    Update ProductVariantServiceImplementation.java
+
+[33mcommit c7711460c6954ed7282dfcde0afb9ee5d1f70d97[m
+Author: ngocanh1124 <nguyenthingocanh2004pt@gmail.com>
+Date:   Mon Jun 2 19:07:31 2025 +0700
+
+    Add NMCNPM project files to main branch
+
+[33mcommit 1e096136af2d15ceea686b973bb4fc865417930a[m
+Author: ngocanh1124 <Nguyenthingocanh2004pt@gmail.com>
+Date:   Sat May 31 19:23:45 2025 +0700
+
+    Update ProductVariantServiceImplementation.java
+
+[33mcommit 10bcd431c44d12920d2bb92e8c10d203e3576757[m
+Author: ngocanh1124 <Nguyenthingocanh2004pt@gmail.com>
+Date:   Sat May 31 19:20:54 2025 +0700
+
+    Update ProductSizeServiceImplementation.java
+
+[33mcommit eb5cb79b0315119387da3f71a5d86e90d7a9a1f1[m
+Author: ngocanh1124 <nguyenthingocanh2004pt@gmail.com>
+Date:   Sat May 31 18:04:56 2025 +0700
+
+    feat: Implement initial backend API for shipping services
+
+[33mcommit b66bc8a7c5c2541d77bdf7f4cb8ea0b10a0660ac[m
+Author: DinhDuyen2810 <166526709+DinhDuyen2810@users.noreply.github.com>
+Date:   Fri May 23 22:03:28 2025 +0700
+
+    Update server.js
+
+[33mcommit 857b54e35da442348a8540a6a948da2639e4ca82[m
+Author: DinhDuyen2810 <166526709+DinhDuyen2810@users.noreply.github.com>
+Date:   Wed May 21 10:06:41 2025 +0700
+
+    Update server.js
+
+[33mcommit 9b8c2d28c257c309059d55d41431b03cf856994c[m
+Author: DinhDuyen2810 <dinhduyen299792@gmail.com>
+Date:   Wed May 21 09:12:38 2025 +0700
+
+    add image and update database
+
+[33mcommit de77d2c63ac0dcde81c215daa24a0c2d7b9f1f29[m
+Author: Bui Cao Vinh <buicaovinh5@gmail.com>
+Date:   Mon May 19 17:41:07 2025 +0700
+
+    Frontend ver3.0
+
+[33mcommit 4abfe27b581f07bc208d4abf28bab56664c94e3d[m
+Author: DinhDuyen2810 <166526709+DinhDuyen2810@users.noreply.github.com>
+Date:   Fri May 16 23:26:24 2025 +0700
+
+    Update dữ liệu mẫu.sql
+
+[33mcommit 843096881d3e310c268feda323ceb6d038401411[m
+Author: DinhDuyen2810 <166526709+DinhDuyen2810@users.noreply.github.com>
+Date:   Fri May 16 23:25:21 2025 +0700
+
+    Add more query
+
+[33mcommit 214598a35e9700061ed1099445059316d3e637af[m
+Author: DinhDuyen2810 <166526709+DinhDuyen2810@users.noreply.github.com>
+Date:   Fri May 16 23:24:31 2025 +0700
+
+    Update Query.sql
+
+[33mcommit ac8a7baee619ed1d9e833d0bf43799dfe768b467[m
+Author: DinhDuyen2810 <166526709+DinhDuyen2810@users.noreply.github.com>
+Date:   Fri May 16 17:42:51 2025 +0700
+
+    Update database.sql
+
+[33mcommit bd2fdc126722fab43843d570e8a85f833c2648d0[m
+Author: DinhDuyen2810 <166526709+DinhDuyen2810@users.noreply.github.com>
+Date:   Fri May 16 17:42:08 2025 +0700
+
+    Add server.js
+
+[33mcommit e499d181fc490262b371a60f818b19a3ad4c1e4d[m
+Author: DinhDuyen2810 <166526709+DinhDuyen2810@users.noreply.github.com>
+Date:   Thu May 15 18:29:51 2025 +0700
+
+    Add EER
+
+[33mcommit 3eec7df63134b1e3d96f2882d848954fe60da12e[m
+Merge: 9f0daaf 9afa187
+Author: DinhDuyen2810 <dinhduyen299792@gmail.com>
+Date:   Wed May 14 23:03:10 2025 +0700
+
+    Merge remote-tracking branch 'origin/main'
+
+[33mcommit 9f0daaf460f571f6744858fd8966e635b5b05fc6[m
+Author: DinhDuyen2810 <dinhduyen299792@gmail.com>
+Date:   Wed May 14 22:56:56 2025 +0700
+
+    add database
+
+[33mcommit 9afa187a5631db66e7ea1ede9cdaac3d5a4df4e5[m
+Author: Bui Cao Vinh <buicaovinh5@gmail.com>
+Date:   Wed May 14 18:29:15 2025 +0700
+
+    frontend ver2.1
+
+[33mcommit f4a5f178118736dac6335890749da2d506f0fe8f[m
+Author: Bui Cao Vinh <buicaovinh5@gmail.com>
+Date:   Wed May 14 17:11:47 2025 +0700
+
+    frontend ver2.0
+
+[33mcommit 1f10fd5604cf93ea6a17c07a8fc6dc8332bc42a1[m
+Author: Bui Cao Vinh <buicaovinh5@gmail.com>
+Date:   Wed May 14 07:31:52 2025 +0700
+
+    frontend ver1.1
+
+[33mcommit bd314c983eba9ef5b92dc996092cdd0f0330b40f[m
+Author: Bui Cao Vinh <buicaovinh5@gmail.com>
+Date:   Wed May 14 07:25:55 2025 +0700
+
+    frontend ver1
+
+[33mcommit c2bd0cf9114497267aee65e5571e695f97802617[m[33m ([m[1;31morigin/dat[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mdat[m[33m)[m
+Author: Bùi Đạt-1802 <buixuandat1802@gmail.com>
+Date:   Mon May 12 21:04:42 2025 +0700
+
+    add donhang.html
+
+[33mcommit 5d33e76112f2e4985594d83765191b14edd005a4[m
+Author: Bùi Đạt-1802 <buixuandat1802@gmail.com>
+Date:   Sun May 11 21:24:34 2025 +0700
+
+    add donhang.html
+
+[33mcommit 184bff6abed66febca9dab606f57d7780dcaa018[m
+Author: Bùi Đạt-1802 <buixuandat1802@gmail.com>
+Date:   Sun May 11 21:15:18 2025 +0700
+
+    1.1
