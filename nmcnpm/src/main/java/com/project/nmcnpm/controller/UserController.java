@@ -18,7 +18,7 @@ public class UserController {
     private final UserService userService;
     public UserController(UserService userService, ShopService shopService) {
         this.userService = userService;
-        this.shopService = shopService; // Initialize shopService here
+        this.shopService = shopService; 
     }
     @PostMapping("/register")
     public ResponseEntity<UserResponseDTO> registerUser(@RequestBody UserRegistrationDTO registrationDTO) { // Changed return type
@@ -43,7 +43,7 @@ public class UserController {
         }
     }
     @GetMapping("/{username}")
-    public ResponseEntity<UserResponseDTO> getUserByUsername(@PathVariable String username) { // Changed return type
+    public ResponseEntity<UserResponseDTO> getUserByUsername(@PathVariable String username) { 
         try {
             UserResponseDTO user = userService.findByUsername(username);
             return new ResponseEntity<>(user, HttpStatus.OK);
