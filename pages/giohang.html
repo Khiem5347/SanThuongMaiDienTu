@@ -17,6 +17,10 @@
     .remove-item-btn:hover {
         background-color: #c82333;
     }
+    .checkout-btn:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
   </style>
 </head>
 <body>
@@ -43,23 +47,25 @@
         </thead>
         <tbody id="cart-items-body">
           <tr>
-             <td colspan="7" style="text-align: center;" id="loading-cart-message">Đang tải giỏ hàng...</td>
+              <td colspan="7" style="text-align: center;" id="loading-cart-message">Đang tải giỏ hàng...</td>
           </tr>
         </tbody>
       </table>
-      <button type="button" class="checkout-btn">Đặt hàng</button> </form>
+      <button type="button" class="checkout-btn" disabled>Đặt hàng</button> 
+    </form>
   </div>
 
 <script>
     function parsePrice(text) {
+        if (!text) return 0;
         const cleanText = text.replace(/\D/g, '');
-        return parseInt(cleanText);
+        return parseInt(cleanText) || 0;
     }
 
     function formatPrice(number) {
-         if (typeof number !== 'number' || isNaN(number)) {
-              return '0đ';
-         }
+        if (typeof number !== 'number' || isNaN(number)) {
+            return '0đ';
+        }
         return number.toLocaleString('vi-VN') + 'đ';
     }
 
@@ -68,15 +74,14 @@
         let total = 0;
 
         rows.forEach(row => {
-             if (row.id === 'loading-cart-message' || row.id === 'empty-cart-message') {
-                 return;
-             }
-
+            // Bỏ qua các dòng thông báo (không chứa checkbox)
             const checkbox = row.querySelector('input[type="checkbox"]');
-             const itemTotal = parseFloat(row.dataset.itemTotal);
+            if (!checkbox) return;
+
+            const itemTotal = parseFloat(row.dataset.itemTotal);
 
             if (checkbox.checked && !isNaN(itemTotal)) {
-                 total += itemTotal;
+                total += itemTotal;
             }
         });
 
@@ -92,71 +97,66 @@
         let cartItems = [];
 
         if (cartItemsString) {
-             try {
-                 cartItems = JSON.parse(cartItemsString);
-             } catch (error) {
-                 console.error("Lỗi đọc dữ liệu giỏ hàng khi xóa:", error);
-                 localStorage.removeItem('cartItems');
-                 renderCart([]);
-                 return;
-             }
+            try {
+                cartItems = JSON.parse(cartItemsString);
+            } catch (error) {
+                console.error("Lỗi đọc dữ liệu giỏ hàng khi xóa:", error);
+                localStorage.removeItem('cartItems');
+                renderCart([]);
+                return;
+            }
         }
-
+        
+        // ĐÃ SỬA LỖI: Chuyển item.productId thành chuỗi (String) trước khi so sánh
         const updatedCartItems = cartItems.filter(item =>
-            !(item.productId === productIdToRemove && item.variation.option === variationOptionToRemove)
+            !(String(item.productId) === productIdToRemove && item.variation.option === variationOptionToRemove)
         );
 
         localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
 
-        // Sau khi xóa, cần render lại giỏ hàng
+        // Sau khi xóa, render lại giỏ hàng
         renderCart(updatedCartItems);
-
-         // Tùy chọn: Hiển thị thông báo đã xóa
-         // alert("Đã xóa sản phẩm khỏi giỏ hàng.");
     }
-
 
     function renderCart(cartItems) {
         const tbody = document.getElementById('cart-items-body');
         tbody.innerHTML = '';
 
-        const checkoutBtn = document.querySelector('.checkout-btn'); // Lấy tham chiếu nút đặt hàng
+        const checkoutBtn = document.querySelector('.checkout-btn');
 
         if (!cartItems || cartItems.length === 0) {
             const emptyRow = document.createElement('tr');
             emptyRow.innerHTML = '<td colspan="7" style="text-align: center;">Giỏ hàng của bạn trống.</td>';
-            emptyRow.id = 'empty-cart-message';
             tbody.appendChild(emptyRow);
 
-             // Vô hiệu hóa nút đặt hàng nếu giỏ hàng trống
-             if(checkoutBtn) checkoutBtn.disabled = true;
-
+            if(checkoutBtn) checkoutBtn.disabled = true;
         } else {
-             // Bật nút đặt hàng nếu có item
-              if(checkoutBtn) checkoutBtn.disabled = false;
+            if(checkoutBtn) checkoutBtn.disabled = false;
 
             cartItems.forEach(item => {
                 const row = document.createElement('tr');
 
-                const itemTotal = item.variation.price * item.quantity;
-                row.dataset.itemTotal = itemTotal; // Lưu tổng tiền item vào data attribute
-                // Lưu cả thông tin item gốc vào data attribute (cần cho lúc đặt hàng)
-                 row.dataset.itemDetails = JSON.stringify(item);
-
+                // Kiểm tra an toàn, đảm bảo item.variation tồn tại
+                const itemPrice = item.variation ? item.variation.price : 0;
+                const itemOption = item.variation ? item.variation.option : 'N/A';
+                
+                const itemTotal = itemPrice * item.quantity;
+                row.dataset.itemTotal = itemTotal;
+                row.dataset.itemDetails = JSON.stringify(item);
 
                 row.innerHTML = `
-                    <td><input type="checkbox" name="selected" value="${item.productId}-${item.variation.option}" checked></td>
-                    <td>${item.productName}</td>
-                    <td>${item.variation.option}</td>
+                    <td><input type="checkbox" name="selected" value="${item.productId}-${itemOption}" checked></td>
+                    <td>${item.productName || 'Sản phẩm không xác định'}</td>
+                    <td>${itemOption}</td>
                     <td>${item.quantity}</td>
-                    <td>${formatPrice(item.variation.price)}</td>
+                    <td>${formatPrice(itemPrice)}</td>
                     <td>${formatPrice(itemTotal)}</td>
                     <td>
-                         <button class="remove-item-btn"
-                                 data-product-id="${item.productId}"
-                                 data-variation-option="${item.variation.option}">
-                              Xóa
-                         </button>
+                        <button class="remove-item-btn"
+                                data-product-id="${item.productId}"
+                                data-variation-option="${itemOption}">
+                            Xóa
+                        </button>
                     </td>
                 `;
                 tbody.appendChild(row);
@@ -166,7 +166,6 @@
 
                 const removeButton = row.querySelector('.remove-item-btn');
                 removeButton.addEventListener('click', handleRemoveItemClick);
-
             });
         }
 
@@ -174,11 +173,10 @@
     }
 
     // --- Logic ĐẶT HÀNG từ giỏ hàng ---
-    const checkoutBtn = document.querySelector('.checkout-btn'); // Lấy tham chiếu nút đặt hàng
+    const checkoutBtn = document.querySelector('.checkout-btn');
 
     if (checkoutBtn) {
         checkoutBtn.addEventListener('click', () => {
-            // Lấy tất cả các dòng sản phẩm có checkbox được chọn
             const selectedRows = document.querySelectorAll("#cart-items-body tr input[type='checkbox']:checked");
 
             if (selectedRows.length === 0) {
@@ -187,71 +185,60 @@
             }
 
             const itemsToOrder = [];
-            let itemsTotalAmount = 0; // Tính tổng tiền hàng của các mục đã chọn
+            let itemsTotalAmount = 0;
 
             selectedRows.forEach(checkbox => {
-                 // Lấy dòng cha (<tr>) của checkbox
                 const row = checkbox.closest('tr');
-                // Lấy thông tin item đã lưu trong data attribute của dòng
                 const itemDetailsString = row.dataset.itemDetails;
                 if (itemDetailsString) {
-                     try {
-                          const item = JSON.parse(itemDetailsString);
-                          itemsToOrder.push(item);
-                          itemsTotalAmount += item.variation.price * item.quantity; // Cộng vào tổng tiền hàng
-                     } catch (error) {
-                          console.error("Lỗi đọc chi tiết item từ data attribute:", error);
-                     }
+                    try {
+                        const item = JSON.parse(itemDetailsString);
+                        itemsToOrder.push(item);
+                        const itemPrice = item.variation ? item.variation.price : 0;
+                        itemsTotalAmount += itemPrice * item.quantity;
+                    } catch (error) {
+                        console.error("Lỗi đọc chi tiết item từ data attribute:", error);
+                    }
                 }
             });
 
-             // Giả định phí vận chuyển và phương thức thanh toán cho đơn hàng từ giỏ
-             // Trong thực tế, phí VC có thể cần tính toán phức tạp hơn
-             const shippingFee = 30000; // Giả định phí vận chuyển cố định
-             const paymentMethod = 'Thanh toán khi nhận hàng'; // Giả định phương thức TT
+            const shippingFee = 30000; // Giả định phí vận chuyển
+            const paymentMethod = 'Thanh toán khi nhận hàng';
 
-            // Chuẩn bị dữ liệu đơn hàng để lưu vào sessionStorage
             const orderDataForSession = {
-                orderId: 'TEMP_' + Date.now(), // ID đơn hàng tạm thời
-                orderDate: new Date().toISOString().split('T')[0], // Ngày đặt hàng
+                orderId: 'TEMP_' + Date.now(),
+                orderDate: new Date().toISOString().split('T')[0],
                 paymentMethod: paymentMethod,
                 shippingFee: shippingFee,
-                items: itemsToOrder, // Danh sách các items đã chọn từ giỏ hàng
-                itemsTotalAmount: itemsTotalAmount // Tổng tiền hàng của các mục đã chọn
+                items: itemsToOrder,
+                itemsTotalAmount: itemsTotalAmount
             };
 
-            // Lưu dữ liệu đơn hàng vào sessionStorage
             sessionStorage.setItem('currentOrderDetails', JSON.stringify(orderDataForSession));
             console.log("Lưu chi tiết đơn hàng (từ giỏ) vào sessionStorage:", orderDataForSession);
 
+            // Xóa các item đã đặt hàng khỏi localStorage
+            const currentCartItemsString = localStorage.getItem('cartItems');
+            if (currentCartItemsString) {
+                try {
+                    let currentCartItems = JSON.parse(currentCartItemsString);
+                    const remainingCartItems = currentCartItems.filter(cartItem =>
+                        !itemsToOrder.some(orderedItem =>
+                            String(orderedItem.productId) === String(cartItem.productId) &&
+                            (orderedItem.variation && cartItem.variation && orderedItem.variation.option === cartItem.variation.option)
+                        )
+                    );
+                    localStorage.setItem('cartItems', JSON.stringify(remainingCartItems));
+                    console.log("Đã xóa các mục đã đặt khỏi giỏ hàng.");
+                } catch (error) {
+                    console.error("Lỗi cập nhật giỏ hàng sau khi đặt:", error);
+                }
+            }
 
-            // Tùy chọn: Xóa các item đã đặt hàng khỏi localStorage (giỏ hàng)
-            // Bạn có thể muốn xóa CHỈ CÁC MỤC ĐÃ CHỌN khỏi localStorage
-             const currentCartItemsString = localStorage.getItem('cartItems');
-             if (currentCartItemsString) {
-                 try {
-                      let currentCartItems = JSON.parse(currentCartItemsString);
-                      // Tạo mảng mới chỉ giữ lại những item KHÔNG có trong danh sách itemsToOrder
-                      const remainingCartItems = currentCartItems.filter(cartItem =>
-                           !itemsToOrder.some(orderedItem =>
-                                orderedItem.productId === cartItem.productId &&
-                                orderedItem.variation.option === cartItem.variation.option
-                           )
-                      );
-                      localStorage.setItem('cartItems', JSON.stringify(remainingCartItems));
-                       console.log("Đã xóa các mục đã đặt khỏi giỏ hàng trong localStorage.");
-
-                 } catch (error) {
-                      console.error("Lỗi cập nhật giỏ hàng sau khi đặt:", error);
-                 }
-             }
-
-
-            // Chuyển hướng sang trang chi tiết đơn hàng
-            window.location.href = 'xacnhanmuahang.html'; // Điều chỉnh đường dẫn nếu cấu trúc khác
+            // Chuyển hướng sang trang xác nhận
+            window.location.href = 'xacnhanmuahang.html';
         });
     }
-
 
     // --- Logic Tải Giỏ Hàng khi trang load ---
     window.addEventListener('load', () => {
@@ -270,7 +257,6 @@
 
         renderCart(cartItems);
     });
-
 </script>
 
 </body>
