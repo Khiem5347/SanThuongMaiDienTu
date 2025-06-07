@@ -1,7 +1,7 @@
 package com.project.nmcnpm.service;
 
 import com.project.nmcnpm.dao.ConversationRepository;
-import com.project.nmcnpm.dao.UserRepository;
+import com.project.nmcnpm.dao.UserRepository; 
 import com.project.nmcnpm.dto.ConversationDTO;
 import com.project.nmcnpm.dto.ConversationResponseDTO;
 import com.project.nmcnpm.entity.Conversation;
@@ -19,13 +19,11 @@ import java.util.stream.Collectors;
 public class ConversationServiceImplementation implements ConversationService {
     private final ConversationRepository conversationRepository;
     private final UserRepository userRepository;
-
     public ConversationServiceImplementation(ConversationRepository conversationRepository,
                                              UserRepository userRepository) {
         this.conversationRepository = conversationRepository;
         this.userRepository = userRepository;
     }
-
     @Override
     @Transactional
     public Conversation createConversation(ConversationDTO conversationDTO) {
@@ -37,26 +35,22 @@ public class ConversationServiceImplementation implements ConversationService {
         if (existingConversation.isPresent()) {
             throw new IllegalArgumentException("A conversation already exists between these users.");
         }
-
         User buyer = userRepository.findById(conversationDTO.getBuyerId())
                 .orElseThrow(() -> new EntityNotFoundException("Buyer user not found with id: " + conversationDTO.getBuyerId()));
         User seller = userRepository.findById(conversationDTO.getSellerId())
                 .orElseThrow(() -> new EntityNotFoundException("Seller user not found with id: " + conversationDTO.getSellerId()));
-
         Conversation conversation = new Conversation();
         conversation.setBuyer(buyer);
         conversation.setSeller(seller);
         return conversationRepository.save(conversation);
     }
-
     @Override
     @Transactional(readOnly = true)
     public ConversationResponseDTO getConversationById(Integer conversationId) {
-        Conversation conversation = conversationRepository.findByIdWithUsers(conversationId)
+        Conversation conversation = conversationRepository.findById(conversationId)
                 .orElseThrow(() -> new EntityNotFoundException("Conversation not found with id: " + conversationId));
         return new ConversationResponseDTO(conversation);
     }
-
     @Override
     @Transactional
     public void deleteConversation(Integer conversationId) {
@@ -65,38 +59,34 @@ public class ConversationServiceImplementation implements ConversationService {
         }
         conversationRepository.deleteById(conversationId);
     }
-
     @Override
     @Transactional(readOnly = true)
     public Page<ConversationResponseDTO> getAllConversations(Pageable pageable) {
-        Page<Conversation> conversationsPage = conversationRepository.findAllWithUsers(pageable);
+        Page<Conversation> conversationsPage = conversationRepository.findAll(pageable);
         return conversationsPage.map(ConversationResponseDTO::new);
     }
-
     @Override
     @Transactional(readOnly = true)
     public List<ConversationResponseDTO> getConversationsByBuyerId(Integer buyerId) {
         if (!userRepository.existsById(buyerId)) {
             throw new EntityNotFoundException("Buyer user not found with id: " + buyerId);
         }
-        List<Conversation> conversations = conversationRepository.findByBuyerUserIdWithUsers(buyerId);
+        List<Conversation> conversations = conversationRepository.findByBuyerUserId(buyerId);
         return conversations.stream()
                 .map(ConversationResponseDTO::new)
                 .collect(Collectors.toList());
     }
-
     @Override
     @Transactional(readOnly = true)
     public List<ConversationResponseDTO> getConversationsBySellerId(Integer sellerId) {
         if (!userRepository.existsById(sellerId)) {
             throw new EntityNotFoundException("Seller user not found with id: " + sellerId);
         }
-        List<Conversation> conversations = conversationRepository.findBySellerUserIdWithUsers(sellerId);
+        List<Conversation> conversations = conversationRepository.findBySellerUserId(sellerId);
         return conversations.stream()
                 .map(ConversationResponseDTO::new)
                 .collect(Collectors.toList());
     }
-
     @Override
     @Transactional(readOnly = true)
     public ConversationResponseDTO getConversationBetweenUsers(Integer buyerId, Integer sellerId) {
@@ -106,9 +96,9 @@ public class ConversationServiceImplementation implements ConversationService {
         if (!userRepository.existsById(sellerId)) {
             throw new EntityNotFoundException("Seller user not found with id: " + sellerId);
         }
-        Optional<Conversation> conversation = conversationRepository.findByBuyerUserIdAndSellerUserIdWithUsers(buyerId, sellerId);
+        Optional<Conversation> conversation = conversationRepository.findByBuyerUserIdAndSellerUserId(buyerId, sellerId);
         if (conversation.isEmpty()) {
-            conversation = conversationRepository.findByBuyerUserIdAndSellerUserIdWithUsers(sellerId, buyerId); // Check reverse
+            conversation = conversationRepository.findByBuyerUserIdAndSellerUserId(sellerId, buyerId); // Check reverse
         }
         return conversation.map(ConversationResponseDTO::new)
                 .orElseThrow(() -> new EntityNotFoundException("No conversation found between user " + buyerId + " and user " + sellerId));

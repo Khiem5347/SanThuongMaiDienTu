@@ -1,7 +1,8 @@
 package com.project.nmcnpm.controller;
 
 import com.project.nmcnpm.dto.ShopDTO;
-import com.project.nmcnpm.dto.ShopResponseDTO; 
+import com.project.nmcnpm.dto.ShopResponseDTO;
+import com.project.nmcnpm.entity.Shop;
 import com.project.nmcnpm.service.ShopService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid; 
@@ -11,34 +12,32 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/shops")
 public class ShopController {
     private final ShopService shopService;
-
     public ShopController(ShopService shopService) {
         this.shopService = shopService;
     }
-
     @PostMapping
-    public ResponseEntity<ShopResponseDTO> createShop(@Valid @RequestBody ShopDTO shopDTO) {
+    public ResponseEntity<Shop> createShop(@Valid @RequestBody ShopDTO shopDTO) {
         try {
-            ShopResponseDTO createdShop = shopService.createShop(shopDTO);
+            Shop createdShop = shopService.createShop(shopDTO);
             return new ResponseEntity<>(createdShop, HttpStatus.CREATED);
         } catch (EntityNotFoundException e) {
             System.err.println("Error creating shop: " + e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // Ví dụ: User không tồn tại
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } catch (IllegalArgumentException e) { 
             System.err.println("Validation error creating shop: " + e.getMessage());
-            return new ResponseEntity<>(HttpStatus.CONFLICT); // Ví dụ: User đã có shop
+            return new ResponseEntity<>(HttpStatus.CONFLICT); 
         } catch (Exception e) {
             System.err.println("Internal server error creating shop: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
     @GetMapping("/{id}")
     public ResponseEntity<ShopResponseDTO> getShopById(@PathVariable Integer id) {
         try {
@@ -52,24 +51,22 @@ public class ShopController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
     @PutMapping("/{id}")
-    public ResponseEntity<ShopResponseDTO> updateShop(@PathVariable Integer id, @Valid @RequestBody ShopDTO shopDTO) {
+    public ResponseEntity<Shop> updateShop(@PathVariable Integer id, @Valid @RequestBody ShopDTO shopDTO) {
         try {
-            ShopResponseDTO updatedShop = shopService.updateShop(id, shopDTO);
+            Shop updatedShop = shopService.updateShop(id, shopDTO);
             return new ResponseEntity<>(updatedShop, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             System.err.println("Shop or user not found during update: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (IllegalArgumentException e) {
             System.err.println("Validation error updating shop: " + e.getMessage());
-            return new ResponseEntity<>(HttpStatus.CONFLICT); // Ví dụ: User mới đã có shop khác
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         } catch (Exception e) {
             System.err.println("Internal server error updating shop: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteShop(@PathVariable Integer id) {
         try {
@@ -83,7 +80,6 @@ public class ShopController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
     @GetMapping
     public ResponseEntity<Page<ShopResponseDTO>> getAllShops(
             @RequestParam(defaultValue = "0") int page,
@@ -92,7 +88,6 @@ public class ShopController {
         Page<ShopResponseDTO> shops = shopService.getAllShops(pageable);
         return new ResponseEntity<>(shops, HttpStatus.OK);
     }
-
     @GetMapping("/user/{userId}")
     public ResponseEntity<ShopResponseDTO> getShopByUserId(@PathVariable Integer userId) {
         try {
@@ -106,7 +101,6 @@ public class ShopController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
     @GetMapping("/search")
     public ResponseEntity<List<ShopResponseDTO>> searchShopsByName(
             @RequestParam String name) {

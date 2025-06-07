@@ -19,15 +19,19 @@ public class ShippingProvider {
     private Set<ShippingLink> shippingLinks = new HashSet<>(); 
     @OneToMany(mappedBy = "shippingProvider", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ShippingService> shippingServices = new HashSet<>(); 
+    @OneToMany(mappedBy = "shippingProvider", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ProductsInOrder> productsInOrders = new HashSet<>(); 
     public ShippingProvider() {
     }
     public ShippingProvider(Integer providerId, String providerName, String contactPhone,
-                            Set<ShippingLink> shippingLinks, Set<ShippingService> shippingServices) {
+                            Set<ShippingLink> shippingLinks, Set<ShippingService> shippingServices,
+                            Set<ProductsInOrder> productsInOrders) {
         this.providerId = providerId;
         this.providerName = providerName;
         this.contactPhone = contactPhone;
         this.shippingLinks = shippingLinks;
         this.shippingServices = shippingServices;
+        this.productsInOrders = productsInOrders;
     }
     public Integer getProviderId() {
         return providerId;
@@ -44,6 +48,9 @@ public class ShippingProvider {
     public Set<ShippingService> getShippingServices() {
         return shippingServices;
     }
+    public Set<ProductsInOrder> getProductsInOrders() {
+        return productsInOrders;
+    }
     public void setProviderId(Integer providerId) {
         this.providerId = providerId;
     }
@@ -58,6 +65,9 @@ public class ShippingProvider {
     }
     public void setShippingServices(Set<ShippingService> shippingServices) {
         this.shippingServices = shippingServices;
+    }
+    public void setProductsInOrders(Set<ProductsInOrder> productsInOrders) {
+        this.productsInOrders = productsInOrders;
     }
     public void addShippingLink(ShippingLink shippingLink) {
         if (shippingLink != null) {
@@ -87,6 +97,21 @@ public class ShippingProvider {
         if (shippingService != null && this.shippingServices != null) {
             this.shippingServices.remove(shippingService);
             shippingService.setShippingProvider(null);
+        }
+    }
+    public void addProductsInOrder(ProductsInOrder productsInOrder) {
+        if (productsInOrder != null) {
+            if (this.productsInOrders == null) {
+                this.productsInOrders = new HashSet<>();
+            }
+            this.productsInOrders.add(productsInOrder);
+            productsInOrder.setShippingProvider(this); 
+        }
+    }
+    public void removeProductsInOrder(ProductsInOrder productsInOrder) {
+        if (productsInOrder != null && this.productsInOrders != null) {
+            this.productsInOrders.remove(productsInOrder);
+            productsInOrder.setShippingProvider(null);
         }
     }
 }

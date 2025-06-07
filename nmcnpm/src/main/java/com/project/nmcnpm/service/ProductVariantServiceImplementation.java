@@ -1,8 +1,8 @@
 package com.project.nmcnpm.service;
 
 import com.project.nmcnpm.dao.ProductVariantRepository;
-import com.project.nmcnpm.dao.ProductRepository;
-import com.project.nmcnpm.dao.ProductSizeRepository;
+import com.project.nmcnpm.dao.ProductRepository; 
+import com.project.nmcnpm.dao.ProductSizeRepository; 
 import com.project.nmcnpm.dto.ProductSizeDTO;
 import com.project.nmcnpm.dto.ProductVariantDTO;
 import com.project.nmcnpm.dto.ProductVariantResponseDTO;
@@ -14,16 +14,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.math.BigDecimal;
+import java.math.BigDecimal; 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class ProductVariantServiceImplementation implements ProductVariantService {
     private final ProductVariantRepository productVariantRepository;
     private final ProductRepository productRepository;
-    private final ProductSizeRepository productSizeRepository;
+    private final ProductSizeRepository productSizeRepository; 
     public ProductVariantServiceImplementation(ProductVariantRepository productVariantRepository,
                                                ProductRepository productRepository,
                                                ProductSizeRepository productSizeRepository) {
@@ -31,13 +30,11 @@ public class ProductVariantServiceImplementation implements ProductVariantServic
         this.productRepository = productRepository;
         this.productSizeRepository = productSizeRepository;
     }
-
     @Override
     @Transactional
-    public ProductVariantResponseDTO createProductVariant(ProductVariantDTO productVariantDTO) {
+    public ProductVariant createProductVariant(ProductVariantDTO productVariantDTO) {
         Product product = productRepository.findById(productVariantDTO.getProductId())
                 .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + productVariantDTO.getProductId()));
-
         ProductVariant productVariant = new ProductVariant();
         productVariant.setProduct(product);
         productVariant.setColor(productVariantDTO.getColor());
@@ -51,25 +48,23 @@ public class ProductVariantServiceImplementation implements ProductVariantServic
                 productVariant.addProductSize(productSize); 
             }
         }
-
         ProductVariant savedVariant = productVariantRepository.save(productVariant);
         updateProductStockAndPrice(product);
-        return getProductVariantById(savedVariant.getVariantId());
+        return savedVariant;
     }
-
     @Override
     @Transactional(readOnly = true)
     public ProductVariantResponseDTO getProductVariantById(Integer variantId) {
-        ProductVariant productVariant = productVariantRepository.findByIdWithProductAndSizes(variantId)
+        ProductVariant productVariant = productVariantRepository.findById(variantId)
                 .orElseThrow(() -> new EntityNotFoundException("Product Variant not found with id: " + variantId));
         return new ProductVariantResponseDTO(productVariant);
     }
-
     @Override
     @Transactional
-    public ProductVariantResponseDTO updateProductVariant(Integer variantId, ProductVariantDTO productVariantDTO) {
+    public ProductVariant updateProductVariant(Integer variantId, ProductVariantDTO productVariantDTO) {
         ProductVariant existingVariant = productVariantRepository.findById(variantId)
                 .orElseThrow(() -> new EntityNotFoundException("Product Variant not found with id: " + variantId));
+
         Product originalProduct = existingVariant.getProduct();
         if (productVariantDTO.getColor() != null && !productVariantDTO.getColor().isEmpty()) {
             existingVariant.setColor(productVariantDTO.getColor());
@@ -81,7 +76,7 @@ public class ProductVariantServiceImplementation implements ProductVariantServic
             Product newProduct = productRepository.findById(productVariantDTO.getProductId())
                     .orElseThrow(() -> new EntityNotFoundException("New Product not found with id: " + productVariantDTO.getProductId()));
             existingVariant.setProduct(newProduct);
-            updateProductStockAndPrice(originalProduct); 
+            updateProductStockAndPrice(originalProduct);
             updateProductStockAndPrice(newProduct); 
         }
         if (productVariantDTO.getProductSizes() != null) {
@@ -97,43 +92,39 @@ public class ProductVariantServiceImplementation implements ProductVariantServic
                 existingVariant.addProductSize(newSize);
             }
         }
-
         ProductVariant updatedVariant = productVariantRepository.save(existingVariant);
         updateProductStockAndPrice(updatedVariant.getProduct());
-        return getProductVariantById(updatedVariant.getVariantId());
+        return updatedVariant;
     }
-
     @Override
     @Transactional
     public void deleteProductVariant(Integer variantId) {
         ProductVariant variantToDelete = productVariantRepository.findById(variantId)
                 .orElseThrow(() -> new EntityNotFoundException("Product Variant not found with id: " + variantId));
-        Product product = variantToDelete.getProduct(); 
+        Product product = variantToDelete.getProduct();
         productVariantRepository.delete(variantToDelete);
         updateProductStockAndPrice(product);
     }
-
     @Override
     @Transactional(readOnly = true)
     public Page<ProductVariantResponseDTO> getAllProductVariants(Pageable pageable) {
-        Page<ProductVariant> variantsPage = productVariantRepository.findAllWithProductAndSizes(pageable);
+        Page<ProductVariant> variantsPage = productVariantRepository.findAll(pageable);
         return variantsPage.map(ProductVariantResponseDTO::new);
     }
-
     @Override
     @Transactional(readOnly = true)
     public List<ProductVariantResponseDTO> getProductVariantsByProductId(Integer productId) {
         if (!productRepository.existsById(productId)) {
             throw new EntityNotFoundException("Product not found with id: " + productId);
         }
-        List<ProductVariant> variants = productVariantRepository.findByProductProductIdWithProductAndSizes(productId);
+        List<ProductVariant> variants = productVariantRepository.findByProductProductId(productId);
         return variants.stream()
                 .map(ProductVariantResponseDTO::new)
                 .collect(Collectors.toList());
     }
-    @Transactional
+    @Transactional 
     private void updateProductStockAndPrice(Product product) {
-        List<ProductVariant> variantsForProduct = productVariantRepository.findByProductProductIdWithProductAndSizes(product.getProductId());
+        List<ProductVariant> variantsForProduct = productVariantRepository.findByProductProductId(product.getProductId());
         int totalStock = 0;
         Integer minPrice = null;
         Integer maxPrice = null;
@@ -151,9 +142,9 @@ public class ProductVariantServiceImplementation implements ProductVariantServic
                 }
             }
         }
-        product.setProductStock(totalStock);
+        product.setProductStock(Integer.valueOf(totalStock));
         product.setProductMinPrice(minPrice != null ? minPrice : 0);
         product.setProductMaxPrice(maxPrice != null ? maxPrice : 0);
-        productRepository.save(product); 
+        productRepository.save(product);
     }
 }

@@ -1,7 +1,7 @@
 package com.project.nmcnpm.service;
 
 import com.project.nmcnpm.dao.ShippingServiceRepository;
-import com.project.nmcnpm.dao.ShippingProviderRepository;
+import com.project.nmcnpm.dao.ShippingProviderRepository; 
 import com.project.nmcnpm.dto.ShippingServiceDTO;
 import com.project.nmcnpm.dto.ShippingServiceResponseDTO;
 import com.project.nmcnpm.entity.ShippingProvider;
@@ -24,33 +24,29 @@ public class ShippingServiceServiceImplementation implements ShippingServiceServ
         this.shippingServiceRepository = shippingServiceRepository;
         this.shippingProviderRepository = shippingProviderRepository;
     }
-
     @Override
     @Transactional
-    public ShippingServiceResponseDTO createShippingService(ShippingServiceDTO shippingServiceDTO) { // Changed return type to DTO
+    public ShippingService createShippingService(ShippingServiceDTO shippingServiceDTO) {
         ShippingProvider provider = shippingProviderRepository.findById(shippingServiceDTO.getProviderId())
                 .orElseThrow(() -> new EntityNotFoundException("Shipping Provider not found with id: " + shippingServiceDTO.getProviderId()));
-
         ShippingService shippingService = new ShippingService();
         shippingService.setShippingProvider(provider);
         shippingService.setFastPrice(shippingServiceDTO.getFastPrice());
         shippingService.setDefaultPrice(shippingServiceDTO.getDefaultPrice());
         shippingService.setAddDistance(shippingServiceDTO.getAddDistance());
         provider.addShippingService(shippingService); 
-        ShippingService savedService = shippingServiceRepository.save(shippingService);
-        return getShippingServiceById(savedService.getServiceId());
+        return shippingServiceRepository.save(shippingService);
     }
-
     @Override
     @Transactional(readOnly = true)
     public ShippingServiceResponseDTO getShippingServiceById(Integer serviceId) {
-        ShippingService shippingService = shippingServiceRepository.findByIdWithProvider(serviceId)
+        ShippingService shippingService = shippingServiceRepository.findById(serviceId)
                 .orElseThrow(() -> new EntityNotFoundException("Shipping Service not found with id: " + serviceId));
         return new ShippingServiceResponseDTO(shippingService);
     }
     @Override
     @Transactional
-    public ShippingServiceResponseDTO updateShippingService(Integer serviceId, ShippingServiceDTO shippingServiceDTO) { // Changed return type to DTO
+    public ShippingService updateShippingService(Integer serviceId, ShippingServiceDTO shippingServiceDTO) {
         ShippingService existingService = shippingServiceRepository.findById(serviceId)
                 .orElseThrow(() -> new EntityNotFoundException("Shipping Service not found with id: " + serviceId));
         if (shippingServiceDTO.getFastPrice() != null) {
@@ -64,18 +60,14 @@ public class ShippingServiceServiceImplementation implements ShippingServiceServ
         }
         if (shippingServiceDTO.getProviderId() != null &&
             !existingService.getShippingProvider().getProviderId().equals(shippingServiceDTO.getProviderId())) {
-
-            ShippingProvider oldProvider = existingService.getShippingProvider();
             ShippingProvider newProvider = shippingProviderRepository.findById(shippingServiceDTO.getProviderId())
                     .orElseThrow(() -> new EntityNotFoundException("New Shipping Provider not found with id: " + shippingServiceDTO.getProviderId()));
-            oldProvider.removeShippingService(existingService);
+            existingService.getShippingProvider().removeShippingService(existingService);
             existingService.setShippingProvider(newProvider);
             newProvider.addShippingService(existingService);
         }
-        ShippingService updatedService = shippingServiceRepository.save(existingService);
-        return getShippingServiceById(updatedService.getServiceId());
+        return shippingServiceRepository.save(existingService);
     }
-
     @Override
     @Transactional
     public void deleteShippingService(Integer serviceId) {
@@ -86,21 +78,19 @@ public class ShippingServiceServiceImplementation implements ShippingServiceServ
         }
         shippingServiceRepository.delete(serviceToDelete);
     }
-
     @Override
     @Transactional(readOnly = true)
     public Page<ShippingServiceResponseDTO> getAllShippingServices(Pageable pageable) {
-        Page<ShippingService> servicesPage = shippingServiceRepository.findAllWithProvider(pageable);
+        Page<ShippingService> servicesPage = shippingServiceRepository.findAll(pageable);
         return servicesPage.map(ShippingServiceResponseDTO::new);
     }
-
     @Override
     @Transactional(readOnly = true)
     public List<ShippingServiceResponseDTO> getShippingServicesByProviderId(Integer providerId) {
         if (!shippingProviderRepository.existsById(providerId)) {
             throw new EntityNotFoundException("Shipping Provider not found with id: " + providerId);
         }
-        List<ShippingService> services = shippingServiceRepository.findByShippingProviderProviderIdWithProvider(providerId);
+        List<ShippingService> services = shippingServiceRepository.findByShippingProviderProviderId(providerId);
         return services.stream()
                 .map(ShippingServiceResponseDTO::new)
                 .collect(Collectors.toList());

@@ -3,7 +3,7 @@ package com.project.nmcnpm.service;
 import com.project.nmcnpm.dao.ShopRepository;
 import com.project.nmcnpm.dao.UserRepository; 
 import com.project.nmcnpm.dto.ShopDTO;
-import com.project.nmcnpm.dto.ShopResponseDTO; // Đảm bảo import DTO này
+import com.project.nmcnpm.dto.ShopResponseDTO;
 import com.project.nmcnpm.entity.Shop;
 import com.project.nmcnpm.entity.User;
 import jakarta.persistence.EntityNotFoundException;
@@ -25,39 +25,34 @@ public class ShopServiceImplementation implements ShopService {
     }
     @Override
     @Transactional
-    public ShopResponseDTO createShop(ShopDTO shopDTO) { 
+    public Shop createShop(ShopDTO shopDTO) {
         User user = userRepository.findById(shopDTO.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + shopDTO.getUserId()));
-
-        Shop existingShopForUser = shopRepository.findByUserUserId(shopDTO.getUserId());
-        if (existingShopForUser != null) {
+        if (shopRepository.findByUserUserId(shopDTO.getUserId()) != null) {
             throw new IllegalArgumentException("User with ID " + shopDTO.getUserId() + " already owns a shop.");
         }
-
         Shop shop = new Shop();
         shop.setShopName(shopDTO.getShopName());
         shop.setShopDescription(shopDTO.getShopDescription());
         shop.setShopAvatarUrl(shopDTO.getShopAvatarUrl());
         shop.setShopAddr(shopDTO.getShopAddr());
-        shop.setShopRevenue(shopDTO.getShopRevenue() != null ? shopDTO.getShopRevenue() : 0); 
+        shop.setShopRevenue(shopDTO.getShopRevenue() != null ? shopDTO.getShopRevenue() : 0); // Default to 0 if null
         shop.setUser(user);
-        Shop savedShop = shopRepository.save(shop); 
-        return new ShopResponseDTO(savedShop); 
+        return shopRepository.save(shop);
     }
-
     @Override
     @Transactional(readOnly = true)
     public ShopResponseDTO getShopById(Integer shopId) {
         Shop shop = shopRepository.findById(shopId)
                 .orElseThrow(() -> new EntityNotFoundException("Shop not found with id: " + shopId));
-        return new ShopResponseDTO(shop); 
+        return new ShopResponseDTO(shop);
     }
-
     @Override
     @Transactional
-    public ShopResponseDTO updateShop(Integer shopId, ShopDTO shopDTO) { 
+    public Shop updateShop(Integer shopId, ShopDTO shopDTO) {
         Shop existingShop = shopRepository.findById(shopId)
                 .orElseThrow(() -> new EntityNotFoundException("Shop not found with id: " + shopId));
+
         if (shopDTO.getShopName() != null && !shopDTO.getShopName().isEmpty()) {
             existingShop.setShopName(shopDTO.getShopName());
         }
@@ -73,22 +68,18 @@ public class ShopServiceImplementation implements ShopService {
         if (shopDTO.getShopRevenue() != null) {
             existingShop.setShopRevenue(shopDTO.getShopRevenue());
         }
-        if (shopDTO.getUserId() != null && 
+        if (shopDTO.getUserId() != null &&
             (existingShop.getUser() == null || !existingShop.getUser().getUserId().equals(shopDTO.getUserId()))) {
-            
             User newUser = userRepository.findById(shopDTO.getUserId())
                     .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + shopDTO.getUserId()));
-
             Shop shopOwnedByNewUser = shopRepository.findByUserUserId(shopDTO.getUserId());
             if (shopOwnedByNewUser != null && !shopOwnedByNewUser.getShopId().equals(shopId)) {
                 throw new IllegalArgumentException("User with ID " + shopDTO.getUserId() + " already owns another shop.");
             }
             existingShop.setUser(newUser);
         }
-        Shop updatedShop = shopRepository.save(existingShop);
-        return new ShopResponseDTO(updatedShop); 
+        return shopRepository.save(existingShop);
     }
-
     @Override
     @Transactional
     public void deleteShop(Integer shopId) {
@@ -97,14 +88,12 @@ public class ShopServiceImplementation implements ShopService {
         }
         shopRepository.deleteById(shopId);
     }
-
     @Override
     @Transactional(readOnly = true)
     public Page<ShopResponseDTO> getAllShops(Pageable pageable) {
         Page<Shop> shopsPage = shopRepository.findAll(pageable);
         return shopsPage.map(ShopResponseDTO::new);
     }
-
     @Override
     @Transactional(readOnly = true)
     public ShopResponseDTO getShopByUserId(Integer userId) {
@@ -114,7 +103,6 @@ public class ShopServiceImplementation implements ShopService {
         }
         return new ShopResponseDTO(shop);
     }
-
     @Override
     @Transactional(readOnly = true)
     public List<ShopResponseDTO> searchShopsByName(String shopName) {

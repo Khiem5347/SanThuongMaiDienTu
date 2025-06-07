@@ -99,6 +99,7 @@ E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\service\ShopServic
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\entity\Message.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\controller\CategoryController.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dto\OrderItemResponseDTO.java
+E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\config\WebConfig.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\service\CategoryServiceImplementation.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dao\OrderRepository.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dto\CartItemResponseDTO.java
@@ -147,7 +148,6 @@ E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\service\CheckoutSe
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dao\ShippingLinkRepository.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dao\ShippingProviderRepository.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dto\ShippingServiceDTO.java
-E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dto\UserResponseDTO.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dao\AddressRepository.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dto\ConversationResponseDTO.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dto\ProductDTO.java

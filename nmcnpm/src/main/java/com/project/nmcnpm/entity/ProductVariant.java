@@ -5,24 +5,19 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "ProductVariants") 
+@Table(name = "ProductVariants")
 public class ProductVariant {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "variant_id")
     private Integer variantId;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
-
-    @Column(name = "color", length = 50) 
+    @Column(name = "color", length = 50)
     private String color;
-
-    @Column(name = "image_url", length = 255) 
-    private String imageUrl; 
-
+    @Column(name = "image_url", length = 255)
+    private String imageUrl;
     @OneToMany(mappedBy = "productVariant", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProductSize> productSizes = new HashSet<>();
     public ProductVariant() {
@@ -34,45 +29,33 @@ public class ProductVariant {
         this.imageUrl = imageUrl;
         this.productSizes = productSizes;
     }
-
     public Integer getVariantId() {
         return variantId;
     }
-
     public Product getProduct() {
         return product;
     }
-
     public String getColor() {
         return color;
     }
-
-    public String getImageUrl() { 
+    public String getImageUrl() {
         return imageUrl;
     }
-
     public Set<ProductSize> getProductSizes() {
         return productSizes;
     }
-
-    // Setters
-
     public void setVariantId(Integer variantId) {
         this.variantId = variantId;
     }
-
     public void setProduct(Product product) {
         this.product = product;
     }
-
     public void setColor(String color) {
         this.color = color;
     }
-
-    public void setImageUrl(String imageUrl) { 
+    public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
-
     public void setProductSizes(Set<ProductSize> productSizes) {
         this.productSizes = productSizes;
     }

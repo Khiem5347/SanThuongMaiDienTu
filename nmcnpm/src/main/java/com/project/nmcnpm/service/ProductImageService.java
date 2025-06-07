@@ -4,6 +4,7 @@ import com.project.nmcnpm.dto.ProductImageDTO;
 import com.project.nmcnpm.dto.ProductImageResponseDTO;
 import com.project.nmcnpm.entity.ProductImage;
 import java.util.List;
+
 public interface ProductImageService {
     ProductImage createProductImage(ProductImageDTO productImageDTO);
     ProductImageResponseDTO getProductImageById(Integer imageId);

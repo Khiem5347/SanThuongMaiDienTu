@@ -2,6 +2,7 @@ package com.project.nmcnpm.controller;
 
 import com.project.nmcnpm.dto.AddressDTO;
 import com.project.nmcnpm.dto.AddressResponseDTO;
+import com.project.nmcnpm.entity.Address;
 import com.project.nmcnpm.service.AddressService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -21,16 +23,16 @@ public class AddressController {
         this.addressService = addressService;
     }
     @PostMapping
-    public ResponseEntity<AddressResponseDTO> createAddress(@Valid @RequestBody AddressDTO addressDTO) {
+    public ResponseEntity<Address> createAddress(@Valid @RequestBody AddressDTO addressDTO) {
         try {
-            AddressResponseDTO createdAddress = addressService.createAddress(addressDTO);
+            Address createdAddress = addressService.createAddress(addressDTO);
             return new ResponseEntity<>(createdAddress, HttpStatus.CREATED);
         } catch (EntityNotFoundException e) {
             System.err.println("Error creating address: " + e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // User not found
         } catch (IllegalArgumentException e) {
             System.err.println("Validation error creating address: " + e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // Business rule violation
         } catch (Exception e) {
             System.err.println("Internal server error creating address: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -49,11 +51,10 @@ public class AddressController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
     @PutMapping("/{id}")
-    public ResponseEntity<AddressResponseDTO> updateAddress(@PathVariable Integer id, @Valid @RequestBody AddressDTO addressDTO) {
+    public ResponseEntity<Address> updateAddress(@PathVariable Integer id, @Valid @RequestBody AddressDTO addressDTO) {
         try {
-            AddressResponseDTO updatedAddress = addressService.updateAddress(id, addressDTO);
+            Address updatedAddress = addressService.updateAddress(id, addressDTO);
             return new ResponseEntity<>(updatedAddress, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             System.err.println("Address or user not found during update: " + e.getMessage());
@@ -66,7 +67,6 @@ public class AddressController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAddress(@PathVariable Integer id) {
         try {
@@ -83,7 +83,6 @@ public class AddressController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
     @GetMapping
     public ResponseEntity<Page<AddressResponseDTO>> getAllAddresses(
             @RequestParam(defaultValue = "0") int page,
@@ -92,7 +91,6 @@ public class AddressController {
         Page<AddressResponseDTO> addresses = addressService.getAllAddresses(pageable);
         return new ResponseEntity<>(addresses, HttpStatus.OK);
     }
-
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<AddressResponseDTO>> getAddressesByUserId(@PathVariable Integer userId) {
         try {
@@ -106,7 +104,6 @@ public class AddressController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
     @GetMapping("/user/{userId}/default")
     public ResponseEntity<AddressResponseDTO> getDefaultAddressByUserId(@PathVariable Integer userId) {
         try {
@@ -120,7 +117,6 @@ public class AddressController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
     @PatchMapping("/user/{userId}/default/{addressId}")
     public ResponseEntity<AddressResponseDTO> setDefaultAddress(
             @PathVariable Integer userId,

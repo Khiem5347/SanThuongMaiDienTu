@@ -2,6 +2,7 @@ package com.project.nmcnpm.controller;
 
 import com.project.nmcnpm.dto.ProductVariantDTO;
 import com.project.nmcnpm.dto.ProductVariantResponseDTO;
+import com.project.nmcnpm.entity.ProductVariant;
 import com.project.nmcnpm.service.ProductVariantService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -12,18 +13,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+
 @RestController
 @RequestMapping("/api/product-variants")
 public class ProductVariantController {
-
     private final ProductVariantService productVariantService;
     public ProductVariantController(ProductVariantService productVariantService) {
         this.productVariantService = productVariantService;
     }
     @PostMapping
-    public ResponseEntity<ProductVariantResponseDTO> createProductVariant(@Valid @RequestBody ProductVariantDTO productVariantDTO) {
+    public ResponseEntity<ProductVariant> createProductVariant(@Valid @RequestBody ProductVariantDTO productVariantDTO) {
         try {
-            ProductVariantResponseDTO createdVariant = productVariantService.createProductVariant(productVariantDTO);
+            ProductVariant createdVariant = productVariantService.createProductVariant(productVariantDTO);
             return new ResponseEntity<>(createdVariant, HttpStatus.CREATED);
         } catch (EntityNotFoundException e) {
             System.err.println("Error creating product variant: " + e.getMessage());
@@ -47,9 +48,9 @@ public class ProductVariantController {
         }
     }
     @PutMapping("/{id}")
-    public ResponseEntity<ProductVariantResponseDTO> updateProductVariant(@PathVariable Integer id, @Valid @RequestBody ProductVariantDTO productVariantDTO) {
+    public ResponseEntity<ProductVariant> updateProductVariant(@PathVariable Integer id, @Valid @RequestBody ProductVariantDTO productVariantDTO) {
         try {
-            ProductVariantResponseDTO updatedVariant = productVariantService.updateProductVariant(id, productVariantDTO);
+            ProductVariant updatedVariant = productVariantService.updateProductVariant(id, productVariantDTO);
             return new ResponseEntity<>(updatedVariant, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             System.err.println("Product Variant or associated entity not found during update: " + e.getMessage());

@@ -1,24 +1,19 @@
 package com.project.nmcnpm.service;
 
 import com.project.nmcnpm.dto.UserRegistrationDTO;
-import com.project.nmcnpm.dto.UserResponseDTO; 
 import com.project.nmcnpm.entity.User;
 import com.project.nmcnpm.dao.UserRepository;
-import com.project.nmcnpm.util.PasswordHasher;
-import jakarta.persistence.EntityNotFoundException; 
+import com.project.nmcnpm.util.PasswordHasher; 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional; 
 
-@Service
+@Service 
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository) { 
         this.userRepository = userRepository;
     }
-
     @Override
-    @Transactional 
-    public UserResponseDTO registerUser(UserRegistrationDTO registrationDTO) { 
+    public User registerUser(UserRegistrationDTO registrationDTO) {
         if (userRepository.findByUsername(registrationDTO.getUsername()) != null) {
             throw new IllegalArgumentException("Username already exists.");
         }
@@ -32,45 +27,27 @@ public class UserServiceImpl implements UserService {
         user.setPhone(registrationDTO.getPhone());
         user.setDateOfBirth(registrationDTO.getDateOfBirth());
         user.setGender(registrationDTO.getGender());
-        user.setUserRole(registrationDTO.getUserRole());
+        user.setUserRole(registrationDTO.getUserRole()); 
+        //băm mật khẩukhẩu
         String hashedPassword = PasswordHasher.hashStringTo10Digits(registrationDTO.getPassword());
         user.setPasswordHash(hashedPassword);
-        User savedUser = userRepository.save(user);
-        return getUserById(savedUser.getUserId());
+        return userRepository.save(user);
     }
-
     @Override
-    @Transactional(readOnly = true) 
-    public UserResponseDTO findByUsername(String username) { 
-        User user = userRepository.findByUsernameWithDetails(username)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with username: " + username));
-        return new UserResponseDTO(user);
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
-
     @Override
-    @Transactional(readOnly = true) 
-    public UserResponseDTO findByEmail(String email) { 
-        User user = userRepository.findByEmailWithDetails(email)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with email: " + email));
-        return new UserResponseDTO(user);
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
-
     @Override
-    @Transactional(readOnly = true) 
-    public UserResponseDTO getUserById(Integer userId) { 
-        User user = userRepository.findByIdWithDetails(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
-        return new UserResponseDTO(user);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
     public boolean authenticateUser(String username, String rawPassword) {
         User user = userRepository.findByUsername(username);
         if (user == null) {
             return false;
         }
         String hashedRawPassword = PasswordHasher.hashStringTo10Digits(rawPassword);
-        return hashedRawPassword.equals(user.getPasswordHash()); 
+        return hashedRawPassword.equals(user.getPasswordHash()); //so sánh mật khẩu với sql
     }
 }

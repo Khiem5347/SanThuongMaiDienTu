@@ -12,10 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
-
     private final OrderService orderService;
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
@@ -27,10 +27,10 @@ public class OrderController {
             return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
         } catch (EntityNotFoundException e) {
             System.err.println("Error creating order: " + e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
         } catch (IllegalArgumentException e) {
             System.err.println("Validation error creating order: " + e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
         } catch (Exception e) {
             System.err.println("Internal server error creating order: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -46,6 +46,21 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             System.err.println("Internal server error getting order by ID: " + e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<OrderResponseDTO> updateOrderStatus(
+            @PathVariable Integer id,
+            @RequestParam String newStatus) {
+        try {
+            OrderResponseDTO updatedOrder = orderService.updateOrderStatus(id, newStatus);
+            return new ResponseEntity<>(updatedOrder, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            System.err.println("Order not found for status update: " + e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            System.err.println("Internal server error updating order status: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -97,6 +112,19 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             System.err.println("Internal server error getting orders by user ID: " + e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/tracking/{trackingNumber}")
+    public ResponseEntity<OrderResponseDTO> getOrderByTrackingNumber(@PathVariable String trackingNumber) {
+        try {
+            OrderResponseDTO order = orderService.getOrderByTrackingNumber(trackingNumber);
+            return new ResponseEntity<>(order, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            System.err.println("Order not found by tracking number: " + e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            System.err.println("Internal server error getting order by tracking number: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

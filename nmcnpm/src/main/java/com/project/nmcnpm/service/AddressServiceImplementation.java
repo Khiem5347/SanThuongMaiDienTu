@@ -6,7 +6,6 @@ import com.project.nmcnpm.dto.AddressDTO;
 import com.project.nmcnpm.dto.AddressResponseDTO;
 import com.project.nmcnpm.entity.Address;
 import com.project.nmcnpm.entity.User;
-import com.project.nmcnpm.service.AddressService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,15 +19,13 @@ import java.util.stream.Collectors;
 public class AddressServiceImplementation implements AddressService {
     private final AddressRepository addressRepository;
     private final UserRepository userRepository;
-
     public AddressServiceImplementation(AddressRepository addressRepository, UserRepository userRepository) {
         this.addressRepository = addressRepository;
         this.userRepository = userRepository;
     }
-
     @Override
     @Transactional
-    public AddressResponseDTO createAddress(AddressDTO addressDTO) { 
+    public Address createAddress(AddressDTO addressDTO) {
         User user = userRepository.findById(addressDTO.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + addressDTO.getUserId()));
 
@@ -48,13 +45,10 @@ public class AddressServiceImplementation implements AddressService {
                     });
         }
         else if (addressRepository.findByUserUserId(user.getUserId()).isEmpty()) {
-            address.setIsDefault(true); 
+            address.setIsDefault(true);
         }
-
-        Address savedAddress = addressRepository.save(address); 
-        return new AddressResponseDTO(savedAddress); 
+        return addressRepository.save(address);
     }
-
     @Override
     @Transactional(readOnly = true)
     public AddressResponseDTO getAddressById(Integer addressId) {
@@ -62,13 +56,11 @@ public class AddressServiceImplementation implements AddressService {
                 .orElseThrow(() -> new EntityNotFoundException("Address not found with id: " + addressId));
         return new AddressResponseDTO(address);
     }
-
     @Override
     @Transactional
-    public AddressResponseDTO updateAddress(Integer addressId, AddressDTO addressDTO) { 
+    public Address updateAddress(Integer addressId, AddressDTO addressDTO) {
         Address existingAddress = addressRepository.findById(addressId)
                 .orElseThrow(() -> new EntityNotFoundException("Address not found with id: " + addressId));
-
         if (addressDTO.getRecipientName() != null && !addressDTO.getRecipientName().isEmpty()) {
             existingAddress.setRecipientName(addressDTO.getRecipientName());
         }
@@ -84,22 +76,14 @@ public class AddressServiceImplementation implements AddressService {
                     .filter(Address::getIsDefault)
                     .forEach(addr -> {
                         addr.setIsDefault(false);
-                        addressRepository.save(addr); 
+                        addressRepository.save(addr);
                     });
             existingAddress.setIsDefault(true);
         } else if (addressDTO.getIsDefault() != null && !addressDTO.getIsDefault() && existingAddress.getIsDefault()) {
-            List<Address> userAddresses = addressRepository.findByUserUserId(existingAddress.getUser().getUserId());
-            long defaultCount = userAddresses.stream().filter(Address::getIsDefault).count();
-            if (defaultCount == 1 && existingAddress.getIsDefault() && !addressDTO.getIsDefault()) {
-                throw new IllegalArgumentException("Cannot unmark the only default address. Set another address as default first or delete it.");
-            }
             existingAddress.setIsDefault(false);
         }
-
-        Address updatedAddress = addressRepository.save(existingAddress); 
-        return new AddressResponseDTO(updatedAddress); 
+        return addressRepository.save(existingAddress);
     }
-
     @Override
     @Transactional
     public void deleteAddress(Integer addressId) {
@@ -107,27 +91,25 @@ public class AddressServiceImplementation implements AddressService {
                 .orElseThrow(() -> new EntityNotFoundException("Address not found with id: " + addressId));
         List<Address> userAddresses = addressRepository.findByUserUserId(addressToDelete.getUser().getUserId());
         if (userAddresses.size() == 1 && addressToDelete.getIsDefault()) {
-            throw new IllegalArgumentException("Cannot delete the only default address for a user. Please add another address first.");
+            throw new IllegalArgumentException("Cannot delete the only default address for a user.");
         }
         if (addressToDelete.getIsDefault()) {
             userAddresses.stream()
-                    .filter(addr -> !addr.getAddressId().equals(addressId)) 
+                    .filter(addr -> !addr.getAddressId().equals(addressId))
                     .findFirst() 
                     .ifPresent(addr -> {
                         addr.setIsDefault(true);
-                        addressRepository.save(addr); 
+                        addressRepository.save(addr);
                     });
         }
         addressRepository.deleteById(addressId);
     }
-
     @Override
     @Transactional(readOnly = true)
     public Page<AddressResponseDTO> getAllAddresses(Pageable pageable) {
         Page<Address> addressesPage = addressRepository.findAll(pageable);
         return addressesPage.map(AddressResponseDTO::new);
     }
-
     @Override
     @Transactional(readOnly = true)
     public List<AddressResponseDTO> getAddressesByUserId(Integer userId) {
@@ -139,7 +121,6 @@ public class AddressServiceImplementation implements AddressService {
                 .map(AddressResponseDTO::new)
                 .collect(Collectors.toList());
     }
-
     @Override
     @Transactional(readOnly = true)
     public AddressResponseDTO getDefaultAddressByUserId(Integer userId) {
@@ -152,7 +133,6 @@ public class AddressServiceImplementation implements AddressService {
         }
         return new AddressResponseDTO(defaultAddress);
     }
-
     @Override
     @Transactional
     public AddressResponseDTO setDefaultAddress(Integer userId, Integer addressId) {
@@ -163,17 +143,15 @@ public class AddressServiceImplementation implements AddressService {
         if (!addressToSetDefault.getUser().getUserId().equals(userId)) {
             throw new IllegalArgumentException("Address with ID " + addressId + " does not belong to user with ID " + userId);
         }
-
         List<Address> userAddresses = addressRepository.findByUserUserId(userId);
         userAddresses.stream()
                 .filter(Address::getIsDefault)
                 .forEach(addr -> {
                     addr.setIsDefault(false);
-                    addressRepository.save(addr); 
+                    addressRepository.save(addr);
                 });
-
         addressToSetDefault.setIsDefault(true);
         Address updatedAddress = addressRepository.save(addressToSetDefault);
-        return new AddressResponseDTO(updatedAddress); 
-}
+        return new AddressResponseDTO(updatedAddress);
+    }
 }

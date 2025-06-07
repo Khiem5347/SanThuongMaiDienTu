@@ -2,7 +2,7 @@ package com.project.nmcnpm.controller;
 
 import com.project.nmcnpm.dto.PaymentDTO;
 import com.project.nmcnpm.dto.PaymentResponseDTO;
-import com.project.nmcnpm.entity.Payment; 
+import com.project.nmcnpm.entity.Payment;
 import com.project.nmcnpm.service.PaymentService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -12,26 +12,25 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 @RestController
 @RequestMapping("/api/payments")
 public class PaymentController {
-
     private final PaymentService paymentService;
     public PaymentController(PaymentService paymentService) {
         this.paymentService = paymentService;
     }
     @PostMapping
-    public ResponseEntity<PaymentResponseDTO> createPayment(@Valid @RequestBody PaymentDTO paymentDTO) {
+    public ResponseEntity<Payment> createPayment(@Valid @RequestBody PaymentDTO paymentDTO) {
         try {
             Payment createdPayment = paymentService.createPayment(paymentDTO);
-            PaymentResponseDTO responseDTO = paymentService.getPaymentById(createdPayment.getPaymentId());
-            return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+            return new ResponseEntity<>(createdPayment, HttpStatus.CREATED);
         } catch (EntityNotFoundException e) {
             System.err.println("Error creating payment: " + e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
         } catch (IllegalArgumentException e) {
             System.err.println("Validation error creating payment: " + e.getMessage());
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
+            return new ResponseEntity<>(HttpStatus.CONFLICT); 
         } catch (Exception e) {
             System.err.println("Internal server error creating payment: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -51,13 +50,12 @@ public class PaymentController {
         }
     }
     @PatchMapping("/{id}/status")
-    public ResponseEntity<PaymentResponseDTO> updatePaymentStatus(
+    public ResponseEntity<Payment> updatePaymentStatus(
             @PathVariable Integer id,
             @RequestParam Payment.PaymentStatus newStatus) {
         try {
             Payment updatedPayment = paymentService.updatePaymentStatus(id, newStatus);
-            PaymentResponseDTO responseDTO = paymentService.getPaymentById(updatedPayment.getPaymentId());
-            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+            return new ResponseEntity<>(updatedPayment, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             System.err.println("Payment not found for status update: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -67,11 +65,10 @@ public class PaymentController {
         }
     }
     @PutMapping("/{id}")
-    public ResponseEntity<PaymentResponseDTO> updatePayment(@PathVariable Integer id, @Valid @RequestBody PaymentDTO paymentDTO) {
+    public ResponseEntity<Payment> updatePayment(@PathVariable Integer id, @Valid @RequestBody PaymentDTO paymentDTO) {
         try {
             Payment updatedPayment = paymentService.updatePayment(id, paymentDTO);
-            PaymentResponseDTO responseDTO = paymentService.getPaymentById(updatedPayment.getPaymentId());
-            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+            return new ResponseEntity<>(updatedPayment, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             System.err.println("Payment not found during update: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -80,6 +77,7 @@ public class PaymentController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePayment(@PathVariable Integer id) {
         try {

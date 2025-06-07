@@ -47,13 +47,15 @@ public class Product {
     private Set<ShippingLink> shippingLinks = new HashSet<>();
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProductReview> productReviews = new HashSet<>();
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ProductsInOrder> productsInOrder = new HashSet<>();
     public Product() {
     }
     public Product(Integer productId, Category category, Shop shop, String productName, String productDescription,
                    Integer productStar, Integer productReview, Integer productSold, String productMainImageUrl,
                    Integer productMinPrice, Integer productMaxPrice, Integer productStock, Integer numberOfLikes, Integer numOfProductStar,
                    Set<ProductImage> productImages, Set<ProductVariant> productVariants, Set<ShippingLink> shippingLinks,
-                   Set<ProductReview> productReviews) {
+                   Set<ProductReview> productReviews, Set<ProductsInOrder> productsInOrder) {
         this.productId = productId;
         this.category = category;
         this.shop = shop;
@@ -72,6 +74,7 @@ public class Product {
         this.productVariants = productVariants;
         this.shippingLinks = shippingLinks;
         this.productReviews = productReviews;
+        this.productsInOrder = productsInOrder;
     }
     public Integer getProductId() {
         return productId;
@@ -127,6 +130,9 @@ public class Product {
     public Set<ProductReview> getProductReviews() {
         return productReviews;
     }
+    public Set<ProductsInOrder> getProductsInOrder() {
+        return productsInOrder;
+    }
     public void setProductId(Integer productId) {
         this.productId = productId;
     }
@@ -181,6 +187,9 @@ public class Product {
     public void setProductReviews(Set<ProductReview> productReviews) {
         this.productReviews = productReviews;
     }
+    public void setProductsInOrder(Set<ProductsInOrder> productsInOrder) {
+        this.productsInOrder = productsInOrder;
+    }
     public void addProductImage(ProductImage image) {
         if (image != null) {
             if (this.productImages == null) {
@@ -215,6 +224,15 @@ public class Product {
             }
             this.productReviews.add(review);
             review.setProduct(this);
+        }
+    }
+    public void addProductsInOrder(ProductsInOrder productsInOrder) {
+        if (productsInOrder != null) {
+            if (this.productsInOrder == null) {
+                this.productsInOrder = new HashSet<>();
+            }
+            this.productsInOrder.add(productsInOrder);
+            productsInOrder.setProduct(this);
         }
     }
 }

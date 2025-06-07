@@ -8,12 +8,12 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface AddressService {
-    AddressResponseDTO createAddress(AddressDTO addressDTO);
+    Address createAddress(AddressDTO addressDTO);
     AddressResponseDTO getAddressById(Integer addressId);
-    AddressResponseDTO updateAddress(Integer addressId, AddressDTO addressDTO);
+    Address updateAddress(Integer addressId, AddressDTO addressDTO);
     void deleteAddress(Integer addressId);
     Page<AddressResponseDTO> getAllAddresses(Pageable pageable);
     List<AddressResponseDTO> getAddressesByUserId(Integer userId);
     AddressResponseDTO getDefaultAddressByUserId(Integer userId);
-    AddressResponseDTO setDefaultAddress(Integer userId, Integer addressId);
+    AddressResponseDTO setDefaultAddress(Integer userId, Integer addressId); 
 }

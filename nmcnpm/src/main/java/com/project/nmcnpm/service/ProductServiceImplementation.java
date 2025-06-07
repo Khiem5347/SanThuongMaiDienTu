@@ -13,13 +13,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import java.util.List; 
+import java.util.stream.Collectors; 
+import java.util.Arrays; 
 
 @Service
 public class ProductServiceImplementation implements ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final ShopRepository shopRepository;
-
     public ProductServiceImplementation(ProductRepository productRepository,
                                         CategoryRepository categoryRepository,
                                         ShopRepository shopRepository) {
@@ -27,10 +29,9 @@ public class ProductServiceImplementation implements ProductService {
         this.categoryRepository = categoryRepository;
         this.shopRepository = shopRepository;
     }
-
     @Override
     @Transactional
-    public ProductResponseDTO createProduct(ProductDTO productDTO) {
+    public Product createProduct(ProductDTO productDTO) {
         Category category = categoryRepository.findById(productDTO.getCategoryId())
                 .orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + productDTO.getCategoryId()));
         Shop shop = shopRepository.findById(productDTO.getShopId())
@@ -44,25 +45,20 @@ public class ProductServiceImplementation implements ProductService {
         product.setProductMaxPrice(productDTO.getProductMaxPrice());
         product.setCategory(category);
         product.setShop(shop);
-
-        Product savedProduct = productRepository.save(product);
-        return getProductById(savedProduct.getProductId());
+        return productRepository.save(product);
     }
-
     @Override
     @Transactional(readOnly = true)
     public ProductResponseDTO getProductById(Integer productId) {
-        Product product = productRepository.findByIdWithCategoryAndShop(productId)
+        Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + productId));
         return new ProductResponseDTO(product);
     }
-
     @Override
     @Transactional
-    public ProductResponseDTO updateProduct(Integer productId, ProductDTO productDTO) {
+    public Product updateProduct(Integer productId, ProductDTO productDTO) {
         Product existingProduct = productRepository.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + productId));
-
         if (productDTO.getProductName() != null) {
             existingProduct.setProductName(productDTO.getProductName());
         }
@@ -88,11 +84,8 @@ public class ProductServiceImplementation implements ProductService {
                     .orElseThrow(() -> new EntityNotFoundException("Shop not found with id: " + productDTO.getShopId()));
             existingProduct.setShop(shop);
         }
-
-        Product updatedProduct = productRepository.save(existingProduct);
-        return getProductById(updatedProduct.getProductId());
+        return productRepository.save(existingProduct);
     }
-
     @Override
     @Transactional
     public void deleteProduct(Integer productId) {
@@ -101,32 +94,34 @@ public class ProductServiceImplementation implements ProductService {
         }
         productRepository.deleteById(productId);
     }
-
     @Override
     @Transactional(readOnly = true)
     public Page<ProductResponseDTO> getAllProducts(Pageable pageable) {
-        Page<Product> productsPage = productRepository.findAllWithCategoryAndShop(pageable);
+        Page<Product> productsPage = productRepository.findAll(pageable);
         return productsPage.map(ProductResponseDTO::new);
     }
-
     @Override
     @Transactional(readOnly = true)
     public Page<ProductResponseDTO> getProductsByCategoryId(Integer categoryId, Pageable pageable) {
-        Page<Product> productsPage = productRepository.findByCategoryCategoryIdWithCategoryAndShop(categoryId, pageable);
+        Page<Product> productsPage = productRepository.findByCategoryCategoryId(categoryId, pageable);
         return productsPage.map(ProductResponseDTO::new);
     }
-
     @Override
     @Transactional(readOnly = true)
     public Page<ProductResponseDTO> searchProductsByName(String name, Pageable pageable) {
-        Page<Product> productsPage = productRepository.findByProductNameContainingIgnoreCaseWithCategoryAndShop(name, pageable);
+        Page<Product> productsPage = productRepository.findByProductNameContainingIgnoreCase(name, pageable);
         return productsPage.map(ProductResponseDTO::new);
     }
-
     @Override
     @Transactional(readOnly = true)
     public Page<ProductResponseDTO> getProductsByShopId(Integer shopId, Pageable pageable) {
-        Page<Product> productsPage = productRepository.findByShopShopIdWithCategoryAndShop(shopId, pageable);
+        Page<Product> productsPage = productRepository.findByShopShopId(shopId, pageable);
+        return productsPage.map(ProductResponseDTO::new);
+    }
+    @Override
+    @Transactional(readOnly = true)
+    public Page<ProductResponseDTO> getProductsByCategoryIds(List<Integer> categoryIds, Pageable pageable) {
+        Page<Product> productsPage = productRepository.findByCategoryCategoryIdIn(categoryIds, pageable);
         return productsPage.map(ProductResponseDTO::new);
     }
 }

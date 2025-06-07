@@ -10,10 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+
 @RestController
 @RequestMapping("/api/messages")
 public class MessageController {
-
     private final MessageService messageService;
     public MessageController(MessageService messageService) {
         this.messageService = messageService;
@@ -25,10 +25,10 @@ public class MessageController {
             return new ResponseEntity<>(createdMessage, HttpStatus.CREATED);
         } catch (EntityNotFoundException e) {
             System.err.println("Error creating message: " + e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
         } catch (IllegalArgumentException e) {
             System.err.println("Validation error creating message: " + e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // Using BAD_REQUEST for client-side validation errors
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             System.err.println("Internal server error creating message: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

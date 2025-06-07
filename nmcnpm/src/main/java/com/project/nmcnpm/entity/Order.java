@@ -2,132 +2,131 @@ package com.project.nmcnpm.entity;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
-@Table(name = "Orders") 
+@Table(name = "Orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
     private Integer orderId;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
-
     @Column(name = "total_amount", nullable = false, precision = 10, scale = 2)
     private BigDecimal totalAmount;
-
+    @Column(name = "order_tracking_number", length = 255)
+    private String orderTrackingNumber;
+    @Column(name = "status", length = 50)
+    private String status;
+    @Column(name = "date_created")
+    @CreationTimestamp
+    private Date dateCreated;
+    @Column(name = "last_updated")
+    @UpdateTimestamp
+    private Date lastUpdated;
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ProductsInOrder> productsInOrder = new HashSet<>();
-
-    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<ProductsInOrder> productsInOrder = new HashSet<>(); // Initialize here
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private Payment payment;
-
-    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private History history;
     public Order() {
     }
-
-    public Order(Integer orderId, User user, Address address, BigDecimal totalAmount,
-                 Set<ProductsInOrder> productsInOrder, Payment payment, History history) {
+    public Order(Integer orderId, User user, Address address, BigDecimal totalAmount, String orderTrackingNumber,
+                 String status, Date dateCreated, Date lastUpdated, Set<ProductsInOrder> productsInOrder,
+                 Payment payment, History history) {
         this.orderId = orderId;
         this.user = user;
         this.address = address;
         this.totalAmount = totalAmount;
+        this.orderTrackingNumber = orderTrackingNumber;
+        this.status = status;
+        this.dateCreated = dateCreated;
+        this.lastUpdated = lastUpdated;
         this.productsInOrder = productsInOrder;
         this.payment = payment;
         this.history = history;
     }
-    public Order(User user, Address address, BigDecimal totalAmount) {
-        this.user = user;
-        this.address = address;
-        this.totalAmount = totalAmount;
-    }
-
     public Integer getOrderId() {
         return orderId;
     }
-
     public User getUser() {
         return user;
     }
-
     public Address getAddress() {
         return address;
     }
-
     public BigDecimal getTotalAmount() {
         return totalAmount;
     }
-
+    public String getOrderTrackingNumber() {
+        return orderTrackingNumber;
+    }
+    public String getStatus() {
+        return status;
+    }
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+    public Date getLastUpdated() {
+        return lastUpdated;
+    }
     public Set<ProductsInOrder> getProductsInOrder() {
         return productsInOrder;
     }
-
     public Payment getPayment() {
         return payment;
     }
-
     public History getHistory() {
         return history;
     }
     public void setOrderId(Integer orderId) {
         this.orderId = orderId;
     }
-
     public void setUser(User user) {
         this.user = user;
     }
-
     public void setAddress(Address address) {
         this.address = address;
     }
-
     public void setTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
     }
-
+    public void setOrderTrackingNumber(String orderTrackingNumber) {
+        this.orderTrackingNumber = orderTrackingNumber;
+    }
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+    public void setLastUpdated(Date lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
     public void setProductsInOrder(Set<ProductsInOrder> productsInOrder) {
         this.productsInOrder = productsInOrder;
     }
-
     public void setPayment(Payment payment) {
-        if (this.payment != null && !this.payment.equals(payment)) {
-            this.payment.setOrder(null);
-        }
         this.payment = payment;
-        if (payment != null && !this.equals(payment.getOrder())) {
-            payment.setOrder(this);
-        }
     }
-
     public void setHistory(History history) {
-        if (this.history != null && !this.history.equals(history)) {
-            this.history.setOrder(null);
-        }
         this.history = history;
-        if (history != null && !this.equals(history.getOrder())) {
-            history.setOrder(this);
-        }
     }
     public void addProductInOrder(ProductsInOrder item) {
         if (productsInOrder == null) {
             productsInOrder = new HashSet<>();
         }
         productsInOrder.add(item);
-        item.setOrder(this); 
-    }
-    public void removeProductInOrder(ProductsInOrder item) {
-        if (productsInOrder != null) {
-            productsInOrder.remove(item);
-            item.setOrder(null); 
-        }
+        item.setOrder(this);
     }
 }

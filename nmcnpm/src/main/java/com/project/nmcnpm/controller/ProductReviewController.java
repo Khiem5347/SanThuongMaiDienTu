@@ -13,23 +13,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+
 @RestController
 @RequestMapping("/api/product-reviews")
 public class ProductReviewController {
-
     private final ProductReviewService productReviewService;
     public ProductReviewController(ProductReviewService productReviewService) {
         this.productReviewService = productReviewService;
     }
     @PostMapping
-    public ResponseEntity<ProductReviewResponseDTO> createProductReview(@Valid @RequestBody ProductReviewDTO productReviewDTO) {
+    public ResponseEntity<ProductReview> createProductReview(@Valid @RequestBody ProductReviewDTO productReviewDTO) {
         try {
             ProductReview createdReview = productReviewService.createProductReview(productReviewDTO);
-            ProductReviewResponseDTO responseDTO = productReviewService.getProductReviewById(createdReview.getReviewId()); // Assuming getReviewId() exists in ProductReview entity
-            return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+            return new ResponseEntity<>(createdReview, HttpStatus.CREATED);
         } catch (EntityNotFoundException e) {
             System.err.println("Error creating product review: " + e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
         } catch (Exception e) {
             System.err.println("Internal server error creating product review: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -49,11 +48,10 @@ public class ProductReviewController {
         }
     }
     @PutMapping("/{id}")
-    public ResponseEntity<ProductReviewResponseDTO> updateProductReview(@PathVariable Integer id, @Valid @RequestBody ProductReviewDTO productReviewDTO) {
+    public ResponseEntity<ProductReview> updateProductReview(@PathVariable Integer id, @Valid @RequestBody ProductReviewDTO productReviewDTO) {
         try {
             ProductReview updatedReview = productReviewService.updateProductReview(id, productReviewDTO);
-            ProductReviewResponseDTO responseDTO = productReviewService.getProductReviewById(updatedReview.getReviewId()); // Assuming getReviewId() exists in ProductReview entity
-            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+            return new ResponseEntity<>(updatedReview, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             System.err.println("Product Review or associated entity not found during update: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

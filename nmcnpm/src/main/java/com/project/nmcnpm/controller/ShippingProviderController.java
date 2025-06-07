@@ -2,6 +2,7 @@ package com.project.nmcnpm.controller;
 
 import com.project.nmcnpm.dto.ShippingProviderDTO;
 import com.project.nmcnpm.dto.ShippingProviderResponseDTO;
+import com.project.nmcnpm.entity.ShippingProvider;
 import com.project.nmcnpm.service.ShippingProviderService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -11,19 +12,20 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
+
 @RestController
 @RequestMapping("/api/shipping-providers")
 public class ShippingProviderController {
-
     private final ShippingProviderService shippingProviderService;
     public ShippingProviderController(ShippingProviderService shippingProviderService) {
         this.shippingProviderService = shippingProviderService;
     }
     @PostMapping
-    public ResponseEntity<ShippingProviderResponseDTO> createShippingProvider(@Valid @RequestBody ShippingProviderDTO shippingProviderDTO) {
+    public ResponseEntity<ShippingProvider> createShippingProvider(@Valid @RequestBody ShippingProviderDTO shippingProviderDTO) {
         try {
-            ShippingProviderResponseDTO createdProvider = shippingProviderService.createShippingProvider(shippingProviderDTO);
+            ShippingProvider createdProvider = shippingProviderService.createShippingProvider(shippingProviderDTO);
             return new ResponseEntity<>(createdProvider, HttpStatus.CREATED);
         } catch (Exception e) {
             System.err.println("Internal server error creating shipping provider: " + e.getMessage());
@@ -44,9 +46,9 @@ public class ShippingProviderController {
         }
     }
     @PutMapping("/{id}")
-    public ResponseEntity<ShippingProviderResponseDTO> updateShippingProvider(@PathVariable Integer id, @Valid @RequestBody ShippingProviderDTO shippingProviderDTO) {
+    public ResponseEntity<ShippingProvider> updateShippingProvider(@PathVariable Integer id, @Valid @RequestBody ShippingProviderDTO shippingProviderDTO) {
         try {
-            ShippingProviderResponseDTO updatedProvider = shippingProviderService.updateShippingProvider(id, shippingProviderDTO);
+            ShippingProvider updatedProvider = shippingProviderService.updateShippingProvider(id, shippingProviderDTO);
             return new ResponseEntity<>(updatedProvider, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             System.err.println("Shipping Provider not found during update: " + e.getMessage());

@@ -1,7 +1,8 @@
 package com.project.nmcnpm.controller;
 
 import com.project.nmcnpm.dto.AppliedVoucherDTO;
-import com.project.nmcnpm.dto.AppliedVoucherResponseDTO; 
+import com.project.nmcnpm.dto.AppliedVoucherResponseDTO;
+import com.project.nmcnpm.entity.AppliedVoucher;
 import com.project.nmcnpm.service.AppliedVoucherService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -11,21 +12,20 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/applied-vouchers")
 public class AppliedVoucherController {
     private final AppliedVoucherService appliedVoucherService;
-
     public AppliedVoucherController(AppliedVoucherService appliedVoucherService) {
         this.appliedVoucherService = appliedVoucherService;
     }
-
     @PostMapping
-    public ResponseEntity<AppliedVoucherResponseDTO> createAppliedVoucher(@Valid @RequestBody AppliedVoucherDTO appliedVoucherDTO) {
+    public ResponseEntity<AppliedVoucher> createAppliedVoucher(@Valid @RequestBody AppliedVoucherDTO appliedVoucherDTO) {
         try {
-            AppliedVoucherResponseDTO createdAppliedVoucher = appliedVoucherService.createAppliedVoucher(appliedVoucherDTO);
+            AppliedVoucher createdAppliedVoucher = appliedVoucherService.createAppliedVoucher(appliedVoucherDTO);
             return new ResponseEntity<>(createdAppliedVoucher, HttpStatus.CREATED);
         } catch (EntityNotFoundException e) {
             System.err.println("Error creating applied voucher: " + e.getMessage());
@@ -38,7 +38,6 @@ public class AppliedVoucherController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
     @GetMapping("/{id}")
     public ResponseEntity<AppliedVoucherResponseDTO> getAppliedVoucherById(@PathVariable Integer id) {
         try {
@@ -52,7 +51,6 @@ public class AppliedVoucherController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAppliedVoucher(@PathVariable Integer id) {
         try {
@@ -66,7 +64,6 @@ public class AppliedVoucherController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
     @GetMapping
     public ResponseEntity<Page<AppliedVoucherResponseDTO>> getAllAppliedVouchers(
             @RequestParam(defaultValue = "0") int page,
@@ -75,7 +72,6 @@ public class AppliedVoucherController {
         Page<AppliedVoucherResponseDTO> appliedVouchers = appliedVoucherService.getAllAppliedVouchers(pageable);
         return new ResponseEntity<>(appliedVouchers, HttpStatus.OK);
     }
-
     @GetMapping("/category/{categoryId}")
     public ResponseEntity<List<AppliedVoucherResponseDTO>> getAppliedVouchersByCategoryId(@PathVariable Integer categoryId) {
         try {
@@ -89,7 +85,6 @@ public class AppliedVoucherController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
     @GetMapping("/voucher/{voucherId}")
     public ResponseEntity<List<AppliedVoucherResponseDTO>> getAppliedVouchersByVoucherId(@PathVariable Integer voucherId) {
         try {

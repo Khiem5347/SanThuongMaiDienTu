@@ -8,8 +8,9 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import java.time.LocalDate; 
+import org.springframework.transaction.annotation.Transactional; 
+import java.sql.Date; 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -17,11 +18,9 @@ import java.util.stream.Collectors;
 @Service
 public class VoucherServiceImplementation implements VoucherService {
     private final VoucherRepository voucherRepository;
-
     public VoucherServiceImplementation(VoucherRepository voucherRepository) {
         this.voucherRepository = voucherRepository;
     }
-
     @Override
     @Transactional
     public Voucher createVoucher(VoucherDTO voucherDTO) {
@@ -37,11 +36,10 @@ public class VoucherServiceImplementation implements VoucherService {
         voucher.setStartDate(voucherDTO.getStartDate());
         voucher.setEndDate(voucherDTO.getEndDate());
         voucher.setMaxUsage(voucherDTO.getMaxUsage());
-        voucher.setUsageCount(0);
+        voucher.setUsageCount(0); 
         voucher.setTargetUserRole(voucherDTO.getTargetUserRole());
         return voucherRepository.save(voucher);
     }
-
     @Override
     @Transactional(readOnly = true)
     public VoucherResponseDTO getVoucherById(Integer voucherId) {
@@ -49,7 +47,6 @@ public class VoucherServiceImplementation implements VoucherService {
                 .orElseThrow(() -> new EntityNotFoundException("Voucher not found with id: " + voucherId));
         return new VoucherResponseDTO(voucher);
     }
-
     @Override
     @Transactional(readOnly = true)
     public VoucherResponseDTO getVoucherByCode(String voucherCode) {
@@ -57,7 +54,6 @@ public class VoucherServiceImplementation implements VoucherService {
                 .orElseThrow(() -> new EntityNotFoundException("Voucher not found with code: " + voucherCode));
         return new VoucherResponseDTO(voucher);
     }
-
     @Override
     @Transactional
     public Voucher updateVoucher(Integer voucherId, VoucherDTO voucherDTO) {
@@ -95,7 +91,6 @@ public class VoucherServiceImplementation implements VoucherService {
         }
         return voucherRepository.save(existingVoucher);
     }
-
     @Override
     @Transactional
     public void deleteVoucher(Integer voucherId) {
@@ -104,29 +99,31 @@ public class VoucherServiceImplementation implements VoucherService {
         }
         voucherRepository.deleteById(voucherId);
     }
-
     @Override
     @Transactional(readOnly = true)
     public Page<VoucherResponseDTO> getAllVouchers(Pageable pageable) {
         Page<Voucher> vouchersPage = voucherRepository.findAll(pageable);
         return vouchersPage.map(VoucherResponseDTO::new);
     }
-
     @Override
     @Transactional(readOnly = true)
     public List<VoucherResponseDTO> getActiveVouchers() {
-        // Use LocalDate.now() for current date
-        LocalDate currentDate = LocalDate.now();
-        List<Voucher> activeVouchers = voucherRepository.findActiveVouchers(currentDate);
+        Date currentDate = Date.valueOf(LocalDate.now());
+        List<Voucher> activeVouchers = voucherRepository.findAll().stream()
+                .filter(voucher -> (voucher.getStartDate() == null || !voucher.getStartDate().after(currentDate)) &&
+                                   (voucher.getEndDate() == null || !voucher.getEndDate().before(currentDate)) &&
+                                   (voucher.getMaxUsage() == null || voucher.getUsageCount() < voucher.getMaxUsage()))
+                .collect(Collectors.toList());
         return activeVouchers.stream()
                 .map(VoucherResponseDTO::new)
                 .collect(Collectors.toList());
     }
-
     @Override
     @Transactional(readOnly = true)
     public List<VoucherResponseDTO> getVouchersByDiscountType(Voucher.DiscountType discountType) {
-        List<Voucher> vouchers = voucherRepository.findByDiscountType(discountType);
+        List<Voucher> vouchers = voucherRepository.findAll().stream()
+                .filter(voucher -> voucher.getDiscountType().equals(discountType))
+                .collect(Collectors.toList());
         return vouchers.stream()
                 .map(VoucherResponseDTO::new)
                 .collect(Collectors.toList());

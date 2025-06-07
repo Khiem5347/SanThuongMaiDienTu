@@ -15,32 +15,27 @@ import java.util.stream.Collectors;
 @Service
 public class ShippingProviderServiceImplementation implements ShippingProviderService {
     private final ShippingProviderRepository shippingProviderRepository;
-
     public ShippingProviderServiceImplementation(ShippingProviderRepository shippingProviderRepository) {
         this.shippingProviderRepository = shippingProviderRepository;
     }
-
     @Override
     @Transactional
-    public ShippingProviderResponseDTO createShippingProvider(ShippingProviderDTO shippingProviderDTO) { // Changed return type to DTO
+    public ShippingProvider createShippingProvider(ShippingProviderDTO shippingProviderDTO) {
         ShippingProvider shippingProvider = new ShippingProvider();
         shippingProvider.setProviderName(shippingProviderDTO.getProviderName());
         shippingProvider.setContactPhone(shippingProviderDTO.getContactPhone());
-        ShippingProvider savedProvider = shippingProviderRepository.save(shippingProvider);
-        return getShippingProviderById(savedProvider.getProviderId());
+        return shippingProviderRepository.save(shippingProvider);
     }
-
     @Override
     @Transactional(readOnly = true)
     public ShippingProviderResponseDTO getShippingProviderById(Integer providerId) {
-        ShippingProvider shippingProvider = shippingProviderRepository.findByIdWithLinks(providerId)
+        ShippingProvider shippingProvider = shippingProviderRepository.findById(providerId)
                 .orElseThrow(() -> new EntityNotFoundException("Shipping Provider not found with id: " + providerId));
         return new ShippingProviderResponseDTO(shippingProvider);
     }
-
     @Override
     @Transactional
-    public ShippingProviderResponseDTO updateShippingProvider(Integer providerId, ShippingProviderDTO shippingProviderDTO) { // Changed return type to DTO
+    public ShippingProvider updateShippingProvider(Integer providerId, ShippingProviderDTO shippingProviderDTO) {
         ShippingProvider existingProvider = shippingProviderRepository.findById(providerId)
                 .orElseThrow(() -> new EntityNotFoundException("Shipping Provider not found with id: " + providerId));
 
@@ -50,11 +45,8 @@ public class ShippingProviderServiceImplementation implements ShippingProviderSe
         if (shippingProviderDTO.getContactPhone() != null) {
             existingProvider.setContactPhone(shippingProviderDTO.getContactPhone());
         }
-
-        ShippingProvider updatedProvider = shippingProviderRepository.save(existingProvider);
-        return getShippingProviderById(updatedProvider.getProviderId());
+        return shippingProviderRepository.save(existingProvider);
     }
-
     @Override
     @Transactional
     public void deleteShippingProvider(Integer providerId) {
@@ -63,18 +55,16 @@ public class ShippingProviderServiceImplementation implements ShippingProviderSe
         }
         shippingProviderRepository.deleteById(providerId);
     }
-
     @Override
     @Transactional(readOnly = true)
     public Page<ShippingProviderResponseDTO> getAllShippingProviders(Pageable pageable) {
-        Page<ShippingProvider> providersPage = shippingProviderRepository.findAllWithLinks(pageable);
+        Page<ShippingProvider> providersPage = shippingProviderRepository.findAll(pageable);
         return providersPage.map(ShippingProviderResponseDTO::new);
     }
-
     @Override
     @Transactional(readOnly = true)
     public List<ShippingProviderResponseDTO> searchShippingProvidersByName(String providerName) {
-        List<ShippingProvider> providers = shippingProviderRepository.findByProviderNameContainingIgnoreCaseWithLinks(providerName);
+        List<ShippingProvider> providers = shippingProviderRepository.findByProviderNameContainingIgnoreCase(providerName);
         return providers.stream()
                 .map(ShippingProviderResponseDTO::new)
                 .collect(Collectors.toList());
