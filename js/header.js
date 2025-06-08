@@ -1,105 +1,117 @@
-// [Thư mục gốc]/js/header.js
+console.log("js/header.js: File đã tải. Chứa các hàm khởi tạo, sẵn sàng được gọi.");
 
-console.log("js/header.js: File đã tải, hàm initHeaderUI đã được định nghĩa.");
-
+/**
+ * Khởi tạo giao diện người dùng cho header (đăng nhập, dropdown).
+ */
 function initHeaderUI() {
-    console.log("js/header.js: hàm initHeaderUI() được gọi.");
+    console.log("js/header.js: Bắt đầu chạy hàm initHeaderUI().");
 
     const loginNavLi = document.getElementById('loginNav')?.parentElement;
     const headerUl = document.querySelector('header ul');
 
-    console.log("js/header.js: (trong initHeaderUI) loginNavLi tìm thấy:", loginNavLi);
-    console.log("js/header.js: (trong initHeaderUI) headerUl tìm thấy:", headerUl);
-
     if (!headerUl) {
-        console.error("js/header.js: (trong initHeaderUI) Vẫn không tìm thấy thẻ ul trong header.");
+        console.error("js/header.js: (Lỗi trong initHeaderUI) Không tìm thấy thẻ <ul> trong <header>.");
         return;
-    }
-    if (!loginNavLi && !localStorage.getItem('isLoggedIn')) {
-        console.warn("js/header.js: (trong initHeaderUI) Không tìm thấy loginNavLi. Đảm bảo thẻ a đăng nhập có id='loginNav'.");
     }
 
     const isLoggedIn = localStorage.getItem('isLoggedIn');
     const username = localStorage.getItem('loggedInUser');
 
-    console.log("js/header.js: (trong initHeaderUI) Trạng thái đăng nhập (isLoggedIn):", isLoggedIn);
-    console.log("js/header.js: (trong initHeaderUI) Tên người dùng (username):", username);
-
-    // Xóa các mục tài khoản/dropdown cũ trước khi thêm mới
     const existingUserDropdown = headerUl.querySelector('.user-dropdown-li');
     if (existingUserDropdown) existingUserDropdown.remove();
 
-
     if (isLoggedIn === 'true' && username) {
-        console.log("js/header.js: (trong initHeaderUI) Người dùng đã đăng nhập, tạo dropdown tài khoản.");
         if (loginNavLi) loginNavLi.style.display = 'none';
 
-        // Tạo phần tử <li> chính cho dropdown
         const userDropdownLi = document.createElement('li');
-        userDropdownLi.classList.add('user-dropdown-li'); // Class để CSS
+        userDropdownLi.classList.add('user-dropdown-li');
 
-        // Tạo link hiển thị tên người dùng (trigger cho dropdown)
         const usernameLink = document.createElement('a');
-        usernameLink.href = '#'; // Không điều hướng khi click vào tên
+        usernameLink.href = '#';
         usernameLink.textContent = username;
         usernameLink.classList.add('user-dropdown-trigger');
         userDropdownLi.appendChild(usernameLink);
 
-        // Tạo nội dung dropdown (ban đầu ẩn)
         const dropdownContent = document.createElement('div');
         dropdownContent.classList.add('user-dropdown-content');
 
-        // Tạo link "Tài Khoản Của Tôi"
         const myAccountLink = document.createElement('a');
-        myAccountLink.href = '../pages/taikhoan.html'; // Đường dẫn đến trang tài khoản
+        myAccountLink.href = '../pages/taikhoan.html';
         myAccountLink.textContent = 'Tài Khoản Của Tôi';
         dropdownContent.appendChild(myAccountLink);
 
-        // Tạo link "Đăng Xuất"
         const logoutLinkDropdown = document.createElement('a');
         logoutLinkDropdown.href = '#';
         logoutLinkDropdown.textContent = 'Đăng Xuất';
-        logoutLinkDropdown.addEventListener('click', function(e) {
+        logoutLinkDropdown.addEventListener('click', function (e) {
             e.preventDefault();
             localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('loggedInUser');
             alert('Bạn đã đăng xuất.');
-            window.location.href = '../pages/index.html'; // Hoặc trang đăng nhập
+            window.location.href = '../pages/index.html';
         });
         dropdownContent.appendChild(logoutLinkDropdown);
 
-        userDropdownLi.appendChild(dropdownContent); // Thêm nội dung dropdown vào <li>
+        userDropdownLi.appendChild(dropdownContent);
 
-        // Thêm logic để hiện/ẩn dropdown khi di chuột hoặc click (ví dụ đơn giản với hover)
-        userDropdownLi.addEventListener('mouseenter', () => {
-            dropdownContent.style.display = 'block';
-        });
-        userDropdownLi.addEventListener('mouseleave', () => {
-            dropdownContent.style.display = 'none';
-        });
+        userDropdownLi.addEventListener('mouseenter', () => dropdownContent.style.display = 'block');
+        userDropdownLi.addEventListener('mouseleave', () => dropdownContent.style.display = 'none');
 
-        // Chèn dropdown vào đầu <ul>
         headerUl.prepend(userDropdownLi);
-        console.log("js/header.js: Đã chèn userDropdownLi vào đầu headerUl.");
-
     } else {
-        console.log("js/header.js: (trong initHeaderUI) Người dùng chưa đăng nhập.");
-        if (loginNavLi) {
-            loginNavLi.style.display = '';
-            const loginNavLink = loginNavLi.querySelector('a');
-            if(loginNavLink) {
-                loginNavLink.textContent = 'Đăng nhập';
-                loginNavLink.href = "../pages/dangnhap.html";
-            }
-        }
+        if (loginNavLi) loginNavLi.style.display = '';
     }
+    console.log("js/header.js: Hàm initHeaderUI() đã chạy xong.");
 }
 
-window.addEventListener('storage', function(event) {
-    console.log("js/header.js: Sự kiện storage thay đổi:", event.key);
-    if (event.key === 'isLoggedIn' || event.key === 'loggedInUser') {
-        if (typeof initHeaderUI === 'function') {
-            initHeaderUI();
+/**
+ * Khởi tạo chức năng tìm kiếm đơn giản.
+ */
+function initSearch() {
+    console.log("js/header.js: Bắt đầu chạy hàm initSearch() đã được đơn giản hóa.");
+
+    const searchInput = document.getElementById('searchInput');
+    const searchButton = document.getElementById('searchButton');
+
+    if (!searchInput || !searchButton) {
+        console.error("js/header.js: (Lỗi trong initSearch) Không tìm thấy searchInput hoặc searchButton.");
+        return;
+    }
+
+    // Hàm thực hiện chuyển trang khi tìm kiếm
+    const performSearch = () => {
+        const query = searchInput.value.trim();
+        if (query) {
+            window.location.href = `../pages/timkiem.html?q=${encodeURIComponent(query)}`;
         }
+    };
+
+    // Gán sự kiện cho nút Enter trên ô input
+    searchInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            performSearch();
+        }
+    });
+
+    // Gán sự kiện cho nút tìm kiếm
+    searchButton.addEventListener('click', performSearch);
+
+    console.log("js/header.js: Hàm initSearch() đã chạy xong.");
+}
+
+/**
+ * Hàm tổng hợp để khởi tạo toàn bộ header.
+ */
+function initializeHeader() {
+    console.log("js/header.js: Bắt đầu chạy hàm initializeHeader().");
+    initHeaderUI();
+    initSearch();
+    console.log("js/header.js: Hàm initializeHeader() đã chạy xong.");
+}
+
+// Lắng nghe sự kiện storage để cập nhật UI giữa các tab
+window.addEventListener('storage', (event) => {
+    if (event.key === 'isLoggedIn' || event.key === 'loggedInUser') {
+        if (typeof initHeaderUI === 'function') initHeaderUI();
     }
 });
