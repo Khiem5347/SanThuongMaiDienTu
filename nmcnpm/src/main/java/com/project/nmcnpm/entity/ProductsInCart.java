@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class ProductsInCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "products_in_cart_id")
+    @Column(name = "product_in_cart_id")
     private Integer productsInCartId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_id", nullable = false)

@@ -57,7 +57,7 @@ public class OrderServiceImplementation implements OrderService {
         order.setUser(user);
         order.setAddress(address);
         order.setStatus(orderDTO.getStatus() != null ? orderDTO.getStatus() : "PENDING"); // Default status
-        order.setOrderTrackingNumber(generateOrderTrackingNumber());
+        // order.setOrderTrackingNumber(generateOrderTrackingNumber());
         BigDecimal totalAmount = BigDecimal.ZERO;
         if (orderDTO.getItems() == null || orderDTO.getItems().isEmpty()) {
             throw new IllegalArgumentException("Order must contain at least one item.");
@@ -145,7 +145,7 @@ public class OrderServiceImplementation implements OrderService {
         Page<Order> ordersPage = orderRepository.findByUserUserId(userId, pageable);
         return ordersPage.map(OrderResponseDTO::new);
     }
-    @Override
+  /* @Override
     @Transactional(readOnly = true)
     public OrderResponseDTO getOrderByTrackingNumber(String orderTrackingNumber) {
         Order order = orderRepository.findByOrderTrackingNumber(orderTrackingNumber);
@@ -156,5 +156,5 @@ public class OrderServiceImplementation implements OrderService {
     }
     private String generateOrderTrackingNumber() {
         return UUID.randomUUID().toString().replace("-", "").substring(0, 16).toUpperCase(); // Example: 16-char alphanumeric
-    }
+    } */
 }

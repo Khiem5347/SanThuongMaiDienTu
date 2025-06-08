@@ -11,5 +11,5 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Order, Integer> {
     List<Order> findByUserUserId(Integer userId);
     Page<Order> findByUserUserId(Integer userId, Pageable pageable);
-    Order findByOrderTrackingNumber(String orderTrackingNumber);
+    // Order findByOrderTrackingNumber(String orderTrackingNumber);
 }

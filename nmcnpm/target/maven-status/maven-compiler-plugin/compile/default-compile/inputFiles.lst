@@ -146,6 +146,7 @@ E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\service\Conversati
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dto\ShippingLinkDTO.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\service\CheckoutServiceImplementation.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dao\ShippingLinkRepository.java
+E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dto\ChangePasswordRequest.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dao\ShippingProviderRepository.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dto\ShippingServiceDTO.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dao\AddressRepository.java

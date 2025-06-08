@@ -15,5 +15,5 @@ public interface OrderService {
     void deleteOrder(Integer orderId);
     Page<OrderResponseDTO> getAllOrders(Pageable pageable);
     Page<OrderResponseDTO> getOrdersByUserId(Integer userId, Pageable pageable);
-    OrderResponseDTO getOrderByTrackingNumber(String orderTrackingNumber);
+  //   OrderResponseDTO getOrderByTrackingNumber(String orderTrackingNumber);
 }

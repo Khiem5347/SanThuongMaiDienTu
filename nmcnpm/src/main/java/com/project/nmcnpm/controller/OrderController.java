@@ -115,7 +115,7 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("/tracking/{trackingNumber}")
+   /*  @GetMapping("/tracking/{trackingNumber}")
     public ResponseEntity<OrderResponseDTO> getOrderByTrackingNumber(@PathVariable String trackingNumber) {
         try {
             OrderResponseDTO order = orderService.getOrderByTrackingNumber(trackingNumber);
@@ -127,5 +127,5 @@ public class OrderController {
             System.err.println("Internal server error getting order by tracking number: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }*/
 }
