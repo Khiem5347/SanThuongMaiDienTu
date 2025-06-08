@@ -49,18 +49,7 @@
         </div>
     </div>
     <div id="footer"></div>
-    <script>
-        // Thêm header , footer
-        async function loadHTML(id, file) {
-        const res = await fetch(file);
-        const html = await res.text();
-        document.getElementById(id).innerHTML = html;
-        }
-        // Gọi khi trang tải xong
-        window.addEventListener("DOMContentLoaded", () => {
-        loadHTML("header", "../components/header.html");
-        loadHTML("footer", "../components/footer.html");
-        });
-    </script>
+    <script src="../js/header.js"></script>
+    <script src="../js/index.js"></script>
 </body>
 </html>

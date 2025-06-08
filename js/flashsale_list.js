@@ -38,7 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error("Phần tử product-grid không tìm thấy!");
             return;
         }
-        // productGrid.innerHTML = ''; // Đã xóa ở fetchProducts
 
         if (!products || products.length === 0) {
             productGrid.innerHTML = '<p class="loading-text">Không có sản phẩm nào.</p>';
