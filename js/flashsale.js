@@ -100,11 +100,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 swiperWrapper.innerHTML = `<div style="text-align:center; padding: 20px; color: red; width:100%;">Lỗi tải sản phẩm Flash Sale. (${error.message})</div>`;
             }
         });
-
-    // =======================================================
-    // == BẮT ĐẦU LOGIC CHO ĐỒNG HỒ ĐẾM NGƯỢC (TIMER) ==
-    // =======================================================
-
     /**
      * Khởi tạo và chạy đồng hồ đếm ngược cho Flash Sale.
      */

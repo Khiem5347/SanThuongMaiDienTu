@@ -7,14 +7,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const productsGridContainer = document.getElementById('category-products-grid');
     const paginationContainer = document.getElementById('pagination-container');
 
-    let currentCategoryIds = []; // Sẽ là một mảng các ID
+    let currentCategoryIds = [];
 
     // --- HÀM KHỞI TẠO CHÍNH ---
     async function initializeCategoryPage() {
         const urlParams = new URLSearchParams(window.location.search);
         
-        // Đọc tham số 'ids' mới thay vì 'id'
-        const idsString = urlParams.get('ids'); 
+        // SỬA Ở ĐÂY: Đọc tham số 'categoryIds' thay vì 'ids'
+        const idsString = urlParams.get('categoryIds'); 
 
         if (!idsString) {
             displayError("Không có danh mục nào được chọn.");
@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Tách chuỗi thành mảng các ID
         currentCategoryIds = idsString.split(',').map(id => parseInt(id.trim()));
         
         if (currentCategoryIds.length === 0 || currentCategoryIds.some(isNaN)) {
@@ -30,62 +29,88 @@ document.addEventListener('DOMContentLoaded', () => {
              return;
         }
 
-        // Cập nhật tiêu đề (có thể lấy tên từ danh mục đầu tiên hoặc đặt tên chung)
-        // Cách tốt hơn là API mới nên trả về cả tên chung cho nhóm danh mục này
-        if (categoryTitleElement) {
-            categoryTitleElement.textContent = "Sản phẩm theo danh mục đã chọn";
-        }
+        // Cập nhật tiêu đề (lấy tên từ danh mục đầu tiên trong danh sách)
+        await fetchAndSetCategoryTitle(currentCategoryIds[0]);
         
-        // Tải sản phẩm cho trang đầu tiên bằng API mới
+        // Tải sản phẩm cho trang đầu tiên
         await fetchAndRenderProducts(currentCategoryIds, 0);
     }
 
     // --- HÀM TẢI DỮ LIỆU ---
 
-    // Tải sản phẩm theo MẢNG danh mục và trang
-    async function fetchAndRenderProducts(categoryIds, page = 0, size = 10) {
-        if (!productsGridContainer) return;
-        productsGridContainer.innerHTML = '<p class="loading-text">Đang tải sản phẩm...</p>';
-
-        // Chuyển mảng ID thành chuỗi để đưa vào URL API
-        const idsQueryParam = categoryIds.join(',');
-
+    // Tải chi tiết danh mục để lấy tên hiển thị
+    async function fetchAndSetCategoryTitle(firstCategoryId) {
+        // Bạn có thể tùy chỉnh logic này để hiển thị tên phù hợp hơn khi có nhiều ID
         try {
-            // Gọi đến API MỚI mà bạn đã tạo ở backend
-            const response = await fetch(`${API_BASE_URL}/products/by-categories?ids=${idsQueryParam}&page=${page}&size=${size}`);
-            
-            if (!response.ok) {
-                throw new Error('Không thể tải sản phẩm từ server.');
+            const category = await (await fetch(`${API_BASE_URL}/categories/${firstCategoryId}`)).json();
+            if (categoryTitleElement) {
+                // Nếu chỉ có 1 ID thì hiển thị tên, nếu nhiều thì hiển thị tên chung
+                categoryTitleElement.textContent = currentCategoryIds.length > 1 
+                    ? `Danh sách sản phẩm`
+                    : category.categoryName;
             }
-            const data = await response.json();
-            
-            renderProducts(data.content);
-            renderPagination(data.totalPages, data.number, categoryIds);
-
         } catch (error) {
-            console.error('Lỗi khi tải sản phẩm theo danh mục:', error);
-            displayError(error.message);
+            console.error('Lỗi khi tải tên danh mục:', error);
+            if (categoryTitleElement) {
+                categoryTitleElement.textContent = 'Sản phẩm';
+            }
         }
     }
 
-    // --- HÀM RENDER --- (Hàm renderProducts và formatCurrency giữ nguyên)
+   // Tải sản phẩm theo MẢNG danh mục và trang
+async function fetchAndRenderProducts(categoryIds, page = 0) {
+    // Đặt một giá trị size rất lớn để lấy "tất cả"
+    const size = 1000; // Ví dụ: lấy tối đa 1000 sản phẩm
+
+    if (!productsGridContainer) return;
+    productsGridContainer.innerHTML = '<p class="loading-text">Đang tải sản phẩm...</p>';
+
+    const idsQueryParam = categoryIds.join(',');
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/products/category/by-categoryId?categoryIds=${idsQueryParam}&page=${page}&size=${size}`);
+        
+        if (!response.ok) {
+            throw new Error('Không thể tải sản phẩm từ server.');
+        }
+        const data = await response.json();
+        
+        renderProducts(data.content);
+
+        // Khi đã tải tất cả, chúng ta không cần hiển thị các nút phân trang nữa
+        if (paginationContainer) {
+            paginationContainer.innerHTML = '';
+        }
+
+    } catch (error) {
+        console.error('Lỗi khi tải sản phẩm theo danh mục:', error);
+        displayError(error.message);
+    }
+}
+
+    // --- HÀM RENDER ---
 
     function renderProducts(products) {
         if (!productsGridContainer) return;
         productsGridContainer.innerHTML = '';
+
         if (!products || products.length === 0) {
             productsGridContainer.innerHTML = '<p class="empty-text">Không có sản phẩm nào trong các danh mục này.</p>';
             return;
         }
+
         products.forEach(product => {
             const productCard = document.createElement('div');
             productCard.className = 'product-card';
+            
             const priceText = product.productMinPrice === product.productMaxPrice
                 ? formatCurrency(product.productMinPrice)
                 : `${formatCurrency(product.productMinPrice)} - ${formatCurrency(product.productMaxPrice)}`;
+            
             const imageUrl = product.productMainImageUrl 
                 ? `/dumps/${product.productMainImageUrl}` 
                 : '../assets/placeholder-main.jpg';
+
             productCard.innerHTML = `
                 <a href="../pages/chitietsanpham.html?id=${product.productId}">
                     <img src="${imageUrl}" alt="${product.productName}">
@@ -100,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Cập nhật hàm renderPagination để truyền mảng categoryIds
+    // Hàm renderPagination giữ nguyên
     function renderPagination(totalPages, currentPage, categoryIds) {
         if (!paginationContainer) return;
         paginationContainer.innerHTML = '';

@@ -11,6 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List; 
+import java.util.Arrays; 
+import java.util.stream.Collectors; 
 
 @RestController
 @RequestMapping("/api/products")
@@ -20,11 +23,10 @@ public class ProductController {
         this.productService = productService;
     }
     @PostMapping
-    public ResponseEntity<ProductResponseDTO> createProduct(@RequestBody ProductDTO productDTO) { // Changed return type
+    public ResponseEntity<Product> createProduct(@RequestBody ProductDTO productDTO) {
         try {
             Product createdProduct = productService.createProduct(productDTO);
-            ProductResponseDTO responseDTO = productService.getProductById(createdProduct.getProductId());
-            return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+            return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
         } catch (EntityNotFoundException e) {
             System.err.println("Error creating product: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -47,11 +49,10 @@ public class ProductController {
         }
     }
     @PutMapping("/{id}")
-    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable Integer id, @RequestBody ProductDTO productDTO) { // Changed return type
+    public ResponseEntity<Product> updateProduct(@PathVariable Integer id, @RequestBody ProductDTO productDTO) {
         try {
             Product updatedProduct = productService.updateProduct(id, productDTO);
-            ProductResponseDTO responseDTO = productService.getProductById(updatedProduct.getProductId());
-            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+            return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             System.err.println("Product or associated entity not found during update: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -78,7 +79,7 @@ public class ProductController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<ProductResponseDTO> products = productService.getAllProducts(pageable); // Returns Page of ProductResponseDTOs
+        Page<ProductResponseDTO> products = productService.getAllProducts(pageable);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
     @GetMapping("/category/{categoryId}")
@@ -87,8 +88,28 @@ public class ProductController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<ProductResponseDTO> products = productService.getProductsByCategoryId(categoryId, pageable); // Returns Page of ProductResponseDTOs
+        Page<ProductResponseDTO> products = productService.getProductsByCategoryId(categoryId, pageable);
         return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+    @GetMapping("/category/by-categoryId")
+    public ResponseEntity<Page<ProductResponseDTO>> getProductsByCategoryIds(
+            @RequestParam("categoryIds") String categoryIds, // Expecting comma-separated string
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        try {
+            List<Integer> ids = Arrays.stream(categoryIds.split(","))
+                                      .map(Integer::parseInt)
+                                      .collect(Collectors.toList());
+            Pageable pageable = PageRequest.of(page, size);
+            Page<ProductResponseDTO> products = productService.getProductsByCategoryIds(ids, pageable);
+            return new ResponseEntity<>(products, HttpStatus.OK);
+        } catch (NumberFormatException e) {
+            System.err.println("Invalid category ID format: " + e.getMessage());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            System.err.println("Internal server error getting products by category IDs: " + e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     @GetMapping("/search")
     public ResponseEntity<Page<ProductResponseDTO>> searchProductsByName(
@@ -96,7 +117,7 @@ public class ProductController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<ProductResponseDTO> products = productService.searchProductsByName(name, pageable); // Returns Page of ProductResponseDTOs
+        Page<ProductResponseDTO> products = productService.searchProductsByName(name, pageable);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
     @GetMapping("/shop/{shopId}")
@@ -105,7 +126,7 @@ public class ProductController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<ProductResponseDTO> products = productService.getProductsByShopId(shopId, pageable); // Returns Page of ProductResponseDTOs
+        Page<ProductResponseDTO> products = productService.getProductsByShopId(shopId, pageable);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 }

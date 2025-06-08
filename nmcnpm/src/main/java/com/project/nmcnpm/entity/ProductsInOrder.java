@@ -34,6 +34,9 @@ public class ProductsInOrder {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "voucher_id") 
     private Voucher voucher;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shipping_provider_id") 
+    private ShippingProvider shippingProvider;
     public ProductsInOrder() {
     }
     public ProductsInOrder(Order order, Product product, Shop shop, String productName, String color, String size, String productImageUrl, BigDecimal productPrice, Integer productQuantity) {
@@ -80,6 +83,9 @@ public class ProductsInOrder {
     public Voucher getVoucher() {
         return voucher;
     }
+    public ShippingProvider getShippingProvider() {
+        return shippingProvider;
+    }
     public void setProductsInOrderId(Integer productsInOrderId) {
         this.productsInOrderId = productsInOrderId;
     }
@@ -113,5 +119,8 @@ public class ProductsInOrder {
     }
     public void setVoucher(Voucher voucher) {
         this.voucher = voucher;
+    }
+    public void setShippingProvider(ShippingProvider shippingProvider) {
+        this.shippingProvider = shippingProvider;
     }
 }

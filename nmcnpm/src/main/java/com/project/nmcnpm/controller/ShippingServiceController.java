@@ -1,7 +1,7 @@
 package com.project.nmcnpm.controller;
 
 import com.project.nmcnpm.dto.ShippingServiceDTO;
-import com.project.nmcnpm.dto.ShippingServiceResponseDTO; 
+import com.project.nmcnpm.dto.ShippingServiceResponseDTO;
 import com.project.nmcnpm.entity.ShippingService;
 import com.project.nmcnpm.service.ShippingServiceService;
 import jakarta.persistence.EntityNotFoundException;
@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -22,14 +23,13 @@ public class ShippingServiceController {
         this.shippingServiceService = shippingServiceService;
     }
     @PostMapping
-    public ResponseEntity<ShippingServiceResponseDTO> createShippingService(@Valid @RequestBody ShippingServiceDTO shippingServiceDTO) { // Changed return type
+    public ResponseEntity<ShippingService> createShippingService(@Valid @RequestBody ShippingServiceDTO shippingServiceDTO) {
         try {
             ShippingService createdService = shippingServiceService.createShippingService(shippingServiceDTO);
-            ShippingServiceResponseDTO responseDTO = shippingServiceService.getShippingServiceById(createdService.getServiceId());
-            return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+            return new ResponseEntity<>(createdService, HttpStatus.CREATED);
         } catch (EntityNotFoundException e) {
             System.err.println("Error creating shipping service: " + e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
         } catch (Exception e) {
             System.err.println("Internal server error creating shipping service: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

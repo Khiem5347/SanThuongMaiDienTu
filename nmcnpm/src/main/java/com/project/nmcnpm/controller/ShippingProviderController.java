@@ -23,11 +23,10 @@ public class ShippingProviderController {
         this.shippingProviderService = shippingProviderService;
     }
     @PostMapping
-    public ResponseEntity<ShippingProviderResponseDTO> createShippingProvider(@Valid @RequestBody ShippingProviderDTO shippingProviderDTO) { // Changed return type
+    public ResponseEntity<ShippingProvider> createShippingProvider(@Valid @RequestBody ShippingProviderDTO shippingProviderDTO) {
         try {
             ShippingProvider createdProvider = shippingProviderService.createShippingProvider(shippingProviderDTO);
-            ShippingProviderResponseDTO responseDTO = shippingProviderService.getShippingProviderById(createdProvider.getProviderId());
-            return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+            return new ResponseEntity<>(createdProvider, HttpStatus.CREATED);
         } catch (Exception e) {
             System.err.println("Internal server error creating shipping provider: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

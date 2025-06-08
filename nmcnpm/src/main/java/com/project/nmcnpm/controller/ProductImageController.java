@@ -1,7 +1,7 @@
 package com.project.nmcnpm.controller;
 
 import com.project.nmcnpm.dto.ProductImageDTO;
-import com.project.nmcnpm.dto.ProductImageResponseDTO; 
+import com.project.nmcnpm.dto.ProductImageResponseDTO;
 import com.project.nmcnpm.entity.ProductImage;
 import com.project.nmcnpm.service.ProductImageService;
 import jakarta.persistence.EntityNotFoundException;
@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -19,14 +20,13 @@ public class ProductImageController {
         this.productImageService = productImageService;
     }
     @PostMapping
-    public ResponseEntity<ProductImageResponseDTO> createProductImage(@Valid @RequestBody ProductImageDTO productImageDTO) { // Changed return type
+    public ResponseEntity<ProductImage> createProductImage(@Valid @RequestBody ProductImageDTO productImageDTO) {
         try {
             ProductImage createdImage = productImageService.createProductImage(productImageDTO);
-            ProductImageResponseDTO responseDTO = productImageService.getProductImageById(createdImage.getImageId());
-            return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+            return new ResponseEntity<>(createdImage, HttpStatus.CREATED);
         } catch (EntityNotFoundException e) {
             System.err.println("Error creating product image: " + e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
         } catch (Exception e) {
             System.err.println("Internal server error creating product image: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -46,11 +46,10 @@ public class ProductImageController {
         }
     }
     @PutMapping("/{id}")
-    public ResponseEntity<ProductImageResponseDTO> updateProductImage(@PathVariable Integer id, @Valid @RequestBody ProductImageDTO productImageDTO) { // Changed return type
+    public ResponseEntity<ProductImage> updateProductImage(@PathVariable Integer id, @Valid @RequestBody ProductImageDTO productImageDTO) {
         try {
             ProductImage updatedImage = productImageService.updateProductImage(id, productImageDTO);
-            ProductImageResponseDTO responseDTO = productImageService.getProductImageById(updatedImage.getImageId());
-            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+            return new ResponseEntity<>(updatedImage, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             System.err.println("Product Image or associated product not found during update: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

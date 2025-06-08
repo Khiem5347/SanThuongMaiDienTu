@@ -3,13 +3,13 @@ package com.project.nmcnpm.service;
 import com.project.nmcnpm.dto.UserRegistrationDTO;
 import com.project.nmcnpm.entity.User;
 import com.project.nmcnpm.dao.UserRepository;
-import com.project.nmcnpm.util.PasswordHasher; 
+import com.project.nmcnpm.util.PasswordHasher;
 import org.springframework.stereotype.Service;
 
-@Service 
+@Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    public UserServiceImpl(UserRepository userRepository) { 
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
     @Override
@@ -27,8 +27,7 @@ public class UserServiceImpl implements UserService {
         user.setPhone(registrationDTO.getPhone());
         user.setDateOfBirth(registrationDTO.getDateOfBirth());
         user.setGender(registrationDTO.getGender());
-        user.setUserRole(registrationDTO.getUserRole()); 
-        //băm mật khẩukhẩu
+        user.setUserRole(registrationDTO.getUserRole());
         String hashedPassword = PasswordHasher.hashStringTo10Digits(registrationDTO.getPassword());
         user.setPasswordHash(hashedPassword);
         return userRepository.save(user);
@@ -48,6 +47,24 @@ public class UserServiceImpl implements UserService {
             return false;
         }
         String hashedRawPassword = PasswordHasher.hashStringTo10Digits(rawPassword);
-        return hashedRawPassword.equals(user.getPasswordHash()); //so sánh mật khẩu với sql
+        return hashedRawPassword.equals(user.getPasswordHash());
+    }
+    @Override
+    public boolean changePassword(String username, String oldPassword, String newPassword) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new IllegalArgumentException("User not found.");
+        }
+        String hashedOldPassword = PasswordHasher.hashStringTo10Digits(oldPassword);
+        if (!hashedOldPassword.equals(user.getPasswordHash())) {
+            return false; 
+        }
+        String hashedNewPassword = PasswordHasher.hashStringTo10Digits(newPassword);
+        if (hashedNewPassword.equals(user.getPasswordHash())) {
+            throw new IllegalArgumentException("New password cannot be the same as the old password.");
+        }
+        user.setPasswordHash(hashedNewPassword);
+        userRepository.save(user);
+        return true;
     }
 }

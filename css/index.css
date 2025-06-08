@@ -398,63 +398,63 @@ body {
     margin: 0 0 20px 0; /* Khoảng cách dưới tiêu đề */
     text-align: center; /* Căn giữa tiêu đề nếu muốn, trong ảnh nó hơi lệch trái */
 }
-/* Container Swiper cho danh sách thương hiệu */
-/* Bạn cần đảm bảo Swiper CSS đã được include */
-.featured-brands-swiper.swiper {
-    width: 100%;
-    height: 100%; /* Có thể set chiều cao cố định cho Swiper container */
-    padding: 10px 0; /* Padding nhẹ nếu có shadow hoặc border cho item */
+/* CSS MỚI CHO LƯỚI THƯƠNG HIỆU NỔI BẬT */
+
+.brand-grid {
+    display: grid;
+    /* Hiển thị 6 cột trên màn hình lớn */
+    grid-template-columns: repeat(6, 1fr);
+    gap: 15px; /* Khoảng cách giữa các thương hiệu */
 }
-/* Mỗi item thương hiệu trong Swiper */
-.brand-item.swiper-slide {
-    width: 180px; /* Kích thước cố định cho mỗi ô logo (điều chỉnh tùy ý) */
-    height: 80px; /* Chiều cao cố định */
-    flex-shrink: 0; /* Đảm bảo item không bị co lại */
-    margin-right: 15px; /* Khoảng cách giữa các ô logo */
-    background-color: #fff; /* Nền trắng */
-    border-radius: 8px; /* Bo góc */
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .08); /* Shadow nhẹ */
-    overflow: hidden; /* Đảm bảo nội dung không tràn ra ngoài */
-    /* Dùng Flexbox để căn giữa logo bên trong */
+
+.brand-item-link {
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 80px; /* Chiều cao của mỗi ô thương hiệu */
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    box-sizing: border-box;
     transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
- /*Bỏ margin-right cho item cuối cùng nếu không dùng Swiper hoặc khi Swiper không hiển thị scrollbar */
- .brand-item:last-child {
-    margin-right: 0;
-} 
-/* Link bọc logo */
-.brand-link {
-    display: flex; /* Giúp link bọc toàn bộ item */
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none; /* Bỏ gạch chân link */
+
+.brand-item-link:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
+    transform: translateY(-2px); /* Hiệu ứng nhấc nhẹ lên */
 }
-/* Logo ảnh */
+
 .brand-logo {
-    display: block; /* Loại bỏ khoảng trống dưới ảnh */
-    max-width: 80%; /* Giới hạn kích thước logo bên trong ô */
-    max-height: 80%;
-    object-fit: contain; /* Đảm bảo logo hiển thị đầy đủ không bị cắt hoặc méo */
-    filter: grayscale(0%); /* Logo có màu như ảnh */
-    opacity: 1; /* Đảm bảo logo hiển thị đầy đủ */
-    transition: filter 0.2s ease, opacity 0.2s ease;
+    display: block;
+    max-width: 90%; /* Kích thước logo tối đa trong ô */
+    max-height: 90%;
+    object-fit: contain; /* Đảm bảo logo luôn vừa vặn */
 }
-/* Hiệu ứng khi di chuột qua (tùy chọn) */
-.brand-item:hover {
-     box-shadow: 0 4px 12px rgba(0, 0, 0, .15); /* Shadow rõ hơn khi hover */
-     /* transform: translateY(-2px); */ /* Nhấc nhẹ lên */
+
+/* Responsive cho lưới thương hiệu */
+@media (max-width: 992px) {
+    .brand-grid {
+        grid-template-columns: repeat(4, 1fr); /* 4 cột */
+    }
 }
- .brand-item:hover .brand-logo {
-    filter: grayscale(0%); /*Đảm bảo màu nếu bạn làm mờ logo ban đầu*/
-    opacity: 1; /* Đảm bảo hiện đủ nếu làm mờ ban đầu */
-} 
-/* CSS cho Swiper navigation/pagination nếu có */
-.featured-brands-swiper .swiper-button-next,
-.featured-brands-swiper .swiper-button-prev {
-    color: #000; /* Màu đen hoặc màu khác */
+@media (max-width: 768px) {
+    .brand-grid {
+        grid-template-columns: repeat(3, 1fr); /* 3 cột */
+    }
+}
+@media (max-width: 480px) {
+    .brand-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 cột */
+        gap: 10px;
+    }
+    .brand-item-link {
+        height: 70px;
+    }
+}
+
+/* Xóa bỏ các style cũ của swiper cho thương hiệu để tránh xung đột */
+.featured-brands-swiper.swiper,
+.brand-item.swiper-slide {
+    /* Bạn có thể xóa hẳn các rule này khỏi CSS hoặc để trống như vầy */
 }

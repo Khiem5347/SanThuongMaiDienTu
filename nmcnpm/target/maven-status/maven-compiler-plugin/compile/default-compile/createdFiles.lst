@@ -87,6 +87,7 @@ com\project\nmcnpm\service\UserServiceImpl.class
 com\project\nmcnpm\controller\ShippingProviderController.class
 com\project\nmcnpm\dto\OrderItemResponseDTO.class
 com\project\nmcnpm\dto\VoucherDTO.class
+com\project\nmcnpm\dto\ChangePasswordRequest.class
 com\project\nmcnpm\service\CheckoutService.class
 com\project\nmcnpm\entity\User$Gender.class
 com\project\nmcnpm\controller\ShopController.class
@@ -107,7 +108,6 @@ com\project\nmcnpm\dao\ProductRepository.class
 com\project\nmcnpm\service\PaymentService.class
 com\project\nmcnpm\dao\UserRepository.class
 com\project\nmcnpm\service\ShippingLinkServiceImplementation.class
-com\project\nmcnpm\dto\OrderDTO$OrderItemDTO.class
 com\project\nmcnpm\controller\ProductController.class
 com\project\nmcnpm\controller\ProductVariantController.class
 com\project\nmcnpm\service\ProductImageService.class
@@ -144,6 +144,7 @@ com\project\nmcnpm\service\ShopServiceImplementation.class
 com\project\nmcnpm\dto\ShippingServiceDTO.class
 com\project\nmcnpm\dto\ShippingLinkDTO.class
 com\project\nmcnpm\entity\ProductsInCart.class
+com\project\nmcnpm\config\WebConfig.class
 com\project\nmcnpm\controller\ShippingServiceController.class
 com\project\nmcnpm\controller\MessageController.class
 com\project\nmcnpm\service\ShippingProviderService.class

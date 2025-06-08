@@ -8,4 +8,5 @@ public interface UserService {
     User findByUsername(String username);
     User findByEmail(String email);
     boolean authenticateUser(String username, String rawPassword);
+    boolean changePassword(String username, String oldPassword, String newPassword);
 }

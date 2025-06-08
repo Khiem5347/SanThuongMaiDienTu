@@ -27,10 +27,10 @@ public class OrderController {
             return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
         } catch (EntityNotFoundException e) {
             System.err.println("Error creating order: " + e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
         } catch (IllegalArgumentException e) {
             System.err.println("Validation error creating order: " + e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
         } catch (Exception e) {
             System.err.println("Internal server error creating order: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -115,9 +115,17 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("/tracking/{trackingNumber}")
+   /*  @GetMapping("/tracking/{trackingNumber}")
     public ResponseEntity<OrderResponseDTO> getOrderByTrackingNumber(@PathVariable String trackingNumber) {
-        System.err.println("Attempted to get order by tracking number, but 'orderTrackingNumber' field is currently not mapped in Order entity.");
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED); 
-    }
+        try {
+            OrderResponseDTO order = orderService.getOrderByTrackingNumber(trackingNumber);
+            return new ResponseEntity<>(order, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            System.err.println("Order not found by tracking number: " + e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            System.err.println("Internal server error getting order by tracking number: " + e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }*/
 }

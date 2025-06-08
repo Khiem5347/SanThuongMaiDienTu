@@ -1,7 +1,7 @@
 package com.project.nmcnpm.controller;
 
 import com.project.nmcnpm.dto.ProductSizeDTO;
-import com.project.nmcnpm.dto.ProductSizeResponseDTO; 
+import com.project.nmcnpm.dto.ProductSizeResponseDTO;
 import com.project.nmcnpm.entity.ProductSize;
 import com.project.nmcnpm.service.ProductSizeService;
 import jakarta.persistence.EntityNotFoundException;
@@ -22,14 +22,13 @@ public class ProductSizeController {
         this.productSizeService = productSizeService;
     }
     @PostMapping
-    public ResponseEntity<ProductSizeResponseDTO> createProductSize(@Valid @RequestBody ProductSizeDTO productSizeDTO) { // Changed return type
+    public ResponseEntity<ProductSize> createProductSize(@Valid @RequestBody ProductSizeDTO productSizeDTO) {
         try {
             ProductSize createdSize = productSizeService.createProductSize(productSizeDTO);
-            ProductSizeResponseDTO responseDTO = productSizeService.getProductSizeById(createdSize.getSizeId()); // Assuming getSizeId() exists in ProductSize entity
-            return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+            return new ResponseEntity<>(createdSize, HttpStatus.CREATED);
         } catch (EntityNotFoundException e) {
             System.err.println("Error creating product size: " + e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
         } catch (Exception e) {
             System.err.println("Internal server error creating product size: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -49,11 +48,10 @@ public class ProductSizeController {
         }
     }
     @PutMapping("/{id}")
-    public ResponseEntity<ProductSizeResponseDTO> updateProductSize(@PathVariable Integer id, @Valid @RequestBody ProductSizeDTO productSizeDTO) { // Changed return type
+    public ResponseEntity<ProductSize> updateProductSize(@PathVariable Integer id, @Valid @RequestBody ProductSizeDTO productSizeDTO) {
         try {
             ProductSize updatedSize = productSizeService.updateProductSize(id, productSizeDTO);
-            ProductSizeResponseDTO responseDTO = productSizeService.getProductSizeById(updatedSize.getSizeId()); // Assuming getSizeId() exists in ProductSize entity
-            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+            return new ResponseEntity<>(updatedSize, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             System.err.println("Product Size or associated entity not found during update: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

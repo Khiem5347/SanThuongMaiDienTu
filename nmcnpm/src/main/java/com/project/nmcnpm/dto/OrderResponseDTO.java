@@ -12,8 +12,12 @@ public class OrderResponseDTO {
     private Integer orderId;
     private Integer userId;
     private String userName; 
-    private Integer addressId;
+    private Integer addressId; 
     private BigDecimal totalAmount;
+    private String orderTrackingNumber;
+    private String status;
+    private Date dateCreated;
+    private Date lastUpdated;
     private List<OrderItemResponseDTO> items;
     private Integer totalItemsQuantity; 
     public OrderResponseDTO() {
@@ -30,6 +34,10 @@ public class OrderResponseDTO {
             this.addressId = address.getAddressId();
         }
         this.totalAmount = order.getTotalAmount();
+        this.orderTrackingNumber = order.getOrderTrackingNumber();
+        this.status = order.getStatus();
+        this.dateCreated = order.getDateCreated();
+        this.lastUpdated = order.getLastUpdated();
         if (order.getProductsInOrder() != null && !order.getProductsInOrder().isEmpty()) {
             this.items = order.getProductsInOrder().stream()
                     .map(OrderItemResponseDTO::new)
@@ -71,6 +79,30 @@ public class OrderResponseDTO {
     }
     public void setTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
+    }
+    public String getOrderTrackingNumber() {
+        return orderTrackingNumber;
+    }
+    public void setOrderTrackingNumber(String orderTrackingNumber) {
+        this.orderTrackingNumber = orderTrackingNumber;
+    }
+    public String getStatus() {
+        return status;
+    }
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+    public Date getLastUpdated() {
+        return lastUpdated;
+    }
+    public void setLastUpdated(Date lastUpdated) {
+        this.lastUpdated = lastUpdated;
     }
     public List<OrderItemResponseDTO> getItems() {
         return items;

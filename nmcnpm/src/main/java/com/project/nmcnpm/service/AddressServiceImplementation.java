@@ -1,7 +1,7 @@
 package com.project.nmcnpm.service;
 
 import com.project.nmcnpm.dao.AddressRepository;
-import com.project.nmcnpm.dao.UserRepository; 
+import com.project.nmcnpm.dao.UserRepository;
 import com.project.nmcnpm.dto.AddressDTO;
 import com.project.nmcnpm.dto.AddressResponseDTO;
 import com.project.nmcnpm.entity.Address;
@@ -10,9 +10,9 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional; 
-
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,29 +25,31 @@ public class AddressServiceImplementation implements AddressService {
     }
     @Override
     @Transactional
-    public Address createAddress(AddressDTO addressDTO) {
+    public AddressResponseDTO createAddress(AddressDTO addressDTO) {
         User user = userRepository.findById(addressDTO.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + addressDTO.getUserId()));
-
         Address address = new Address();
         address.setUser(user);
         address.setRecipientName(addressDTO.getRecipientName());
         address.setPhone(addressDTO.getPhone());
         address.setDetailAddress(addressDTO.getDetailAddress());
-        address.setIsDefault(addressDTO.getIsDefault() != null ? addressDTO.getIsDefault() : false);
-        if (address.getIsDefault()) {
-            List<Address> existingDefaultAddresses = addressRepository.findByUserUserId(user.getUserId());
-            existingDefaultAddresses.stream()
+        List<Address> userAddresses = addressRepository.findByUserUserId(user.getUserId());
+        boolean hasExistingAddresses = !userAddresses.isEmpty();
+        if (addressDTO.getIsDefault() != null && addressDTO.getIsDefault()) {
+            userAddresses.stream()
                     .filter(Address::getIsDefault)
                     .forEach(addr -> {
                         addr.setIsDefault(false);
-                        addressRepository.save(addr); 
+                        addressRepository.save(addr);
                     });
-        }
-        else if (addressRepository.findByUserUserId(user.getUserId()).isEmpty()) {
             address.setIsDefault(true);
+        } else if (!hasExistingAddresses) {
+            address.setIsDefault(true);
+        } else {
+            address.setIsDefault(false);
         }
-        return addressRepository.save(address);
+        Address savedAddress = addressRepository.save(address);
+        return new AddressResponseDTO(savedAddress);
     }
     @Override
     @Transactional(readOnly = true)
@@ -58,18 +60,12 @@ public class AddressServiceImplementation implements AddressService {
     }
     @Override
     @Transactional
-    public Address updateAddress(Integer addressId, AddressDTO addressDTO) {
+    public AddressResponseDTO updateAddress(Integer addressId, AddressDTO addressDTO) {
         Address existingAddress = addressRepository.findById(addressId)
                 .orElseThrow(() -> new EntityNotFoundException("Address not found with id: " + addressId));
-        if (addressDTO.getRecipientName() != null && !addressDTO.getRecipientName().isEmpty()) {
-            existingAddress.setRecipientName(addressDTO.getRecipientName());
-        }
-        if (addressDTO.getPhone() != null && !addressDTO.getPhone().isEmpty()) {
-            existingAddress.setPhone(addressDTO.getPhone());
-        }
-        if (addressDTO.getDetailAddress() != null && !addressDTO.getDetailAddress().isEmpty()) {
-            existingAddress.setDetailAddress(addressDTO.getDetailAddress());
-        }
+        Optional.ofNullable(addressDTO.getRecipientName()).ifPresent(existingAddress::setRecipientName);
+        Optional.ofNullable(addressDTO.getPhone()).ifPresent(existingAddress::setPhone);
+        Optional.ofNullable(addressDTO.getDetailAddress()).ifPresent(existingAddress::setDetailAddress);
         if (addressDTO.getIsDefault() != null && addressDTO.getIsDefault() && !existingAddress.getIsDefault()) {
             List<Address> userAddresses = addressRepository.findByUserUserId(existingAddress.getUser().getUserId());
             userAddresses.stream()
@@ -82,25 +78,30 @@ public class AddressServiceImplementation implements AddressService {
         } else if (addressDTO.getIsDefault() != null && !addressDTO.getIsDefault() && existingAddress.getIsDefault()) {
             existingAddress.setIsDefault(false);
         }
-        return addressRepository.save(existingAddress);
+        Address updatedAddress = addressRepository.save(existingAddress);
+        return new AddressResponseDTO(updatedAddress);
     }
     @Override
     @Transactional
-    public void deleteAddress(Integer addressId) {
+    public void deleteAddress(Integer addressId, Integer userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new EntityNotFoundException("User not found with id: " + userId);
+        }
         Address addressToDelete = addressRepository.findById(addressId)
                 .orElseThrow(() -> new EntityNotFoundException("Address not found with id: " + addressId));
-        List<Address> userAddresses = addressRepository.findByUserUserId(addressToDelete.getUser().getUserId());
-        if (userAddresses.size() == 1 && addressToDelete.getIsDefault()) {
-            throw new IllegalArgumentException("Cannot delete the only default address for a user.");
+        if (!addressToDelete.getUser().getUserId().equals(userId)) {
+            throw new SecurityException("Address with ID " + addressId + " does not belong to user with ID " + userId);
         }
+        List<Address> userAddresses = addressRepository.findByUserUserId(userId); 
         if (addressToDelete.getIsDefault()) {
-            userAddresses.stream()
+            Optional<Address> newDefaultCandidate = userAddresses.stream()
                     .filter(addr -> !addr.getAddressId().equals(addressId))
-                    .findFirst() 
-                    .ifPresent(addr -> {
-                        addr.setIsDefault(true);
-                        addressRepository.save(addr);
-                    });
+                    .findFirst();
+            if (newDefaultCandidate.isPresent()) {
+                newDefaultCandidate.get().setIsDefault(true);
+                addressRepository.save(newDefaultCandidate.get());
+            } else {
+            }
         }
         addressRepository.deleteById(addressId);
     }
@@ -113,9 +114,8 @@ public class AddressServiceImplementation implements AddressService {
     @Override
     @Transactional(readOnly = true)
     public List<AddressResponseDTO> getAddressesByUserId(Integer userId) {
-        if (!userRepository.existsById(userId)) {
-            throw new EntityNotFoundException("User not found with id: " + userId);
-        }
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
         List<Address> addresses = addressRepository.findByUserUserId(userId);
         return addresses.stream()
                 .map(AddressResponseDTO::new)
@@ -124,9 +124,9 @@ public class AddressServiceImplementation implements AddressService {
     @Override
     @Transactional(readOnly = true)
     public AddressResponseDTO getDefaultAddressByUserId(Integer userId) {
-        if (!userRepository.existsById(userId)) {
-            throw new EntityNotFoundException("User not found with id: " + userId);
-        }
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
+
         Address defaultAddress = addressRepository.findByUserUserIdAndIsDefaultTrue(userId);
         if (defaultAddress == null) {
             throw new EntityNotFoundException("No default address found for user with id: " + userId);
@@ -140,6 +140,7 @@ public class AddressServiceImplementation implements AddressService {
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
         Address addressToSetDefault = addressRepository.findById(addressId)
                 .orElseThrow(() -> new EntityNotFoundException("Address not found with id: " + addressId));
+
         if (!addressToSetDefault.getUser().getUserId().equals(userId)) {
             throw new IllegalArgumentException("Address with ID " + addressId + " does not belong to user with ID " + userId);
         }

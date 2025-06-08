@@ -1,7 +1,7 @@
 package com.project.nmcnpm.controller;
 
 import com.project.nmcnpm.dto.ProductReviewDTO;
-import com.project.nmcnpm.dto.ProductReviewResponseDTO; 
+import com.project.nmcnpm.dto.ProductReviewResponseDTO;
 import com.project.nmcnpm.entity.ProductReview;
 import com.project.nmcnpm.service.ProductReviewService;
 import jakarta.persistence.EntityNotFoundException;
@@ -22,14 +22,13 @@ public class ProductReviewController {
         this.productReviewService = productReviewService;
     }
     @PostMapping
-    public ResponseEntity<ProductReviewResponseDTO> createProductReview(@Valid @RequestBody ProductReviewDTO productReviewDTO) { // Changed return type
+    public ResponseEntity<ProductReview> createProductReview(@Valid @RequestBody ProductReviewDTO productReviewDTO) {
         try {
             ProductReview createdReview = productReviewService.createProductReview(productReviewDTO);
-            ProductReviewResponseDTO responseDTO = productReviewService.getProductReviewById(createdReview.getReviewId()); // Assuming getReviewId() exists in ProductReview entity
-            return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+            return new ResponseEntity<>(createdReview, HttpStatus.CREATED);
         } catch (EntityNotFoundException e) {
             System.err.println("Error creating product review: " + e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
         } catch (Exception e) {
             System.err.println("Internal server error creating product review: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -49,11 +48,10 @@ public class ProductReviewController {
         }
     }
     @PutMapping("/{id}")
-    public ResponseEntity<ProductReviewResponseDTO> updateProductReview(@PathVariable Integer id, @Valid @RequestBody ProductReviewDTO productReviewDTO) { // Changed return type
+    public ResponseEntity<ProductReview> updateProductReview(@PathVariable Integer id, @Valid @RequestBody ProductReviewDTO productReviewDTO) {
         try {
             ProductReview updatedReview = productReviewService.updateProductReview(id, productReviewDTO);
-            ProductReviewResponseDTO responseDTO = productReviewService.getProductReviewById(updatedReview.getReviewId()); // Assuming getReviewId() exists in ProductReview entity
-            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+            return new ResponseEntity<>(updatedReview, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             System.err.println("Product Review or associated entity not found during update: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
