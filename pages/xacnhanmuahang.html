@@ -5,198 +5,233 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Xác nhận mua hàng</title>
   <link rel="stylesheet" href="../css/xacnhanmuahang.css">
+  <style>
+    .action-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+
+    .action-buttons-left,
+    .action-buttons-right {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      font-size: 1em;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      color: white;
+    }
+
+    .btn-back {
+      background-color: #6c757d;
+    }
+
+    .btn-cart {
+      background-color: #17a2b8;
+    }
+
+    .btn-confirm {
+      background-color: #ff9800;
+    }
+
+    .btn:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+  </style>
 </head>
 <body>
 <div id="header"></div>
-  <div class="container">
-    <h3>Thông tin đơn hàng đã đặt</h3>
-    <div class="order-info">
-      <div class="info-box order-id">
-        <p><strong>Mã đơn hàng</strong></p>
-        <p id="order-id-value">0</p>
-      </div>
-      <div class="info-box datedate">
-        <p><strong>Ngày</strong></p>
-        <p id="order-date-value">null</p>
-      </div>
-      <div class="info-box payment-method">
-        <p><strong>Phương thức thanh toán</strong></p>
-        <p id="payment-method-value">Thanh toán khi nhận hàng</p>
-      </div>
-      <div class="info-box total-amount">
-        <p><strong>Tổng tiền</strong></p>
-        <p id="order-info-total-value">0đ</p>
-      </div>
+
+<div class="container">
+  <h3>Thông tin đơn hàng đã đặt</h3>
+  <div class="order-info">
+    <div class="info-box order-id">
+      <p><strong>Mã đơn hàng</strong></p>
+      <p id="order-id-value">0</p>
     </div>
-
-    <div class="top-actions">
-        <a href="../pages/index.html" class="back-link">← Quay về trang chủ</a>
-        <button class="confirm-order-btn">Xác nhận mua hàng</button>
+    <div class="info-box datedate">
+      <p><strong>Ngày</strong></p>
+      <p id="order-date-value">null</p>
     </div>
-
-
-    <div class="section">
-      <h2>Tổng tiền</h2>
-      <p id="items-total-amount-value">Tổng tiền hàng: 0đ</p>
-      <p id="shipping-fee-value">Phí vận chuyển: 0đ</p>
-      <p><strong>Tổng:</strong> <span id="final-total-value">0đ</span></p>
+    <div class="info-box payment-method">
+      <p><strong>Phương thức thanh toán</strong></p>
+      <p id="payment-method-value">Thanh toán khi nhận hàng</p>
     </div>
-
-    <div class="section">
-      <h2>Chi tiết hàng hóa</h2>
-      <p id="total-items-count-value">Tổng mặt hàng: 0</p>
-      <table>
-        <thead>
-          <tr>
-            <th>Tên sản phẩm</th>
-            <th>Số lượng</th>
-            <th>Giá</th>
-            <th>Tổng</th>
-          </tr>
-        </thead>
-        <tbody id="order-items-body">
-           <tr>
-             <td colspan="4" style="text-align: center;">Đang tải chi tiết...</td>
-           </tr>
-        </tbody>
-      </table>
+    <div class="info-box total-amount">
+      <p><strong>Tổng tiền</strong></p>
+      <p id="order-info-total-value">0đ</p>
     </div>
   </div>
 
-  <script>
-    
-    document.addEventListener('DOMContentLoaded', () => {
+  <div class="section">
+    <h2>Tổng tiền</h2>
+    <p id="items-total-amount-value">Tổng tiền hàng: 0đ</p>
+    <p id="shipping-fee-value">Phí vận chuyển: 0đ</p>
+    <p><strong>Tổng:</strong> <span id="final-total-value">0đ</span></p>
+  </div>
 
-    // Hàm định dạng tiền tệ Việt Nam
-    function formatCurrency(amount) {
-         if (typeof amount !== 'number' || isNaN(amount)) {
-              return '0đ';
-         }
-        return `₫${amount.toLocaleString('vi-VN')}`;
+  <div class="section">
+    <h2>Chi tiết hàng hóa</h2>
+    <p id="total-items-count-value">Tổng mặt hàng: 0</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Ảnh</th>
+          <th>Tên sản phẩm</th>
+          <th>Số lượng</th>
+          <th>Giá</th>
+          <th>Tổng</th>
+        </tr>
+      </thead>
+      <tbody id="order-items-body">
+        <tr>
+          <td colspan="5" style="text-align: center;">Đang tải chi tiết...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="action-buttons">
+    <div class="action-buttons-left">
+      <a href="../pages/giohang.html" class="btn btn-cart">← Quay về giỏ hàng</a>
+      <a href="../pages/index.html" class="btn btn-back">← Quay về trang chủ</a>
+    </div>
+    <div class="action-buttons-right">
+      <button class="btn btn-confirm confirm-order-btn">Xác nhận mua hàng</button>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  function formatCurrency(amount) {
+    if (typeof amount !== 'number' || isNaN(amount)) return '0đ';
+    return '₫' + amount.toLocaleString('vi-VN');
+  }
+
+  const orderStatusElement = document.querySelector('.container h3');
+  const orderIdElement = document.getElementById('order-id-value');
+  const orderDateElement = document.getElementById('order-date-value');
+  const paymentMethodElement = document.getElementById('payment-method-value');
+  const orderInfoTotalElement = document.getElementById('order-info-total-value');
+  const itemsTotalAmountElement = document.getElementById('items-total-amount-value');
+  const shippingFeeElement = document.getElementById('shipping-fee-value');
+  const finalTotalElement = document.getElementById('final-total-value');
+  const totalItemsCountElement = document.getElementById('total-items-count-value');
+  const orderItemsTableBody = document.getElementById('order-items-body');
+  const confirmOrderBtn = document.querySelector('.confirm-order-btn');
+
+  const orderDetailsString = sessionStorage.getItem('currentOrderDetails');
+  let orderDetails = null;
+
+  if (orderDetailsString) {
+    try {
+      orderDetails = JSON.parse(orderDetailsString);
+      console.log("Đã tải chi tiết đơn hàng từ sessionStorage:", orderDetails);
+    } catch (error) {
+      console.error("Lỗi phân tích dữ liệu đơn hàng:", error);
+      sessionStorage.removeItem('currentOrderDetails');
     }
+  }
 
-    // Lấy các tham chiếu đến các phần tử HTML
-    const orderStatusElement = document.querySelector('.container h3'); // Tham chiếu đến toàn bộ h3
-    const orderIdElement = document.getElementById('order-id-value');
-    const orderDateElement = document.getElementById('order-date-value');
-    const paymentMethodElement = document.getElementById('payment-method-value');
-    const orderInfoTotalElement = document.getElementById('order-info-total-value');
+  function renderOrderDetails(details) {
+    if (details && details.items && details.items.length > 0) {
+      orderStatusElement.textContent = 'Thông tin đơn hàng của bạn';
+      orderIdElement.textContent = details.orderId || 'N/A';
+      orderDateElement.textContent = details.orderDate || 'N/A';
+      paymentMethodElement.textContent = details.paymentMethod || 'Chưa xác định';
 
-    const itemsTotalAmountElement = document.getElementById('items-total-amount-value');
-    const shippingFeeElement = document.getElementById('shipping-fee-value');
-    const finalTotalElement = document.getElementById('final-total-value');
+      const calculatedTotal = details.itemsTotalAmount + (details.shippingFee || 0);
+      itemsTotalAmountElement.textContent = `Tổng tiền hàng: ${formatCurrency(details.itemsTotalAmount)}`;
+      shippingFeeElement.textContent = `Phí vận chuyển: ${formatCurrency(details.shippingFee || 0)}`;
+      finalTotalElement.textContent = `${formatCurrency(calculatedTotal)}`;
+      orderInfoTotalElement.textContent = formatCurrency(calculatedTotal);
+      totalItemsCountElement.textContent = `Tổng mặt hàng: ${details.items.length}`;
+      orderItemsTableBody.innerHTML = '';
 
-    const totalItemsCountElement = document.getElementById('total-items-count-value');
-    const orderItemsTableBody = document.getElementById('order-items-body');
+      details.items.forEach(item => {
+        const row = document.createElement('tr');
+        const itemTotal = item.variation.price * item.quantity;
+        const imageUrl = item.variation?.imageUrl || '../assets/default-product.jpg';
 
-    const confirmOrderBtn = document.querySelector('.confirm-order-btn'); // Tham chiếu nút Xác nhận
+        row.innerHTML = `
+          <td><img src="${imageUrl}" alt="ảnh" style="width: 60px; height: 60px; object-fit: cover;"></td>
+          <td>${item.productName} - ${item.variation.option}</td>
+          <td>${item.quantity}</td>
+          <td>${formatCurrency(item.variation.price)}</td>
+          <td>${formatCurrency(itemTotal)}</td>
+        `;
+        orderItemsTableBody.appendChild(row);
+      });
 
+      confirmOrderBtn.disabled = false;
+    } else {
+      orderStatusElement.textContent = 'Không tìm thấy thông tin đơn hàng';
+      orderIdElement.textContent = 'N/A';
+      orderDateElement.textContent = 'N/A';
+      paymentMethodElement.textContent = 'N/A';
+      orderInfoTotalElement.textContent = '0đ';
+      itemsTotalAmountElement.textContent = `Tổng tiền hàng: 0đ`;
+      shippingFeeElement.textContent = `Phí vận chuyển: 0đ`;
+      finalTotalElement.textContent = `0đ`;
+      totalItemsCountElement.textContent = `Tổng mặt hàng: 0`;
+      orderItemsTableBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Không có chi tiết mặt hàng.</td></tr>';
+      confirmOrderBtn.disabled = true;
+    }
+  }
 
-    // --- Logic Tải và Hiển thị Chi tiết Đơn hàng ---
-    const orderDetailsString = sessionStorage.getItem('currentOrderDetails');
-    let orderDetails = null;
-
-    if (orderDetailsString) {
-        try {
-            orderDetails = JSON.parse(orderDetailsString);
-            console.log("Đã tải chi tiết đơn hàng từ sessionStorage:", orderDetails);
-        } catch (error) {
-            console.error("Lỗi đọc hoặc phân tích dữ liệu đơn hàng từ sessionStorage:", error);
-            sessionStorage.removeItem('currentOrderDetails');
+  if (confirmOrderBtn) {
+    confirmOrderBtn.addEventListener('click', () => {
+      if (orderDetails && orderDetails.items && orderDetails.items.length > 0) {
+        // Save the confirmed order to localStorage for danhsachdonhang.html to pick up
+        let userOrders = JSON.parse(localStorage.getItem('userOrders')) || [];
+        // Prevent duplicate orders if the page is somehow re-confirmed
+        const existingOrderIndex = userOrders.findIndex(order => order.orderId === orderDetails.orderId);
+        if (existingOrderIndex === -1) {
+            userOrders.push(orderDetails);
+            localStorage.setItem('userOrders', JSON.stringify(userOrders));
+            console.log("Đã lưu đơn hàng vào localStorage.userOrders:", orderDetails);
+        } else {
+            console.log("Đơn hàng đã tồn tại trong localStorage.userOrders, không lưu lại.", orderDetails);
         }
-    }
 
-    // Hàm render chi tiết đơn hàng
-    function renderOrderDetails(details) {
-         if (details && details.items && details.items.length > 0) {
-             // Cập nhật tiêu đề/trạng thái
-             if (orderStatusElement) orderStatusElement.textContent = 'Thông tin đơn hàng của bạn'; // Cập nhật text
+        // Xoá item đã xác nhận khỏi giỏ hàng
+        const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+        const itemsToRemove = orderDetails.items || [];
 
-             if (orderIdElement) orderIdElement.textContent = details.orderId || 'N/A';
-             if (orderDateElement) orderDateElement.textContent = details.orderDate || 'N/A';
-             if (paymentMethodElement) paymentMethodElement.textContent = details.paymentMethod || 'Chưa xác định';
+        const updatedCart = cartItems.filter(cartItem =>
+          !itemsToRemove.some(orderedItem =>
+            String(orderedItem.productId) === String(cartItem.productId) &&
+            orderedItem.variation?.option === cartItem.variation?.option
+          )
+        );
+        localStorage.setItem('cartItems', JSON.stringify(updatedCart));
+        console.log("Đã xoá sản phẩm khỏi giỏ hàng sau khi xác nhận.");
 
-             const calculatedTotal = details.itemsTotalAmount + (details.shippingFee || 0);
-             if (itemsTotalAmountElement) itemsTotalAmountElement.textContent = `Tổng tiền hàng: ${formatCurrency(details.itemsTotalAmount)}`;
-             if (shippingFeeElement) shippingFeeElement.textContent = `Phí vận chuyển: ${formatCurrency(details.shippingFee || 0)}`;
-             if (finalTotalElement) finalTotalElement.textContent = `${formatCurrency(calculatedTotal)}`;
-             if (orderInfoTotalElement) orderInfoTotalElement.textContent = formatCurrency(calculatedTotal); // Cập nhật tổng tiền box
+        sessionStorage.removeItem('currentOrderDetails');
+        console.log("Đã xoá dữ liệu đơn hàng khỏi sessionStorage sau xác nhận.");
 
+        window.location.href = '../pages/danhsachdonhang.html';
+      } else {
+        alert("Không có thông tin đơn hàng để xác nhận.");
+      }
+    });
+  }
 
-             if (totalItemsCountElement) totalItemsCountElement.textContent = `Tổng mặt hàng: ${details.items.length}`;
-
-             if (orderItemsTableBody) orderItemsTableBody.innerHTML = '';
-
-             if (orderItemsTableBody) {
-                  details.items.forEach(item => {
-                      const row = document.createElement('tr');
-                      const itemTotal = item.variation.price * item.quantity;
-
-                      row.innerHTML = `
-                          <td>${item.productName} - ${item.variation.option}</td>
-                          <td>${item.quantity}</td>
-                          <td>${formatCurrency(item.variation.price)}</td>
-                          <td>${formatCurrency(itemTotal)}</td>
-                      `;
-                      orderItemsTableBody.appendChild(row);
-                  });
-             }
-
-             // Bật nút xác nhận nếu có dữ liệu
-             if (confirmOrderBtn) confirmOrderBtn.disabled = false;
-
-
-         } else {
-             // Hiển thị thông báo nếu không tìm thấy dữ liệu
-             if (orderStatusElement) orderStatusElement.textContent = 'Không tìm thấy thông tin đơn hàng'; // Cập nhật text
-             if (orderIdElement) orderIdElement.textContent = 'N/A';
-             if (orderDateElement) orderDateElement.textContent = 'N/A';
-             if (paymentMethodElement) paymentMethodElement.textContent = 'N/A';
-             if (orderInfoTotalElement) orderInfoTotalElement.textContent = '0đ';
-
-             if (itemsTotalAmountElement) itemsTotalAmountElement.textContent = `Tổng tiền hàng: 0đ`;
-             if (shippingFeeElement) shippingFeeElement.textContent = `Phí vận chuyển: 0đ`;
-             if (finalTotalElement) finalTotalElement.textContent = `0đ`;
-
-
-             if (totalItemsCountElement) totalItemsCountElement.textContent = `Tổng mặt hàng: 0`;
-             if (orderItemsTableBody) orderItemsTableBody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Không có chi tiết mặt hàng.</td></tr>';
-
-             console.warn("Không tìm thấy dữ liệu đơn hàng trong sessionStorage hoặc dữ liệu rỗng.");
-
-             // Vô hiệu hóa nút xác nhận nếu không có dữ liệu
-             if (confirmOrderBtn) confirmOrderBtn.disabled = true;
-         }
-    }
-
-    // --- Logic cho nút Xác nhận ---
-    if (confirmOrderBtn) {
-        confirmOrderBtn.addEventListener('click', () => {
-             // Ở đây, trong một ứng dụng thật, bạn sẽ gửi dữ liệu orderDetails
-             // đến máy chủ backend để xử lý thanh toán, lưu đơn hàng vào database, v.v.
-             // Vì đây là ví dụ frontend, chúng ta sẽ mô phỏng:
-
-             if (orderDetails && orderDetails.items && orderDetails.items.length > 0) {
-                  // Xóa dữ liệu đơn hàng khỏi sessionStorage sau khi "xác nhận"
-                  sessionStorage.removeItem('currentOrderDetails');
-                   console.log("Đã xóa dữ liệu đơn hàng khỏi sessionStorage sau xác nhận.");
-
-                  // Chuyển hướng người dùng đến một trang cảm ơn hoặc trang chủ
-                  window.location.href = '../pages/danhsachdonhang.html'; // Điều chỉnh đường dẫn về trang chủ
-
-             } else {
-                 alert("Không có thông tin đơn hàng để xác nhận.");
-             }
-        });
-    }
-    // --- Khởi tạo trang khi load ---
-    renderOrderDetails(orderDetails);
-
-
+  renderOrderDetails(orderDetails);
 });
- </script>
-  <div id="footer"></div>
-  <script src="../js/header.js"></script>
-  <script src="../js/index.js"></script>
+</script>
+
+<div id="footer"></div>
+<script src="../js/header.js"></script>
+<script src="../js/index.js"></script>
 </body>
 </html>
