@@ -317,7 +317,7 @@ body {
 .sold-bar-container {
     width: 100%;
     height: 12px; /* Chiều cao thanh progress */
-    background-color: #eee; /* Nền xám của thanh */
+    background-color: rgb(240, 199, 206); /* Nền xám của thanh */
     border-radius: 6px;
     overflow: hidden; /* Đảm bảo progress bar không tràn ra */
     position: relative; /* Cho văn bản "Đã bán" */
@@ -399,7 +399,6 @@ body {
     text-align: center; /* Căn giữa tiêu đề nếu muốn, trong ảnh nó hơi lệch trái */
 }
 /* CSS MỚI CHO LƯỚI THƯƠNG HIỆU NỔI BẬT */
-
 .brand-grid {
     display: grid;
     /* Hiển thị 6 cột trên màn hình lớn */

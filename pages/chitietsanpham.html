@@ -5,96 +5,228 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chi tiết sản phẩm</title>
     <link rel="stylesheet" href="../css/chitietsanpham.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        /* CSS CHO CÁC PHẦN MỚI */
+        /* .page-wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        } */
+
+        /* CSS cho Shop Info */
+        .shop-info-section {
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .shop-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 1px solid #eee;
+            object-fit: cover;
+        }
+        .shop-details-info {
+            flex-grow: 1;
+        }
+        .shop-name {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin: 0 0 10px 0;
+        }
+        .shop-actions button {
+            padding: 8px 15px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+        .shop-actions button:hover {
+            background-color: #f5f5f5;
+            border-color: #999;
+        }
+        .shop-actions .view-shop-btn {
+            border-color: orangered;
+            color: orangered;
+        }
+
+        /* CSS cho Product Reviews Section */
+        .product-reviews-section {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+        }
+        .product-reviews-section h2 {
+            font-size: 1.5em;
+            margin: 0 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .review-item {
+            display: flex;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .review-item:last-child {
+            border-bottom: none;
+        }
+        .review-author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+        .review-content {
+            flex-grow: 1;
+        }
+        .review-author-name {
+            font-weight: bold;
+            margin: 0 0 5px 0;
+        }
+        .review-stars {
+            color: #ffce3d;
+            margin: 5px 0;
+        }
+        .review-timestamp {
+            font-size: 0.8em;
+            color: #888;
+            margin: 5px 0;
+        }
+        .review-text {
+            margin: 10px 0 0 0;
+            line-height: 1.5;
+        }
+        #review-form {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        #review-form h3 {
+            margin: 0 0 15px 0;
+        }
+        .rating-input .stars {
+            font-size: 1.8em;
+            cursor: pointer;
+            color: #ccc;
+        }
+        .rating-input .stars .star:hover,
+        .rating-input .stars .star.selected {
+            color: #ffce3d;
+        }
+        #review-form textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 10px;
+            margin: 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        #review-form button {
+            padding: 10px 20px;
+            border: none;
+            background-color: orangered;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #review-form button:disabled {
+            background-color: #ccc;
+        }
+    </style>
 </head>
 <body>
-    <div id="header"></div>
-      <div class="product-container">
-        <div class="image-gallery">
-            <img src="placeholder-main.jpg" alt="Main Product Image" class="main-image">
-            <div class="thumbnails">
-                <img src="placeholder-thumb1.jpg" alt="Thumbnail 1" class="thumbnail active">
-                <img src="placeholder-thumb2.jpg" alt="Thumbnail 2" class="thumbnail">
-                <img src="placeholder-thumb3.jpg" alt="Thumbnail 3" class="thumbnail">
-                <img src="placeholder-thumb4.jpg" alt="Thumbnail 4" class="thumbnail">
+    <div id="header"></div> <main class="page-wrapper">
+        <div class="product-container">
+            <div class="image-gallery">
+                <img src="../assets/placeholder-main.jpg" alt="Main Product Image" class="main-image">
+                <div class="thumbnails"></div>
             </div>
-        </div>
-
-        <div class="product-details">
-            <h1 class="product-title">Tên Sản Phẩm Đang Tải...</h1>
-
-            <div class="ratings-sold">
-                <span class="rating">
-                    4.9 <span class="stars">★★★★★</span>
-                </span>
-                <span class="separator">|</span>
-                <span class="reviews">2k Đánh Giá</span>
-                <span class="separator">|</span>
-                <span class="sold">7.8k Đã Bán</span>
+            <div class="product-details">
+                <h1 class="product-title">Tên Sản Phẩm Đang Tải...</h1>
+                <div class="ratings-sold">
+                    <span class="rating">... <span class="stars"></span></span>
+                    <span class="separator">|</span>
+                    <span class="reviews">... Đánh Giá</span>
+                    <span class="separator">|</span>
+                    <span class="sold">... Đã Bán</span>
                 </div>
-
-            <div class="price-section">
-                <span class="price">₫0</span>
-            </div>
-
-            <div class="shipping-info">
-                <div class="shipping-details">
-                     <label>Vận Chuyển</label>
-                     <div>
-                        <p>Nhận từ <span class="est-delivery">6 Th06 - 9 Th06</span></p>
-                        <p>Phí giao <span class="shipping-fee">₫0</span></p>
-                        <p style="font-size: 13px; color: #555;">Tặng Voucher ₫15.000 nếu đơn giao sau thời gian trên.</p>
-                     </div>
-                </div>
-                 <div class="voucher-info">
-                    <label>Ưu đãi Vận Chuyển</label>
-                    <p><span class="voucher-text">Trả hàng miễn phí 15 ngày · Chính hãng 100% · Miễn phí vận chuyển</span></p>
-                 </div>
-            </div>
-
-             <!-- <div class="return-policy">
-                <label>An Tâm Mua Sắm</label>
-                <p>
-                    <span class="policy-text">...</span>
-                    <span class="return-details">Chi tiết trả hàng</span>
-                </p>
-            </div> -->
-
-
-            <div class="variations-section">
-                <div class="color-options-container option-group">
-                    <label>Màu sắc</label>
-                    <div class="variations-options" id="color-options">
-                        <p class="loading-options-text">Đang tải tùy chọn màu...</p>
+                <div class="price-section"><span class="price">...</span></div>
+                <div class="shipping-info"></div>
+                <div class="variations-section">
+                    <div class="color-options-container option-group">
+                        <label>Màu sắc</label>
+                        <div class="variations-options" id="color-options"></div>
+                    </div>
+                    <div class="size-options-container option-group">
+                        <label>Kích thước</label>
+                        <div class="variations-options" id="size-options"></div>
                     </div>
                 </div>
-                <div class="size-options-container option-group">
-                    <label>Kích thước</label>
-                    <div class="variations-options" id="size-options">
-                        <p class="select-color-first-text">Vui lòng chọn màu sắc để xem kích thước.</p>
+                <div class="quantity-section">
+                    <label>Số Lượng</label>
+                    <div class="quantity-selector">
+                        <button class="quantity-btn minus">-</button>
+                        <input type="text" class="quantity-input" value="0" min="0">
+                        <button class="quantity-btn plus">+</button>
+                    </div>
+                    <span class="stock-available">... sản phẩm có sẵn</span>
+                </div>
+                <div class="action-buttons">
+                    <button class="add-to-cart">Thêm Vào Giỏ Hàng</button>
+                    <button class="buy-now">Mua Ngay</button>
+                </div>
+            </div>
+        </div>
+
+        <section id="shop-info-section" class="shop-info-section" style="display: none;">
+            <img src="../assets/default-shop-avatar.png" alt="Shop Avatar" class="shop-avatar">
+            <div class="shop-details-info">
+                <h3 class="shop-name">Tên Shop Đang Tải...</h3>
+                <div class="shop-actions">
+                    <button id="chatWithShopBtn"><i class="fas fa-comment-dots"></i> Chat Ngay</button>
+                    <button id="viewShopBtn"><i class="fas fa-store"></i> Xem Shop</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="product-reviews-section" class="product-reviews-section">
+            <h2>ĐÁNH GIÁ SẢN PHẨM</h2>
+            <div id="reviews-list">
+                <p>Đang tải đánh giá...</p>
+            </div>
+            <form id="review-form" style="display: none;">
+                <h3>Viết đánh giá của bạn</h3>
+                <div class="rating-input">
+                    <label>Chất lượng sản phẩm:</label>
+                    <div class="stars" data-rating="0">
+                        <span class="star" data-value="1">★</span><span class="star" data-value="2">★</span><span class="star" data-value="3">★</span><span class="star" data-value="4">★</span><span class="star" data-value="5">★</span>
                     </div>
                 </div>
+                <textarea id="review-text" placeholder="Hãy chia sẻ cảm nhận của bạn về sản phẩm này nhé..." required></textarea>
+                <button type="submit" id="submit-review-btn">Gửi Đánh Giá</button>
+            </form>
+            <div id="review-login-prompt" style="display: none; text-align: center; margin-top: 20px;">
+                <p>Vui lòng <a href="../pages/dangnhap.html">đăng nhập</a> để viết đánh giá.</p>
             </div>
+        </section>
+    </main>
 
-            <div class="quantity-section">
-                <label>Số Lượng</label>
-                <div class="quantity-selector">
-                    <button class="quantity-btn minus">-</button>
-                    <input type="text" class="quantity-input" value="1" min="1">
-                    <button class="quantity-btn plus">+</button>
-                </div>
-                <span class="stock-available">... sản phẩm có sẵn</span>
-            </div>
-
-            <div class="action-buttons">
-                <button class="add-to-cart">Thêm Vào Giỏ Hàng</button>
-                <button class="buy-now">Mua Ngay</button>
-            </div>
-        </div>
-        </div>
     <div id="footer"></div>
+    
     <script src="../js/header.js"></script>
     <script src="../js/index.js"></script>
-    <script src="../js/main-loader.js"></script>
     <script src="../js/chitietsanpham.js"></script>
 </body>
 </html>

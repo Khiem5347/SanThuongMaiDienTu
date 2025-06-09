@@ -1,3 +1,4 @@
+// js/header.js
 console.log("js/header.js: File đã tải. Chứa các hàm khởi tạo, sẵn sàng được gọi.");
 
 /**
@@ -14,51 +15,59 @@ function initHeaderUI() {
         return;
     }
 
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    const username = localStorage.getItem('loggedInUser');
+    // --- LOGIC KIỂM TRA HYBRID (CẢ CŨ VÀ MỚI) ---
+    // 1. Ưu tiên kiểm tra theo chuẩn mới
+    const token = localStorage.getItem('token');
+    const userString = localStorage.getItem('user');
+    const user = userString ? JSON.parse(userString) : null;
 
+    // 2. Nếu không có, kiểm tra theo chuẩn cũ để tương thích
+    const isLoggedIn_old = localStorage.getItem('isLoggedIn');
+    const username_old = localStorage.getItem('loggedInUser');
+
+    // Xác định tên người dùng và trạng thái đăng nhập cuối cùng
+    const finalUsername = user?.username || username_old;
+    const finalIsLoggedIn = !!token || (isLoggedIn_old === 'true');
+
+    // Xóa dropdown cũ nếu có để tránh trùng lặp
     const existingUserDropdown = headerUl.querySelector('.user-dropdown-li');
     if (existingUserDropdown) existingUserDropdown.remove();
 
-    if (isLoggedIn === 'true' && username) {
+    if (finalIsLoggedIn && finalUsername) {
+        // --- HIỂN THỊ KHI ĐÃ ĐĂNG NHẬP ---
         if (loginNavLi) loginNavLi.style.display = 'none';
 
         const userDropdownLi = document.createElement('li');
         userDropdownLi.classList.add('user-dropdown-li');
 
-        const usernameLink = document.createElement('a');
-        usernameLink.href = '#';
-        usernameLink.textContent = username;
-        usernameLink.classList.add('user-dropdown-trigger');
-        userDropdownLi.appendChild(usernameLink);
+        userDropdownLi.innerHTML = `
+            <a href="#" class="user-dropdown-trigger">
+                <i class="fas fa-user-circle"></i> ${finalUsername}
+            </a>
+            <div class="user-dropdown-content">
+                <a href="../pages/taikhoan.html">Tài Khoản Của Tôi</a>
+                <a href="#" id="logoutBtnInDropdown">Đăng Xuất</a>
+            </div>
+        `;
+        
+        userDropdownLi.addEventListener('mouseenter', () => userDropdownLi.querySelector('.user-dropdown-content').style.display = 'block');
+        userDropdownLi.addEventListener('mouseleave', () => userDropdownLi.querySelector('.user-dropdown-content').style.display = 'none');
 
-        const dropdownContent = document.createElement('div');
-        dropdownContent.classList.add('user-dropdown-content');
-
-        const myAccountLink = document.createElement('a');
-        myAccountLink.href = '../pages/taikhoan.html';
-        myAccountLink.textContent = 'Tài Khoản Của Tôi';
-        dropdownContent.appendChild(myAccountLink);
-
-        const logoutLinkDropdown = document.createElement('a');
-        logoutLinkDropdown.href = '#';
-        logoutLinkDropdown.textContent = 'Đăng Xuất';
-        logoutLinkDropdown.addEventListener('click', function (e) {
+        headerUl.prepend(userDropdownLi);
+        
+        // Gắn sự kiện cho nút logout mới (xóa tất cả các key)
+        document.getElementById('logoutBtnInDropdown').addEventListener('click', (e) => {
             e.preventDefault();
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
             localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('loggedInUser');
             alert('Bạn đã đăng xuất.');
             window.location.href = '../pages/index.html';
         });
-        dropdownContent.appendChild(logoutLinkDropdown);
 
-        userDropdownLi.appendChild(dropdownContent);
-
-        userDropdownLi.addEventListener('mouseenter', () => dropdownContent.style.display = 'block');
-        userDropdownLi.addEventListener('mouseleave', () => dropdownContent.style.display = 'none');
-
-        headerUl.prepend(userDropdownLi);
     } else {
+        // --- HIỂN THỊ KHI CHƯA ĐĂNG NHẬP ---
         if (loginNavLi) loginNavLi.style.display = '';
     }
     console.log("js/header.js: Hàm initHeaderUI() đã chạy xong.");
@@ -68,35 +77,19 @@ function initHeaderUI() {
  * Khởi tạo chức năng tìm kiếm đơn giản.
  */
 function initSearch() {
-    console.log("js/header.js: Bắt đầu chạy hàm initSearch() đã được đơn giản hóa.");
-
+    // ... (Hàm này giữ nguyên, không cần thay đổi) ...
+    console.log("js/header.js: Bắt đầu chạy hàm initSearch().");
     const searchInput = document.getElementById('searchInput');
     const searchButton = document.getElementById('searchButton');
-
-    if (!searchInput || !searchButton) {
-        console.error("js/header.js: (Lỗi trong initSearch) Không tìm thấy searchInput hoặc searchButton.");
-        return;
-    }
-
-    // Hàm thực hiện chuyển trang khi tìm kiếm
+    if (!searchInput || !searchButton) { return; }
     const performSearch = () => {
         const query = searchInput.value.trim();
         if (query) {
             window.location.href = `../pages/timkiem.html?q=${encodeURIComponent(query)}`;
         }
     };
-
-    // Gán sự kiện cho nút Enter trên ô input
-    searchInput.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
-            performSearch();
-        }
-    });
-
-    // Gán sự kiện cho nút tìm kiếm
+    searchInput.addEventListener('keydown', (event) => { if (event.key === 'Enter') performSearch(); });
     searchButton.addEventListener('click', performSearch);
-
-    console.log("js/header.js: Hàm initSearch() đã chạy xong.");
 }
 
 /**
@@ -106,12 +99,12 @@ function initializeHeader() {
     console.log("js/header.js: Bắt đầu chạy hàm initializeHeader().");
     initHeaderUI();
     initSearch();
-    console.log("js/header.js: Hàm initializeHeader() đã chạy xong.");
 }
 
 // Lắng nghe sự kiện storage để cập nhật UI giữa các tab
 window.addEventListener('storage', (event) => {
-    if (event.key === 'isLoggedIn' || event.key === 'loggedInUser') {
+    // Lắng nghe tất cả các key liên quan
+    if (['token', 'user', 'isLoggedIn', 'loggedInUser'].includes(event.key)) {
         if (typeof initHeaderUI === 'function') initHeaderUI();
     }
 });
