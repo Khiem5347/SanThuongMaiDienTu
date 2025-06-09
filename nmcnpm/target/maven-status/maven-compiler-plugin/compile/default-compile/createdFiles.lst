@@ -50,6 +50,7 @@ com\project\nmcnpm\ECommerceApplication.class
 com\project\nmcnpm\dto\CartItemDTO.class
 com\project\nmcnpm\dto\CartResponseDTO.class
 com\project\nmcnpm\dto\ProductSizeDTO.class
+com\project\nmcnpm\service\JwtTokenProvider.class
 com\project\nmcnpm\controller\ProductImageController.class
 com\project\nmcnpm\dto\PaymentResponseDTO.class
 com\project\nmcnpm\dto\ShippingProviderDTO.class
@@ -111,6 +112,7 @@ com\project\nmcnpm\service\ShippingLinkServiceImplementation.class
 com\project\nmcnpm\controller\ProductController.class
 com\project\nmcnpm\controller\ProductVariantController.class
 com\project\nmcnpm\service\ProductImageService.class
+com\project\nmcnpm\config\JwtAuthenticationFilter.class
 com\project\nmcnpm\dto\MessageResponseDTO.class
 com\project\nmcnpm\service\CartService.class
 com\project\nmcnpm\service\HistoryServiceImplementation.class
@@ -127,6 +129,7 @@ com\project\nmcnpm\dto\ProductVariantDTO.class
 com\project\nmcnpm\entity\Address.class
 com\project\nmcnpm\entity\Category.class
 com\project\nmcnpm\dto\ProductSizeResponseDTO.class
+com\project\nmcnpm\config\SecurityConfig.class
 com\project\nmcnpm\dao\AddressRepository.class
 com\project\nmcnpm\dto\MessageDTO.class
 com\project\nmcnpm\service\MessageServiceImplementation.class

@@ -42,6 +42,7 @@ E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\service\ProductSer
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dto\HistoryDTO.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dto\ShippingProviderResponseDTO.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\service\ProductSizeService.java
+E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\config\SecurityConfig.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\service\PaymentService.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dto\ShippingLinkResponseDTO.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\service\UserService.java
@@ -49,6 +50,7 @@ E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dao\AppliedVoucher
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dao\ReviewImageRepository.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dao\ShopRepository.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\service\HistoryServiceImplementation.java
+E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\service\JwtTokenProvider.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dao\ProductsInOrderRepository.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\controller\HistoryController.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\service\MessageService.java
@@ -57,6 +59,7 @@ E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dao\ProductImageRe
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dto\ProductVariantDTO.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\service\ShopServiceImplementation.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\service\PaymentServiceImplementation.java
+E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\config\JwtAuthenticationFilter.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dto\ProductSizeDTO.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\service\ProductReviewServiceImplementation.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\controller\ConversationController.java
