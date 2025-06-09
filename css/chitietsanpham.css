@@ -1,27 +1,30 @@
+/* css/chitietsanpham.css */
+
+/* SỬA LỖI: Bỏ display:flex khỏi body để có luồng trang dọc bình thường */
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
+    padding: 0; /* Xóa padding mặc định */
     background-color: #f5f5f5;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
 }
 
+/* Thêm một container chính để căn giữa nội dung trên trang */
+.page-wrapper {
+    max-width: 1200px; /* Hoặc chiều rộng bạn muốn */
+    margin: 20px auto; /* Tự động căn giữa theo chiều ngang */
+    padding: 0 15px; /* Thêm khoảng trống hai bên trên màn hình nhỏ */
+}
+
+
 .product-container {
-    display: flex; /* Sẽ được thiết lập bởi JS sau khi tải */
+    display: flex;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
-    max-width: 1000px; /* Adjust as needed */
-    width: 100%;
-    padding: 20px;
+    width: 100%; /* Chiếm toàn bộ chiều rộng của .page-wrapper */
+    padding: 30px;
     box-sizing: border-box;
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
-    /* Thêm style cho trạng thái loading ban đầu nếu cần */
-    /* text-align: center; */
-    /* align-items: center; */
-    /* justify-content: center; */
-    /* min-height: 300px; */ /* Chiều cao tối thiểu khi loading */
+    flex-wrap: wrap; /* Cho phép xuống dòng trên màn hình nhỏ */
 }
 
 .image-gallery {
@@ -36,6 +39,8 @@ body {
     height: auto;
     border-radius: 4px;
     margin-bottom: 10px;
+    aspect-ratio: 1 / 1; /* Giữ ảnh vuông vức */
+    object-fit: cover;
 }
 
 .thumbnails {
@@ -63,6 +68,7 @@ body {
     flex: 1.5;
     min-width: 350px;
     box-sizing: border-box;
+    padding-left: 20px; /* Thêm khoảng cách với gallery ảnh */
 }
 
 .product-title {
@@ -70,6 +76,7 @@ body {
     margin-top: 0;
     margin-bottom: 10px;
     color: #333;
+    line-height: 1.3;
 }
 
 .ratings-sold {
@@ -78,6 +85,12 @@ body {
     margin-bottom: 15px;
     font-size: 14px;
     color: #777;
+    flex-wrap: wrap;
+}
+
+.ratings-sold .rating {
+    display: flex;
+    align-items: center;
 }
 
 .ratings-sold .rating .stars {
@@ -91,9 +104,9 @@ body {
 }
 
 .price-section {
-    background-color: #fff0f0; /* Light red/pinkish background */
+    background-color: #fafafa; /* Màu nền nhẹ nhàng hơn */
     padding: 15px 20px;
-    margin-bottom: 20px;
+    margin: 20px 0;
     border-radius: 4px;
     display: flex;
     align-items: center;
@@ -105,63 +118,50 @@ body {
     font-weight: bold;
 }
 
+/* Các section phân loại */
 .shipping-info,
-.return-policy,
 .variations-section,
 .quantity-section {
     margin-bottom: 20px;
     padding-bottom: 15px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #f0f0f0;
+}
+.variations-section .option-group {
+    margin-bottom: 15px;
 }
 
+/* Label chung */
 .shipping-info label,
-.return-policy label,
 .variations-section label,
 .quantity-section label {
     display: block;
     font-size: 14px;
-    color: #777;
+    color: #555; /* Chữ đậm hơn một chút */
     margin-bottom: 10px;
-    font-weight: bold;
+    font-weight: 600; /* Dày hơn */
 }
 
 .shipping-info .shipping-details,
-.shipping-info .voucher-info,
-.return-policy p {
+.shipping-info .voucher-info {
     display: flex;
     align-items: flex-start;
     margin-bottom: 10px;
     font-size: 14px;
     color: #555;
 }
+
 .shipping-info .shipping-details label,
 .shipping-info .voucher-info label {
     flex-basis: 100px;
     flex-shrink: 0;
     margin-right: 15px;
     font-weight: normal;
-    color: #333;
+    color: #777;
 }
 
 .shipping-info .shipping-details > div {
     flex-grow: 1;
 }
-
-.return-policy p label {
-    flex-basis: 100px;
-    flex-shrink: 0;
-    margin-right: 15px;
-    font-weight: normal;
-    color: #333;
-}
-
-
-.return-policy .return-details {
-    color: #007bff;
-    cursor: pointer;
-    margin-left: 10px;
-}
-
 
 .variations-options {
     display: flex;
@@ -188,6 +188,7 @@ body {
     border-color: #ee4d2d;
     color: #ee4d2d;
     background-color: #fff8f5;
+    font-weight: bold;
 }
 
 .quantity-selector {
@@ -202,11 +203,11 @@ body {
 .quantity-btn {
     padding: 5px 10px;
     border: 1px solid #ccc;
-    background-color: #f5f5f5;
+    background-color: #fff;
     cursor: pointer;
     font-size: 16px;
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -220,11 +221,16 @@ body {
     border-radius: 0 4px 4px 0;
     border-left: none;
 }
+.quantity-btn:disabled {
+    background-color: #f9f9f9;
+    color: #ccc;
+    cursor: not-allowed;
+}
 
 
 .quantity-input {
-    width: 40px;
-    height: 30px;
+    width: 50px;
+    height: 32px;
     padding: 0 5px;
     border: 1px solid #ccc;
     text-align: center;
@@ -236,6 +242,9 @@ body {
 .quantity-input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+}
+.quantity-input:disabled {
+    background-color: #f9f9f9;
 }
 
 .stock-available {
@@ -254,29 +263,28 @@ body {
 
 .action-buttons button {
     padding: 12px 25px;
-    border: none;
+    border: 1px solid transparent;
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
     font-weight: bold;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+    flex-grow: 1; /* Cho các nút có chiều rộng bằng nhau */
 }
 
 .add-to-cart {
-    background-color: #ffecd5;
+    background-color: rgba(255, 87, 34, 0.1);
     color: #ee4d2d;
-    border: 1px solid #ee4d2d !important;
+    border-color: #ee4d2d;
 }
-
 .add-to-cart:hover {
-    background-color: #ffe3bf;
+    background-color: rgba(255, 87, 34, 0.2);
 }
 
 .buy-now {
     background-color: #ee4d2d;
     color: #fff;
 }
-
 .buy-now:hover {
     background-color: #d04326;
 }
@@ -296,6 +304,7 @@ body {
 
     .product-details {
         min-width: 100%;
+        padding-left: 0; /* Bỏ padding trái trên mobile */
     }
 
     .price-section {
@@ -307,8 +316,7 @@ body {
     }
 
     .shipping-info .shipping-details label,
-    .shipping-info .voucher-info label,
-    .return-policy p label {
+    .shipping-info .voucher-info label {
         flex-basis: 80px;
         margin-right: 10px;
     }

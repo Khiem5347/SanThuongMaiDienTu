@@ -3,47 +3,118 @@
 <head>
   <meta charset="UTF-8">
   <title>Chi tiết đơn hàng</title>
+  <link rel="stylesheet" href="../css/header.css">
   <style>
-  body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    background-color: #fff3e0; /* 🌈 nền màu cam nhạt */
-  }
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding-bottom: 40px;
+        background-color: #f5f5f5;
+    }
+    
+    .container {
+        max-width: 1000px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    h1 {
+        text-align: center;
+        color: #181004;
+        margin-top: 0; /* Bỏ margin-top vì đã có container */
+        margin-bottom: 30px;
+    }
+    
+    .summary {
+        margin-top: 20px;
+        padding-top: 15px;
+        border-top: 1px solid #ddd;
+        text-align: right;
+        font-size: 1.1em;
+    }
+    .summary p {
+        margin: 8px 0;
+    }
+    .summary p:last-child {
+        font-weight: bold;
+        color: #ee4d2d;
+        font-size: 1.2em;
+    }
 
-  .summary {
-    margin-top: 20px;
-    font-weight: bold;
-  }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: white;
+    }
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: white; /* giữ bảng trắng nếu muốn dễ nhìn */
-  }
+    th, td {
+        padding: 12px;
+        border: 1px solid #ddd;
+        text-align: center;
+        vertical-align: middle;
+    }
 
-  th, td {
-    padding: 12px;
-    border: 1px solid #ddd;
-    text-align: center;
-  }
+    th {
+        background-color: #ff9800;
+        color: white;
+    }
 
-  th {
-    background-color: #ff9800; /* màu cam cho tiêu đề bảng */
-    color: white;
-  }
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
 
-  tr:nth-child(even) {
-    background-color: #fff8e1;
-  }
-</style>
+    /* CSS CHO NÚT QUAY LẠI */
+    .back-link-container {
+        text-align: right; /* Căn phải nút */
+        margin-top: 40px; /* Tạo khoảng cách với khối tổng tiền ở trên */
+        margin-bottom: 20px; /* Tạo khoảng cách với footer */
+    }
+    .back-link {
+        display: inline-block;
+        padding: 10px 20px; /* Tăng padding cho nút to hơn một chút */
+        background-color: #6c757d; /* Màu xám trung tính */
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 15px;
+        transition: background-color 0.2s ease, transform 0.2s ease;
+    }
 
+    .back-link:hover {
+        background-color: #484e53;
+        transform: translateY(-1px);
+    }
+    .summary p:first-child,p:nth-child(2) {
+        font-size: 0.9em;   
+        font-weight: 600; 
+    }
+    .summary p:last-child {
+        color: #eb3d1a; /* Màu đỏ cho tổng tiền */
+        font-size: 1.2em;
+    }
+
+  </style>
 </head>
 <body>
-<a href="danhsachdonhang.html" class="back-link">← Quay lại danh sách đơn hàng</a>
+    <div id="header"></div>
 
-<h2>Chi tiết đơn hàng</h2>
+    <div class="container"> 
+        <h1>Chi tiết đơn hàng</h1>
+        <div id="order-details">
+            </div>
+        
+        <div class="back-link-container">
+            <a href="danhsachdonhang.html" class="back-link"> Quay lại danh sách đơn hàng</a>
+        </div>
+    </div>
 
-<div id="order-details"></div>
-<script src="../js/chitietdonhang.js"></script>
+    <div id="footer"></div>
+
+    <script src="../js/header.js"></script>
+    <script src="../js/index.js"></script>
+    <script src="../js/chitietdonhang.js"></script>
 </body>
 </html>

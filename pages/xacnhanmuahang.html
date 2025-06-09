@@ -32,15 +32,23 @@
     .btn-back {
       background-color: #6c757d;
     }
+    .btn-back:hover {
+      background-color: #2e3235;
+    }
 
     .btn-cart {
       background-color: #17a2b8;
     }
-
-    .btn-confirm {
-      background-color: #ff9800;
+    .btn-cart:hover {
+      background-color: #086978;
     }
 
+    .btn-confirm {
+      background-color: #fa8304;
+    }
+    .btn-confirm:hover {
+      background-color: #e17800;
+    }
     .btn:disabled {
       background-color: #ccc;
       cursor: not-allowed;
@@ -51,7 +59,7 @@
 <div id="header"></div>
 
 <div class="container">
-  <h3>Thông tin đơn hàng đã đặt</h3>
+  <h2>Thông tin đơn hàng đã đặt</h2>
   <div class="order-info">
     <div class="info-box order-id">
       <p><strong>Mã đơn hàng</strong></p>
@@ -101,8 +109,8 @@
 
   <div class="action-buttons">
     <div class="action-buttons-left">
-      <a href="../pages/giohang.html" class="btn btn-cart">← Quay về giỏ hàng</a>
-      <a href="../pages/index.html" class="btn btn-back">← Quay về trang chủ</a>
+      <a href="../pages/giohang.html" class="btn btn-cart"> Quay về giỏ hàng</a>
+      <a href="../pages/index.html" class="btn btn-back"> Quay về trang chủ</a>
     </div>
     <div class="action-buttons-right">
       <button class="btn btn-confirm confirm-order-btn">Xác nhận mua hàng</button>
@@ -117,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return '₫' + amount.toLocaleString('vi-VN');
   }
 
-  const orderStatusElement = document.querySelector('.container h3');
+  const orderStatusElement = document.querySelector('.container h2');
   const orderIdElement = document.getElementById('order-id-value');
   const orderDateElement = document.getElementById('order-date-value');
   const paymentMethodElement = document.getElementById('payment-method-value');
