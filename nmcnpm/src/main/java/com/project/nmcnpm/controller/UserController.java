@@ -3,12 +3,16 @@ package com.project.nmcnpm.controller;
 import com.project.nmcnpm.dto.LoginRequest;
 import com.project.nmcnpm.dto.LoginResponse;
 import com.project.nmcnpm.dto.UserRegistrationDTO;
+import com.project.nmcnpm.dto.UsernameUpdateRequest;
 import com.project.nmcnpm.dto.ChangePasswordRequest;
-import com.project.nmcnpm.dto.ShopResponseDTO; 
+import com.project.nmcnpm.dto.EmailUpdateRequest;
+import com.project.nmcnpm.dto.ShopResponseDTO;
+import com.project.nmcnpm.dto.UserProfileUpdateDTO;
 import com.project.nmcnpm.entity.User;
 import com.project.nmcnpm.service.UserService;
-import com.project.nmcnpm.service.ShopService; 
-import jakarta.persistence.EntityNotFoundException; 
+import com.project.nmcnpm.service.ShopService;
+import com.project.nmcnpm.service.JwtTokenProvider;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +21,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/users")
 public class UserController {
     private final UserService userService;
-    private final ShopService shopService; 
-    public UserController(UserService userService, ShopService shopService) {
+    private final ShopService shopService;
+    private final JwtTokenProvider jwtTokenProvider;
+    public UserController(UserService userService, ShopService shopService, JwtTokenProvider jwtTokenProvider) {
         this.userService = userService;
         this.shopService = shopService;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody UserRegistrationDTO registrationDTO) {
@@ -37,7 +43,23 @@ public class UserController {
     public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
         boolean isAuthenticated = userService.authenticateUser(loginRequest.getUsername(), loginRequest.getPassword());
         if (isAuthenticated) {
-            return new ResponseEntity<>(new LoginResponse("Login successful", true), HttpStatus.OK);
+            User user = userService.findByUsername(loginRequest.getUsername());
+            if (user != null) {
+                String jwt = jwtTokenProvider.generateToken(
+                    user.getUserId().longValue(),
+                    user.getUsername(),
+                    user.getUserRole()
+                );
+                return new ResponseEntity<>(new LoginResponse(
+                    "Login successful",
+                    true,
+                    jwt,
+                    user.getUserId().longValue(),
+                    user.getUsername()
+                ), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(new LoginResponse("User data not found after authentication", false), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         } else {
             return new ResponseEntity<>(new LoginResponse("Invalid username or password", false), HttpStatus.UNAUTHORIZED);
         }
@@ -66,7 +88,7 @@ public class UserController {
             return new ResponseEntity<>("Error changing password: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("/{userId}/shop") 
+    @GetMapping("/{userId}/shop")
     public ResponseEntity<ShopResponseDTO> getShopByUserId(@PathVariable Integer userId) {
         try {
             ShopResponseDTO shop = shopService.getShopByUserId(userId);
@@ -78,4 +100,50 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PutMapping("/{userId}")
+    public ResponseEntity<?> updateUserProfile(@PathVariable Integer userId,
+                                                @RequestBody UserProfileUpdateDTO updateDTO) {
+        try {
+            User updatedUser = userService.updateUserProfile(userId, updateDTO);
+            return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            System.err.println("Error updating user profile: " + e.getMessage());
+            return new ResponseEntity<>("Error updating user profile: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping("/update-email") 
+    public ResponseEntity<?> updateEmail(@RequestBody EmailUpdateRequest request) {
+        try {
+            boolean success = userService.updateEmail(request.getUsername(), request.getCurrentPassword(), request.getNewEmail());
+            if (success) {
+                return new ResponseEntity<>("Email updated successfully!", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Invalid current password.", HttpStatus.UNAUTHORIZED);
+            }
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            System.err.println("Error updating email: " + e.getMessage());
+            return new ResponseEntity<>("Error updating email: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping("/update-username") 
+    public ResponseEntity<?> updateUsername(@RequestBody UsernameUpdateRequest request) {
+        try {
+            boolean success = userService.updateUsername(request.getCurrentUsername(), request.getCurrentPassword(), request.getNewUsername());
+            if (success) {
+                return new ResponseEntity<>("Username updated successfully! Please log in again with your new username.", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Invalid current password.", HttpStatus.UNAUTHORIZED);
+            }
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            System.err.println("Error updating username: " + e.getMessage());
+            return new ResponseEntity<>("Error updating username: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

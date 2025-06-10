@@ -203,6 +203,153 @@
 </main>
 
     </div>
+
+    <div class="profile-content" id="section-profile">
+        <!-- === HỒ SƠ === -->
+        <div class="profile-form">
+            <form id="profileForm">
+                <!-- Các trường Hồ sơ như đã có -->
+                <div class="form-group">
+                    <label for="username">Tên đăng nhập</label>
+                    <div class="input-control"><span id="username" class="readonly-text"></span></div>
+                </div>
+                <div class="form-group">
+                    <label for="fullName">Tên</label>
+                    <div class="input-control"><input type="text" id="fullName" name="fullName"></div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <div class="input-control"><span id="email" class="readonly-text"></span></div>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Số điện thoại</label>
+                    <div class="input-control"><span id="phone" class="readonly-text"></span></div>
+                </div>
+                <div class="form-group">
+                    <label>Giới tính</label>
+                    <div class="input-control radio-group">
+                        <input type="radio" id="gender_male" name="gender" value="MALE"><label for="gender_male">Nam</label>
+                        <input type="radio" id="gender_female" name="gender" value="FEMALE"><label for="gender_female">Nữ</label>
+                        <input type="radio" id="gender_other" name="gender" value="OTHER"><label for="gender_other">Khác</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="dateOfBirth">Ngày sinh</label>
+                    <div class="input-control"><input type="date" id="dateOfBirth" name="dateOfBirth"></div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn-save">Lưu</button>
+                </div>
+            </form>
+        </div>
+        <div class="profile-avatar">
+            <img id="avatarPreview" src="../assets/default-avatar.png" alt="Avatar">
+            <button type="button" class="btn-choose-avatar">Chọn Ảnh</button>
+            <p class="avatar-note">Dung lượng file tối đa 1 MB<br>Định dạng: .JPEG, .PNG</p>
+        </div>
+    </div>
+
+    <!-- === NGÂN HÀNG === -->
+    <div class="profile-content" id="section-bank" style="display:none;">
+        <div class="profile-form">
+            <form>
+                <div class="form-group">
+                    <label for="bankName">Ngân hàng</label>
+                    <div class="input-control"><input type="text" id="bankName" placeholder="Vietcombank"></div>
+                </div>
+                <div class="form-group">
+                    <label for="accountNumber">Số tài khoản</label>
+                    <div class="input-control"><input type="text" id="accountNumber" placeholder="0123456789"></div>
+                </div>
+                <div class="form-group">
+                    <label for="accountHolder">Chủ tài khoản</label>
+                    <div class="input-control"><input type="text" id="accountHolder" placeholder="Tên chủ tài khoản"></div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn-save">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- === ĐỊA CHỈ === -->
+    <!-- Tab Địa Chỉ -->
+<div class="profile-content" id="section-address" style="display:none; flex-direction: column;">
+    <button id="btnAddAddress" style="align-self: flex-end; margin-bottom: 10px;" class="btn-save">+ Thêm địa chỉ</button>
+    <div id="addressList"></div>
+</div>
+
+<!-- Popup form địa chỉ -->
+<div id="addressModal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <h3 id="modalTitle">Thêm địa chỉ</h3>
+        <form id="addressForm">
+    <input type="hidden" id="addressId">
+    <input type="hidden" id="addressUpdateUrl">
+
+    <div class="form-group">
+        <label for="recipientName">Người nhận</label>
+        <div class="input-control">
+            <input type="text" id="recipientName" required>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="addressPhone">Số điện thoại</label>
+        <div class="input-control">
+            <input type="text" id="addressPhone" required>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="detailAddress">Địa chỉ chi tiết</label>
+        <div class="input-control">
+            <input type="text" id="detailAddress" required>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="isDefault" style="text-align: left;">Đặt làm địa chỉ mặc định</label>
+        <div class="input-control" style="justify-content: flex-start;">
+            <input type="checkbox" id="isDefault">
+        </div>
+    </div>
+
+    <div style="margin-top: 15px; text-align: center;">
+        <button type="submit" class="btn-save">Lưu</button>
+        <button type="button" id="btnCloseModal" class="btn-save" style="background-color: gray;">Hủy</button>
+    </div>
+</form>
+
+    </div>
+</div>
+
+
+    <!-- === ĐỔI MẬT KHẨU === -->
+    <div class="profile-content" id="section-password" style="display:none;">
+        <div class="profile-form">
+            <form>
+                <div class="form-group">
+                    <label for="currentPassword">Mật khẩu cũ</label>
+                    <div class="input-control"><input type="password" id="currentPassword"></div>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">Mật khẩu mới</label>
+                    <div class="input-control"><input type="password" id="newPassword"></div>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Xác nhận</label>
+                    <div class="input-control"><input type="password" id="confirmPassword"></div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn-save">Đổi mật khẩu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+    </div>
     <div id="footer"></div>
     <script src="../js/header.js"></script>
     <script src="../js/taikhoan.js"></script>

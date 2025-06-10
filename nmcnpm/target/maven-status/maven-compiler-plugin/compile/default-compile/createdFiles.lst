@@ -5,6 +5,7 @@ com\project\nmcnpm\service\ProductSizeService.class
 com\project\nmcnpm\dto\ProductDTO.class
 com\project\nmcnpm\entity\ProductVariant.class
 com\project\nmcnpm\dao\ProductsInCartRepository.class
+com\project\nmcnpm\dto\UsernameUpdateRequest.class
 com\project\nmcnpm\dao\ShopRepository.class
 com\project\nmcnpm\service\ProductReviewServiceImplementation.class
 com\project\nmcnpm\controller\ProductSizeController.class
@@ -50,10 +51,12 @@ com\project\nmcnpm\ECommerceApplication.class
 com\project\nmcnpm\dto\CartItemDTO.class
 com\project\nmcnpm\dto\CartResponseDTO.class
 com\project\nmcnpm\dto\ProductSizeDTO.class
+com\project\nmcnpm\service\JwtTokenProvider.class
 com\project\nmcnpm\controller\ProductImageController.class
 com\project\nmcnpm\dto\PaymentResponseDTO.class
 com\project\nmcnpm\dto\ShippingProviderDTO.class
 com\project\nmcnpm\dao\VoucherRepository.class
+com\project\nmcnpm\dto\EmailUpdateRequest.class
 com\project\nmcnpm\dto\LoginResponse.class
 com\project\nmcnpm\entity\ProductReview.class
 com\project\nmcnpm\service\ShippingServiceServiceImplementation.class
@@ -111,6 +114,7 @@ com\project\nmcnpm\service\ShippingLinkServiceImplementation.class
 com\project\nmcnpm\controller\ProductController.class
 com\project\nmcnpm\controller\ProductVariantController.class
 com\project\nmcnpm\service\ProductImageService.class
+com\project\nmcnpm\config\JwtAuthenticationFilter.class
 com\project\nmcnpm\dto\MessageResponseDTO.class
 com\project\nmcnpm\service\CartService.class
 com\project\nmcnpm\service\HistoryServiceImplementation.class
@@ -127,6 +131,7 @@ com\project\nmcnpm\dto\ProductVariantDTO.class
 com\project\nmcnpm\entity\Address.class
 com\project\nmcnpm\entity\Category.class
 com\project\nmcnpm\dto\ProductSizeResponseDTO.class
+com\project\nmcnpm\config\SecurityConfig.class
 com\project\nmcnpm\dao\AddressRepository.class
 com\project\nmcnpm\dto\MessageDTO.class
 com\project\nmcnpm\service\MessageServiceImplementation.class
@@ -162,6 +167,7 @@ com\project\nmcnpm\dao\HistoryRepository.class
 com\project\nmcnpm\dto\AppliedVoucherResponseDTO.class
 com\project\nmcnpm\dto\ProductReviewResponseDTO.class
 com\project\nmcnpm\controller\CheckoutController.class
+com\project\nmcnpm\dto\UserProfileUpdateDTO.class
 com\project\nmcnpm\dao\OrderRepository.class
 com\project\nmcnpm\service\ShippingLinkService.class
 com\project\nmcnpm\service\ShippingProviderServiceImplementation.class

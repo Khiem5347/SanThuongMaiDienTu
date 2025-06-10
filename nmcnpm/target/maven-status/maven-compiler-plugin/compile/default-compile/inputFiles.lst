@@ -32,6 +32,7 @@ D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\dao\ProductsInOrde
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\service\ConversationService.java
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\dao\AppliedVoucherRepository.java
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\dto\OrderItemResponseDTO.java
+D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\service\JwtTokenProvider.java
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\entity\ProductVariant.java
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\service\ShippingServiceService.java
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\dto\ProductReviewResponseDTO.java
@@ -41,6 +42,7 @@ D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\entity\Category.ja
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\service\AddressServiceImplementation.java
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\service\MessageService.java
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\controller\CheckoutController.java
+D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\dto\EmailUpdateRequest.java
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\dto\ShopResponseDTO.java
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\entity\ProductImage.java
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\dto\CartResponseDTO.java
@@ -59,6 +61,7 @@ D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\entity\ShippingLin
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\dto\ReviewImageDTO.java
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\dto\ReviewImageResponseDTO.java
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\dao\OrderRepository.java
+D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\dto\UserProfileUpdateDTO.java
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\dto\ChangePasswordRequest.java
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\entity\Shop.java
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\dto\ProductDTO.java
@@ -111,10 +114,12 @@ D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\dto\AppliedVoucher
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\service\MessageServiceImplementation.java
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\entity\Payment.java
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\service\AppliedVoucherService.java
+D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\config\JwtAuthenticationFilter.java
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\controller\ProductImageController.java
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\dao\ProductRepository.java
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\dao\ShippingLinkRepository.java
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\entity\Order.java
+D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\config\SecurityConfig.java
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\service\PaymentService.java
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\service\ShippingProviderService.java
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\service\OrderServiceImplementation.java
@@ -140,6 +145,7 @@ D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\dto\ProductImageDT
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\dto\LoginResponse.java
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\entity\Voucher.java
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\service\VoucherServiceImplementation.java
+D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\dto\UsernameUpdateRequest.java
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\controller\HistoryController.java
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\dao\UserRepository.java
 D:\santhuongmaidientu\nmcnpm\src\main\java\com\project\nmcnpm\service\ShippingLinkService.java

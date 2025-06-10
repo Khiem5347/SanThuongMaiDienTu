@@ -19,13 +19,8 @@ document.addEventListener('DOMContentLoaded', function () {
             try {
                 const response = await fetch('http://localhost:8080/api/users/login', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        username: username,
-                        password: password,
-                    }),
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password }),
                 });
 
                 const result = await response.json();
@@ -34,35 +29,38 @@ document.addEventListener('DOMContentLoaded', function () {
                     throw new Error(result.message || `Lỗi ${response.status}`);
                 }
                 
-                // --- ĐÂY LÀ PHẦN CẬP NHẬT CHÍNH ---
-
-                // Giả định API trả về một object chứa token và thông tin user
-                // Ví dụ: result = { token: "...", user: { userId: 1, username: "..." } }
-                if (result.token && result.user) {
-                    // 1. LƯU THEO CHUẨN MỚI (ƯU TIÊN)
+                // --- LOGIC LƯU TRỮ KHI ĐĂNG NHẬP THÀNH CÔNG ---
+                // API đã trả về token, userId, và username
+                if (result.token && result.userId && result.username) {
+                    
+                    // 1. LƯU THEO CHUẨN MỚI (Bắt buộc cho các chức năng như đánh giá, đặt hàng)
                     localStorage.setItem('token', result.token);
-                    localStorage.setItem('user', JSON.stringify(result.user));
+                    
+                    // Tạo một user object để lưu trữ nhất quán
+                    const user = {
+                        userId: result.userId,
+                        username: result.username
+                        // Thêm email hoặc các thông tin khác nếu API trả về
+                    };
+                    localStorage.setItem('user', JSON.stringify(user));
 
-                    // 2. LƯU THEO CHUẨN CŨ ĐỂ TƯƠNG THÍCH VỚI HEADER.JS CŨ
+                    // 2. LƯU THEO CHUẨN CŨ (để tương thích với các script cũ nếu có)
                     localStorage.setItem('isLoggedIn', 'true');
-                    localStorage.setItem('loggedInUser', result.user.username);
+                    localStorage.setItem('loggedInUser', result.username);
 
-                    alert('Đăng nhập thành công!');
+                    alert(result.message || 'Đăng nhập thành công!');
                     window.location.href = '../pages/index.html';
+
                 } else {
-                    // Nếu API trả về thành công nhưng không có token/user (trường hợp này ít xảy ra)
-                    // thì chỉ lưu theo chuẩn cũ
-                    localStorage.setItem('isLoggedIn', 'true');
-                    localStorage.setItem('loggedInUser', username); // Dùng tạm username đã nhập
-                    alert('Đăng nhập thành công! (Chế độ tương thích)');
-                    window.location.href = '../pages/index.html';
+                    // Xử lý trường hợp API trả về thành công nhưng thiếu dữ liệu
+                    throw new Error('Dữ liệu đăng nhập trả về không đầy đủ.');
                 }
 
             } catch (error) {
                 console.error('Lỗi khi đăng nhập:', error);
                 alert(error.message || 'Tên đăng nhập hoặc mật khẩu không chính xác.');
                 
-                // Xóa tất cả các key khi có lỗi
+                // Dọn dẹp tất cả các key khi có lỗi
                 localStorage.removeItem('token');
                 localStorage.removeItem('user');
                 localStorage.removeItem('isLoggedIn');
