@@ -28,6 +28,7 @@ E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\controller\UserCon
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dto\ProductReviewResponseDTO.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\service\ShippingProviderServiceImplementation.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dao\UserRepository.java
+E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dto\EmailUpdateRequest.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\entity\Voucher.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\service\ShippingLinkService.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\service\ProductVariantServiceImplementation.java
@@ -35,6 +36,7 @@ E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dto\ProductImageRe
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\service\AddressService.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\controller\ProductReviewController.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dto\CartResponseDTO.java
+E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dto\UserProfileUpdateDTO.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\entity\ProductImage.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\service\MessageServiceImplementation.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\service\OrderService.java
@@ -91,6 +93,7 @@ E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\entity\ProductsInO
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\controller\OrderController.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\entity\Category.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\service\ProductImageService.java
+E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\dto\UsernameUpdateRequest.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\service\ProductVariantService.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\config\MyDataRestConfig.java
 E:\SanThuongMaiDienTu\nmcnpm\src\main\java\com\project\nmcnpm\controller\ProductController.java

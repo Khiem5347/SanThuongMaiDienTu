@@ -26,6 +26,7 @@ User:
        lấy user theo tên: GET:  http://localhost:8080/api/users/username
        thêm tài khoản:   POST: http://localhost:8080/api/users/register
        đăng nhập: POST: http://localhost:8080/api/users/login
+           trả về <token> sử dụng trong 7 ngày
        lấy shop theo id_user: GET: http://localhost:8080/api/users/id_user/shop
        đổi mật khẩu: POST: http://localhost:8080/api/users/change-password
                  body: {
@@ -33,6 +34,25 @@ User:
                          "oldPassword": "your_old_password",
                          "newPassword": "your_new_password"
                          }
+        cập nhật thông tin: PUT: http://localhost:8080/api/users/userId
+               header: Authorization: Bearer <token>   (token lấy từ login)
+               body: {
+                        "fullName": "Nguyễn Văn A",
+                        "gender": "male",
+                        "dateOfBirth": "1990-05-20",
+                        "phone": "0901234567"}
+        cập nhật email: POST: http://localhost:8080/api/users/update-email
+           header: Authorization: Bearer <token> 
+           body: {
+                "username": "ngocanh123",      // Tên người dùng hiện tại
+                "currentPassword": "ngocanh123ngocanh123", // Mật khẩu hiện tại của người dùng này
+                "newEmail": "new_email@example.com" // Địa chỉ email mới bạn muốn đặt}
+        cập nhật username: POST: http://localhost:8080/api/users/update-username
+           header: Authorization: Bearer <token>
+           body:{
+                    "currentUsername": "ngocanh123",    // Tên người dùng hiện tại
+                "currentPassword": "ngocanh123", // Mật khẩu hiện tại của người dùng này
+                "newUsername": "ngocanh"      // Tên người dùng mới bạn muốn đặt}
 
 Cart:
         - Lấy giỏ hàng theo userId: GET: http://localhost:8080/api/carts/user/userId

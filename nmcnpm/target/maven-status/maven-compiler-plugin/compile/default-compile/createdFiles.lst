@@ -5,6 +5,7 @@ com\project\nmcnpm\service\ProductSizeService.class
 com\project\nmcnpm\dto\ProductDTO.class
 com\project\nmcnpm\entity\ProductVariant.class
 com\project\nmcnpm\dao\ProductsInCartRepository.class
+com\project\nmcnpm\dto\UsernameUpdateRequest.class
 com\project\nmcnpm\dao\ShopRepository.class
 com\project\nmcnpm\service\ProductReviewServiceImplementation.class
 com\project\nmcnpm\controller\ProductSizeController.class
@@ -55,6 +56,7 @@ com\project\nmcnpm\controller\ProductImageController.class
 com\project\nmcnpm\dto\PaymentResponseDTO.class
 com\project\nmcnpm\dto\ShippingProviderDTO.class
 com\project\nmcnpm\dao\VoucherRepository.class
+com\project\nmcnpm\dto\EmailUpdateRequest.class
 com\project\nmcnpm\dto\LoginResponse.class
 com\project\nmcnpm\entity\ProductReview.class
 com\project\nmcnpm\service\ShippingServiceServiceImplementation.class
@@ -165,6 +167,7 @@ com\project\nmcnpm\dao\HistoryRepository.class
 com\project\nmcnpm\dto\AppliedVoucherResponseDTO.class
 com\project\nmcnpm\dto\ProductReviewResponseDTO.class
 com\project\nmcnpm\controller\CheckoutController.class
+com\project\nmcnpm\dto\UserProfileUpdateDTO.class
 com\project\nmcnpm\dao\OrderRepository.class
 com\project\nmcnpm\service\ShippingLinkService.class
 com\project\nmcnpm\service\ShippingProviderServiceImplementation.class

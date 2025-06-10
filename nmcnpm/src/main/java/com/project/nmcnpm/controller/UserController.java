@@ -3,8 +3,11 @@ package com.project.nmcnpm.controller;
 import com.project.nmcnpm.dto.LoginRequest;
 import com.project.nmcnpm.dto.LoginResponse;
 import com.project.nmcnpm.dto.UserRegistrationDTO;
+import com.project.nmcnpm.dto.UsernameUpdateRequest;
 import com.project.nmcnpm.dto.ChangePasswordRequest;
+import com.project.nmcnpm.dto.EmailUpdateRequest;
 import com.project.nmcnpm.dto.ShopResponseDTO;
+import com.project.nmcnpm.dto.UserProfileUpdateDTO;
 import com.project.nmcnpm.entity.User;
 import com.project.nmcnpm.service.UserService;
 import com.project.nmcnpm.service.ShopService;
@@ -20,7 +23,6 @@ public class UserController {
     private final UserService userService;
     private final ShopService shopService;
     private final JwtTokenProvider jwtTokenProvider;
-
     public UserController(UserService userService, ShopService shopService, JwtTokenProvider jwtTokenProvider) {
         this.userService = userService;
         this.shopService = shopService;
@@ -98,4 +100,50 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PutMapping("/{userId}")
+    public ResponseEntity<?> updateUserProfile(@PathVariable Integer userId,
+                                                @RequestBody UserProfileUpdateDTO updateDTO) {
+        try {
+            User updatedUser = userService.updateUserProfile(userId, updateDTO);
+            return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            System.err.println("Error updating user profile: " + e.getMessage());
+            return new ResponseEntity<>("Error updating user profile: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping("/update-email") 
+    public ResponseEntity<?> updateEmail(@RequestBody EmailUpdateRequest request) {
+        try {
+            boolean success = userService.updateEmail(request.getUsername(), request.getCurrentPassword(), request.getNewEmail());
+            if (success) {
+                return new ResponseEntity<>("Email updated successfully!", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Invalid current password.", HttpStatus.UNAUTHORIZED);
+            }
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            System.err.println("Error updating email: " + e.getMessage());
+            return new ResponseEntity<>("Error updating email: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping("/update-username") 
+    public ResponseEntity<?> updateUsername(@RequestBody UsernameUpdateRequest request) {
+        try {
+            boolean success = userService.updateUsername(request.getCurrentUsername(), request.getCurrentPassword(), request.getNewUsername());
+            if (success) {
+                return new ResponseEntity<>("Username updated successfully! Please log in again with your new username.", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Invalid current password.", HttpStatus.UNAUTHORIZED);
+            }
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            System.err.println("Error updating username: " + e.getMessage());
+            return new ResponseEntity<>("Error updating username: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
