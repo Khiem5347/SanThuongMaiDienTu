@@ -495,9 +495,39 @@ document.addEventListener('DOMContentLoaded', async () => {
         shopInfoSection.style.display = 'flex';
     }
 
+    // --- LOGIC MỚI CHO ĐÁNH GIÁ (SỬ DỤNG LOCALSTORAGE) ---
+
     /**
-     * Render danh sách các đánh giá sản phẩm.
-     * @param {Array} reviews - Mảng các đối tượng đánh giá.
+     * Tải danh sách đánh giá từ localStorage cho một sản phẩm cụ thể.
+     * @param {number} productId - ID của sản phẩm.
+     * @returns {Array} - Mảng các đối tượng đánh giá.
+     */
+    function loadReviewsFromLocalStorage(productId) {
+        if (!productId) return [];
+        const reviewsKey = `reviews_for_product_${productId}`;
+        const reviewsString = localStorage.getItem(reviewsKey);
+        try {
+            return reviewsString ? JSON.parse(reviewsString) : [];
+        } catch (e) {
+            console.error("Lỗi đọc reviews từ localStorage:", e);
+            return [];
+        }
+    }
+
+    /**
+     * Lưu danh sách đánh giá vào localStorage.
+     * @param {number} productId - ID của sản phẩm.
+     * @param {Array} reviews - Mảng các đánh giá cần lưu.
+     */
+    function saveReviewsToLocalStorage(productId, reviews) {
+        if (!productId || !reviews) return;
+        const reviewsKey = `reviews_for_product_${productId}`;
+        localStorage.setItem(reviewsKey, JSON.stringify(reviews));
+    }
+
+
+    /**
+     * Render danh sách các đánh giá sản phẩm. (Không đổi)
      */
     function renderProductReviews(reviews) {
         if (!reviewsListContainer) return;
@@ -515,33 +545,34 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <div class="review-content">
                     <p class="review-author-name">${review.username || 'Anonymous'}</p>
                     <div class="review-stars">${stars}</div>
-                    <p class="review-timestamp">${new Date(review.createdAt || Date.now()).toLocaleDateString('vi-VN')}</p>
-                    <p class="review-text">${review.comment || ''}</p>
+                    <p class="review-timestamp">${new Date(review.createdAt).toLocaleString('vi-VN')}</p>
+                    <p class="review-text">${review.comment}</p>
                 </div>`;
             reviewsListContainer.appendChild(reviewItem);
         });
     }
 
     /**
-     * Cài đặt form gửi đánh giá: hiển thị/ẩn và xử lý sự kiện.
+     * Cài đặt form gửi đánh giá (dùng 'isLoggedIn').
      */
     function setupReviewForm() {
-         if (!reviewForm || !reviewLoginPrompt) return;
-        const token = localStorage.getItem('token');
+        if (!reviewForm || !reviewLoginPrompt) return;
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
 
-        if (token) {
+        if (isLoggedIn === 'true') {
             reviewForm.style.display = 'block';
             reviewLoginPrompt.style.display = 'none';
 
             const stars = starRatingInputContainer?.querySelectorAll('.star');
-            if (!stars) return;
-            stars.forEach(star => {
-                star.addEventListener('click', () => {
-                    const ratingValue = star.dataset.value;
-                    starRatingInputContainer.dataset.rating = ratingValue;
-                    stars.forEach(s => s.classList.toggle('selected', s.dataset.value <= ratingValue));
+            if (stars) {
+                stars.forEach(star => {
+                    star.addEventListener('click', () => {
+                        const ratingValue = star.dataset.value;
+                        starRatingInputContainer.dataset.rating = ratingValue;
+                        stars.forEach(s => s.classList.toggle('selected', s.dataset.value <= ratingValue));
+                    });
                 });
-            });
+            }
 
             reviewForm.addEventListener('submit', handleReviewSubmit);
         } else {
@@ -551,61 +582,53 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     /**
-     * Xử lý sự kiện khi người dùng gửi form đánh giá.
+     * Xử lý gửi form đánh giá (PHIÊN BẢN LOCALSTORAGE).
      */
-    async function handleReviewSubmit(e) {
-         e.preventDefault();
-        const token = localStorage.getItem('token');
-        const userString = localStorage.getItem('user');
-        if (!token || !userString) {
+    function handleReviewSubmit(e) {
+        e.preventDefault();
+        
+        // Vẫn kiểm tra để đảm bảo người dùng có vẻ đã đăng nhập
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+        if (isLoggedIn !== 'true') {
             alert('Bạn cần đăng nhập để đánh giá.');
             return;
         }
-
-        submitReviewBtn.disabled = true;
-        submitReviewBtn.textContent = 'Đang gửi...';
-
+        
         const rating = parseInt(starRatingInputContainer.dataset.rating, 10);
-        const comment = document.getElementById('review-text').value;
-        const user = JSON.parse(userString);
-
+        const comment = document.getElementById('review-text').value.trim();
+        
         if (rating === 0) {
             alert('Vui lòng chọn số sao đánh giá.');
-            submitReviewBtn.disabled = false;
-            submitReviewBtn.textContent = 'Gửi Đánh Giá';
+            return;
+        }
+        if (!comment) {
+            alert('Vui lòng nhập nội dung đánh giá.');
             return;
         }
 
-        try {
-            const response = await fetch(`${API_BASE_URL}/product-reviews`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                body: JSON.stringify({
-                    productId: currentProductId,
-                    userId: user.userId,
-                    rating: rating,
-                    comment: comment
-                })
-            });
-            if (!response.ok) {
-                const errData = await response.json().catch(() => ({ message: 'Không thể gửi đánh giá.' }));
-                throw new Error(errData.message);
-            }
-            alert('Cảm ơn bạn đã đánh giá sản phẩm!');
-            reviewForm.reset();
-            starRatingInputContainer.dataset.rating = 0;
-            starRatingInputContainer.querySelectorAll('.star').forEach(s => s.classList.remove('selected'));
-            
-            // Tải lại danh sách đánh giá
-            const newReviewsData = await fetchData(`${API_BASE_URL}/product-reviews/product/${currentProductId}`);
-            renderProductReviews(newReviewsData);
+        // Lấy tên người dùng từ localStorage thay vì user object
+        const username = localStorage.getItem('loggedInUser') || 'Người dùng ẩn danh';
 
-        } catch (error) {
-            alert(`Đã xảy ra lỗi: ${error.message}`);
-        } finally {
-            submitReviewBtn.disabled = false;
-            submitReviewBtn.textContent = 'Gửi Đánh Giá';
-        }
+        // Tạo đối tượng đánh giá mới
+        const newReview = {
+            username: username,
+            rating: rating,
+            comment: comment,
+            createdAt: new Date().toISOString() // Lưu thời gian hiện tại
+        };
+
+        // Lấy danh sách review cũ, thêm review mới và lưu lại
+        const existingReviews = loadReviewsFromLocalStorage(currentProductId);
+        existingReviews.push(newReview);
+        saveReviewsToLocalStorage(currentProductId, existingReviews);
+
+        alert('Cảm ơn bạn đã đánh giá sản phẩm!');
+        reviewForm.reset();
+        starRatingInputContainer.dataset.rating = 0;
+        starRatingInputContainer.querySelectorAll('.star').forEach(s => s.classList.remove('selected'));
+
+        // Render lại danh sách đánh giá từ localStorage để cập nhật giao diện
+        renderProductReviews(existingReviews);
     }
     // --- KẾT THÚC PHẦN MỚI: CÁC HÀM CHO SHOP VÀ ĐÁNH GIÁ ---
 
