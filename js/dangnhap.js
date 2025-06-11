@@ -47,7 +47,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     // 2. LƯU THEO CHUẨN CŨ (để tương thích với các script cũ nếu có)
                     localStorage.setItem('isLoggedIn', 'true');
                     localStorage.setItem('loggedInUser', result.username);
-
                     alert(result.message || 'Đăng nhập thành công!');
                     window.location.href = '../pages/index.html';
 

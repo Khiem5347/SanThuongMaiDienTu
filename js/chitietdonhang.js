@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
     container.innerHTML = "<p>Không tìm thấy đơn hàng.</p>";
     return;
   }
-
   const itemsHtml = order.items.map(item => {
   const name = item.productName || 'Không rõ';
   const option = item.variation?.option || 'N/A';

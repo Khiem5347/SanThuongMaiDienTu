@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
     const isLoggedIn = localStorage.getItem('isLoggedIn');
     const username = localStorage.getItem('loggedInUser');
+    const token = localStorage.getItem('token');
 
-    if (isLoggedIn !== 'true' || !username) {
+    if (isLoggedIn !== 'true' || !username || !token) {
         alert('Bạn cần đăng nhập để xem trang này.');
         window.location.href = '../pages/dangnhap.html';
         return;
@@ -23,10 +24,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const btnClose = document.getElementById('btnCloseModal');
     const addressForm = document.getElementById('addressForm');
 
+    const btnUpdateEmail = document.getElementById('btnUpdateEmail');
+    const btnUpdateUsername = document.getElementById('btnUpdateUsername');
+    const confirmPasswordField = document.getElementById('confirmPasswordForSensitive');
+
     let currentUserId = null;
     let addressCache = [];
 
-    // === Chuyển TAB ===
     document.querySelectorAll('.account-sidebar ul ul li a').forEach(link => {
         link.addEventListener('click', function (e) {
             e.preventDefault();
@@ -86,7 +90,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 const day = ('0' + date.getDate()).slice(-2);
                 dobInput.value = `${year}-${month}-${day}`;
             } catch (e) {
-                console.error("Lỗi định dạng ngày sinh:", e);
                 dobInput.value = '';
             }
         }
@@ -108,9 +111,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const addresses = await response.json();
             renderAddressList(addresses);
         } catch (error) {
-            console.error('Lỗi khi fetch địa chỉ:', error);
-            document.getElementById('addressList').innerHTML =
-                `<p style="color:red;">Không thể tải địa chỉ: ${error.message}</p>`;
+            document.getElementById('addressList').innerHTML = `<p style="color:red;">Không thể tải địa chỉ: ${error.message}</p>`;
         }
     }
 
@@ -125,11 +126,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         container.innerHTML = addresses.map((addr, index) => `
-            <div class="address-item" style="border:1px solid #ccc; border-radius:6px; padding:15px; margin-bottom:15px; background:#f9f9f9;">
+            <div class="address-item" style="border:1px solid #ccc; padding:12px; margin-bottom:12px;">
                 <p><strong>Người nhận:</strong> ${addr.recipientName}</p>
                 <p><strong>SĐT:</strong> ${addr.phone}</p>
                 <p><strong>Địa chỉ:</strong> ${addr.detailAddress}</p>
-                ${addr.isDefault ? '<p style="color: green;"><em>Địa chỉ mặc định</em></p>' : ''}
+                ${addr.isDefault ? '<p style="color:green;">(Mặc định)</p>' : ''}
                 <button class="btn-edit" data-index="${index}">Sửa</button>
                 <button class="btn-delete" data-id="${addr.addressId}">Xóa</button>
             </div>
@@ -146,14 +147,9 @@ document.addEventListener('DOMContentLoaded', function () {
             btn.addEventListener('click', async () => {
                 const id = btn.getAttribute('data-id');
                 const deleteUrl = `http://localhost:8080/api/addresses/${id}/user/${currentUserId}`;
-                if (confirm('Bạn có chắc muốn xóa địa chỉ này?')) {
-                    try {
-                        await fetch(deleteUrl, { method: 'DELETE' });
-                        alert('Xóa thành công');
-                        fetchUserAddresses(currentUserId);
-                    } catch (err) {
-                        alert('Lỗi khi xóa địa chỉ: ' + err.message);
-                    }
+                if (confirm('Bạn có chắc muốn xóa?')) {
+                    await fetch(deleteUrl, { method: 'DELETE' });
+                    fetchUserAddresses(currentUserId);
                 }
             });
         });
@@ -162,37 +158,39 @@ document.addEventListener('DOMContentLoaded', function () {
     if (profileForm) {
         profileForm.addEventListener('submit', async function (event) {
             event.preventDefault();
+
             const updatedData = {
-                fullName: fullNameInput.value,
+                fullName: fullNameInput.value.trim(),
+                gender: document.querySelector('input[name="gender"]:checked')?.value?.toLowerCase(),
                 dateOfBirth: dobInput.value,
-                gender: document.querySelector('input[name="gender"]:checked')?.value
+                phone: phoneDisplay.textContent.trim()
             };
 
             try {
                 const res = await fetch(`http://localhost:8080/api/users/${currentUserId}`, {
-                    method: 'PATCH',
-                    headers: { 'Content-Type': 'application/json' },
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
                     body: JSON.stringify(updatedData)
                 });
 
-                if (!res.ok) throw new Error(`Cập nhật thất bại: ${res.status}`);
-                alert('Cập nhật thông tin thành công!');
+                if (!res.ok) throw new Error(await res.text());
+                alert("Cập nhật thành công!");
             } catch (err) {
-                alert('Lỗi cập nhật hồ sơ: ' + err.message);
+                alert("Lỗi cập nhật hồ sơ: " + err.message);
             }
         });
     }
 
-    // === Xử lý popup địa chỉ ===
-    btnAdd.addEventListener('click', () => openAddressForm());
-
-    btnClose.addEventListener('click', () => {
+    btnAdd?.addEventListener('click', () => openAddressForm());
+    btnClose?.addEventListener('click', () => {
         modal.style.display = 'none';
         addressForm.reset();
     });
 
     function openAddressForm(address = null) {
-        document.getElementById('modalTitle').textContent = address ? 'Chỉnh sửa địa chỉ' : 'Thêm địa chỉ';
         document.getElementById('addressId').value = address?.addressId || '';
         document.getElementById('recipientName').value = address?.recipientName || '';
         document.getElementById('addressPhone').value = address?.phone || '';
@@ -203,7 +201,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     addressForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-
         const isEdit = !!document.getElementById('addressId').value;
         const addressId = document.getElementById('addressId').value;
 
@@ -220,75 +217,95 @@ document.addEventListener('DOMContentLoaded', function () {
             : `http://localhost:8080/api/addresses`;
         const method = isEdit ? 'PUT' : 'POST';
 
-        try {
-            const res = await fetch(url, {
-                method,
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
+        const res = await fetch(url, {
+            method,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
 
-            if (!res.ok) throw new Error(`Lỗi: ${res.status}`);
-
-            // Nếu đặt là mặc định thì gọi thêm API đặt mặc định
+        if (res.ok) {
             if (payload.isDefault && isEdit) {
-                const setDefaultUrl = `http://localhost:8080/api/addresses/user/${currentUserId}/default/${addressId}`;
-                await fetch(setDefaultUrl, { method: 'PATCH' });
+                await fetch(`http://localhost:8080/api/addresses/user/${currentUserId}/default/${addressId}`, { method: 'PATCH' });
             }
-
             modal.style.display = 'none';
             fetchUserAddresses(currentUserId);
-        } catch (error) {
-            console.error(error);
-            alert('Lỗi khi lưu địa chỉ: ' + error.message);
+        } else {
+            alert("Lỗi khi lưu địa chỉ.");
         }
     });
 
     // === ĐỔI MẬT KHẨU ===
     const passwordForm = document.querySelector('#section-password form');
-
     if (passwordForm) {
         passwordForm.addEventListener('submit', async function (event) {
             event.preventDefault();
-
             const currentPassword = document.getElementById('currentPassword').value.trim();
             const newPassword = document.getElementById('newPassword').value.trim();
             const confirmPassword = document.getElementById('confirmPassword').value.trim();
 
-            if (!currentPassword || !newPassword || !confirmPassword) {
-                alert("Vui lòng nhập đầy đủ thông tin.");
-                return;
-            }
+            if (newPassword !== confirmPassword) return alert("Xác nhận không khớp");
 
-            if (newPassword !== confirmPassword) {
-                alert("Mật khẩu mới và xác nhận không khớp.");
-                return;
-            }
+            const res = await fetch("http://localhost:8080/api/users/change-password", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    username: username,
+                    oldPassword: currentPassword,
+                    newPassword: newPassword
+                })
+            });
 
-            try {
-                const res = await fetch('http://localhost:8080/api/users/change-password', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        username: username,
-                        oldPassword: currentPassword,
-                        newPassword: newPassword
-                    })
-                });
-
-                if (!res.ok) {
-                    const errorText = await res.text();
-                    throw new Error(errorText || `Lỗi ${res.status}`);
-                }
-
+            if (res.ok) {
                 alert("Đổi mật khẩu thành công!");
                 passwordForm.reset();
-            } catch (error) {
-                console.error("Lỗi đổi mật khẩu:", error);
-                alert("Đổi mật khẩu thất bại: " + error.message);
+            } else {
+                alert("Lỗi: " + (await res.text()));
             }
         });
     }
 
-    // Gọi API lần đầu
+    // === CẬP NHẬT EMAIL ===
+    btnUpdateEmail?.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const newEmail = document.getElementById('newEmail').value.trim();
+        const password = confirmPasswordField.value.trim();
+        if (!newEmail || !password) return alert("Vui lòng nhập đầy đủ thông tin");
+
+        const res = await fetch("http://localhost:8080/api/users/update-email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, currentPassword: password, newEmail })
+        });
+
+        if (res.ok) {
+            alert("Cập nhật email thành công!");
+            emailDisplay.textContent = newEmail;
+        } else {
+            alert("Lỗi: " + (await res.text()));
+        }
+    });
+
+    // === CẬP NHẬT USERNAME ===
+    btnUpdateUsername?.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const newUsername = document.getElementById('newUsername').value.trim();
+        const password = confirmPasswordField.value.trim();
+        if (!newUsername || !password) return alert("Vui lòng nhập đầy đủ thông tin");
+
+        const res = await fetch("http://localhost:8080/api/users/update-username", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ currentUsername: username, currentPassword: password, newUsername })
+        });
+
+        if (res.ok) {
+            alert("Đổi username thành công, vui lòng đăng nhập lại.");
+            localStorage.clear();
+            window.location.href = "../pages/dangnhap.html";
+        } else {
+            alert("Lỗi: " + (await res.text()));
+        }
+    });
+
     fetchUserInfo(username);
 });

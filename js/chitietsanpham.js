@@ -30,7 +30,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const reviewLoginPrompt = document.getElementById('review-login-prompt');
     const submitReviewBtn = document.getElementById('submit-review-btn');
     const starRatingInputContainer = reviewForm?.querySelector('.rating-input .stars');
-
     // Các biến trạng thái
     let currentProductId = null;
     let mainProductData = null;
