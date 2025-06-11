@@ -40,6 +40,7 @@
     <div class="account-container">
         <aside class="account-sidebar">
             <ul>
+                <li><a href="index.html">← Trang chủ</a></li>
                 <li><a href="#">Thông Báo</a></li>
                 <li><a href="taikhoan.html" class="active">Tài Khoản Của Tôi</a>
                     <ul style="padding-left: 20px; list-style: disc; margin-top:5px;">
@@ -91,6 +92,32 @@
                     <label for="dateOfBirth">Ngày sinh</label>
                     <div class="input-control"><input type="date" id="dateOfBirth" name="dateOfBirth"></div>
                 </div>
+                <!-- Đổi email -->
+                <div class="form-group">
+                    <label for="newEmail">Email mới</label>
+                    <div class="input-control">
+                        <input type="email" id="newEmail" placeholder="example@email.com">
+                        <a href="#" id="btnUpdateEmail" class="change-link">Cập nhật</a>
+                    </div>
+                </div>
+
+                <!-- Đổi username -->
+                <div class="form-group">
+                    <label for="newUsername">Tên đăng nhập mới (vui lòng đăng nhập lại sau khi cập nhật)</label>
+                    <div class="input-control">
+                        <input type="text" id="newUsername" placeholder="Tên đăng nhập mới">
+                        <a href="#" id="btnUpdateUsername" class="change-link">Cập nhật</a>
+                    </div>
+                </div>
+
+                <!-- Mật khẩu xác thực -->
+                <div class="form-group">
+                    <label for="confirmPasswordForSensitive">Mật khẩu (nếu cập nhật username hoặc email)</label>
+                    <div class="input-control">
+                        <input type="password" id="confirmPasswordForSensitive" placeholder="Nhập mật khẩu hiện tại">
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <button type="submit" class="btn-save">Lưu</button>
                 </div>

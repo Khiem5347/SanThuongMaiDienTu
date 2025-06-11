@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     // Đăng nhập thành công
                     localStorage.setItem('isLoggedIn', 'true');
                     localStorage.setItem('loggedInUser', username); // Lưu username
+                    localStorage.setItem('token', result.token);
                     // Hoặc nếu API trả về username/thông tin user trong result:
                     // localStorage.setItem('loggedInUser', result.username);
 
