@@ -20,6 +20,7 @@ public class ProductResponseDTO {
     private String categoryName;
     private Integer shopId;
     private String shopName;
+    private Integer remainingQuantity;
     public ProductResponseDTO() {
     }
     public ProductResponseDTO(Product product) {
@@ -34,6 +35,7 @@ public class ProductResponseDTO {
         this.productMaxPrice = product.getProductMaxPrice();
         this.numberOfLikes = product.getNumberOfLikes();
         this.numOfProductStar = product.getNumOfProductStar();
+        this.remainingQuantity = product.getRemainingQuantity();
         Category category = product.getCategory();
         if (category != null) {
             this.categoryId = category.getCategoryId();
@@ -134,5 +136,11 @@ public class ProductResponseDTO {
     }
     public void setShopName(String shopName) {
         this.shopName = shopName;
+    }
+    public Integer getRemainingQuantity() { 
+        return remainingQuantity;
+    }
+    public void setRemainingQuantity(Integer remainingQuantity) {
+        this.remainingQuantity = remainingQuantity;
     }
 }

@@ -8,11 +8,12 @@ public class ProductDTO {
     private Integer productMinPrice; 
     private Integer productMaxPrice; 
     private Integer categoryId;      
-    private Integer shopId;         
+    private Integer shopId; 
+    private Integer remainingQuantity;        
     public ProductDTO() {
     }
     public ProductDTO(String productName, String productDescription, String productMainImageUrl,
-                      Integer productMinPrice, Integer productMaxPrice, Integer categoryId, Integer shopId) {
+                      Integer productMinPrice, Integer productMaxPrice, Integer categoryId, Integer shopId, Integer remainingQuantity) {
         this.productName = productName;
         this.productDescription = productDescription;
         this.productMainImageUrl = productMainImageUrl;
@@ -20,6 +21,7 @@ public class ProductDTO {
         this.productMaxPrice = productMaxPrice;
         this.categoryId = categoryId;
         this.shopId = shopId;
+        this.remainingQuantity = remainingQuantity;
     }
     public String getProductName() {
         return productName;
@@ -42,6 +44,9 @@ public class ProductDTO {
     public Integer getShopId() {
         return shopId;
     }
+    public Integer getRemainingQuantity() { 
+        return remainingQuantity;
+    }
     public void setProductName(String productName) {
         this.productName = productName;
     }
@@ -62,5 +67,8 @@ public class ProductDTO {
     }
     public void setShopId(Integer shopId) {
         this.shopId = shopId;
+    }
+    public void setRemainingQuantity(Integer remainingQuantity) { 
+        this.remainingQuantity = remainingQuantity;
     }
 }
