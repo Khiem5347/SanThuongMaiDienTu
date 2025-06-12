@@ -45,6 +45,7 @@ public class ProductServiceImplementation implements ProductService {
         product.setProductMaxPrice(productDTO.getProductMaxPrice());
         product.setCategory(category);
         product.setShop(shop);
+        product.setRemainingQuantity(productDTO.getRemainingQuantity());
         return productRepository.save(product);
     }
     @Override
@@ -83,6 +84,9 @@ public class ProductServiceImplementation implements ProductService {
             Shop shop = shopRepository.findById(productDTO.getShopId())
                     .orElseThrow(() -> new EntityNotFoundException("Shop not found with id: " + productDTO.getShopId()));
             existingProduct.setShop(shop);
+        }
+        if (productDTO.getRemainingQuantity() != null) { 
+            existingProduct.setRemainingQuantity(productDTO.getRemainingQuantity());
         }
         return productRepository.save(existingProduct);
     }

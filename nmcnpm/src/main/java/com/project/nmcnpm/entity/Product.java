@@ -33,6 +33,8 @@ public class Product {
     private Integer productMinPrice; 
     @Column(name = "product_max_price")
     private Integer productMaxPrice; 
+    @Column(name = "remaining_quantity") 
+    private Integer remainingQuantity = 0;
     @Transient
     private Integer productStock = 0;
     @Column(name = "number_of_likes")
@@ -53,7 +55,7 @@ public class Product {
     }
     public Product(Integer productId, Category category, Shop shop, String productName, String productDescription,
                    Integer productStar, Integer productReview, Integer productSold, String productMainImageUrl,
-                   Integer productMinPrice, Integer productMaxPrice, Integer productStock, Integer numberOfLikes, Integer numOfProductStar,
+                   Integer productMinPrice, Integer productMaxPrice, Integer productStock, Integer numberOfLikes, Integer numOfProductStar, Integer remainingQuantity, 
                    Set<ProductImage> productImages, Set<ProductVariant> productVariants, Set<ShippingLink> shippingLinks,
                    Set<ProductReview> productReviews, Set<ProductsInOrder> productsInOrder) {
         this.productId = productId;
@@ -70,6 +72,7 @@ public class Product {
         this.productStock = productStock;
         this.numberOfLikes = numberOfLikes;
         this.numOfProductStar = numOfProductStar;
+        this.remainingQuantity = remainingQuantity;
         this.productImages = productImages;
         this.productVariants = productVariants;
         this.shippingLinks = shippingLinks;
@@ -93,6 +96,9 @@ public class Product {
     }
     public Integer getProductStar() {
         return productStar;
+    }
+    public Integer getRemainingQuantity() { 
+        return remainingQuantity;
     }
     public Integer getProductReview() {
         return productReview;
@@ -150,6 +156,9 @@ public class Product {
     }
     public void setProductStar(Integer productStar) {
         this.productStar = productStar;
+    }
+    public void setRemainingQuantity(Integer remainingQuantity) { 
+        this.remainingQuantity = remainingQuantity;
     }
     public void setProductReview(Integer productReview) {
         this.productReview = productReview;
