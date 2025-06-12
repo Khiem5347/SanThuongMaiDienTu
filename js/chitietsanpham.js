@@ -1,4 +1,5 @@
 // [Thư mục gốc]/js/chitietsanpham.js
+const API_BASE_URL = 'http://localhost:8080/api';
 document.addEventListener('DOMContentLoaded', async () => {
     // Lấy các phần tử DOM chính - thực hiện MỘT LẦN khi DOM sẵn sàng
     const productContainer = document.querySelector('.product-container');
@@ -515,7 +516,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <p class="review-author-name">${review.username || 'Anonymous'}</p>
                     <div class="review-stars">${stars}</div>
                     <p class="review-timestamp">${new Date(review.createdAt || Date.now()).toLocaleDateString('vi-VN')}</p>
-                    <p class="review-text">${review.comment || ''}</p>
+                    <p class="review-text">${review.reviewText || ''}</p>
                 </div>`;
             reviewsListContainer.appendChild(reviewItem);
         });
@@ -583,7 +584,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     productId: currentProductId,
                     userId: user.userId,
                     rating: rating,
-                    comment: comment
+                    reviewText: comment
                 })
             });
             if (!response.ok) {

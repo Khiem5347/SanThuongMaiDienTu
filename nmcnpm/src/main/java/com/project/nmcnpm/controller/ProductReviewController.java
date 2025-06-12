@@ -65,4 +65,15 @@ public class ProductReviewController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @GetMapping("/product/{productId}")
+    public ResponseEntity<List<ProductReviewResponseDTO>> getReviewsByProductId(@PathVariable Integer productId) {
+    try {
+        List<ProductReviewResponseDTO> reviews = productReviewService.getProductReviewsByProductId(productId);
+        return new ResponseEntity<>(reviews, HttpStatus.OK);
+    } catch (Exception e) {
+        System.err.println("Error retrieving reviews for product ID " + productId + ": " + e.getMessage());
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
+
 }
